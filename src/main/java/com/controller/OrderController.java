@@ -48,7 +48,7 @@ public class OrderController {
 		//customerOrder.setBillingAddress(customer.getBillingAddress());
 
 		//customerOrderService.addCustomerOrder(customerOrder);
-		System.out.println("litu");
+		System.out.println("bijendra");
 		return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value = {"/orderList" })
