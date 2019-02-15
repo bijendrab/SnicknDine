@@ -81,16 +81,6 @@ modules
 
 10. Run the server.
 
-### ScreenShots:
-
-* Home Page:
-
-![Alt text](https://github.com/ikismail/ShoppingCart/blob/master/src/main/webapp/WEB-INF/resource/images/screenshots/Home.jpg "Home Page")
-
-* Contact Us:
-
-![Alt text](https://github.com/ikismail/ShoppingCart/blob/master/src/main/webapp/WEB-INF/resource/images/screenshots/ContactUs.png)
-
 #### Somethings wrong!!
 
 If you find that something's wrong with this package, you can let me know by raising an issue on the GitHub issue tracker
