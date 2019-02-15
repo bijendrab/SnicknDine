@@ -23,17 +23,14 @@ modules
 4. **Spring WebFlow**
 
 * after adding products the cart the User can checkout using spring WebFlow
-* Confirming User Details
-* Confirming Shipping and Billing Address
-* Receipt
 * If the user cancel the webflow it will go to cancel Page
-* If the user submits the checkout it will go to thank you page with the timing of delivery Report
+* If the user submits the checkout it will go to thank you page 
 
 ### Tools and Technologies:
 
 * **Technology** : Bootstrap, Java, Spring MVC, Hibernate, JSP, Maven.
 * **Application Servicer**: Apache Tomcat Server
-* **Database** : H2 Database.
+* **Database** : Mysql Database
 
 ### Installation:
 
@@ -48,9 +45,8 @@ modules
 
    * [Download Maven](https://maven.apache.org/download.cgi)
 
-4. Database - H2 Database
+4. Database - MySQL Database
 
-   * [Download H2 Database](http://www.h2database.com/html/download.html)
 
 5. Configuring tomcat with Eclipse (windows) - [Click Here](https://javatutorial.net/run-tomcat-from-eclipse)
 
