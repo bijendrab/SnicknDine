@@ -33,26 +33,22 @@
         </init-param>
     </filter>
 
-    <!--<filter-mapping>
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>com.config.CustomFilter</filter-class>
+    </filter>
+    <!--<filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>-->
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+   <!-- <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>-->
-    <filter>
-        <filter-name>doFilterInternal</filter-name>
-        <filter-class>com.config.CustomFilter</filter-class>
-    </filter>
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>doFilterInternal</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <!-- 	it is used to listen the contextloader -->
     <listener>
