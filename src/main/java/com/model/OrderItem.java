@@ -1,10 +1,10 @@
 package com.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @Data
@@ -19,18 +19,24 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderItemId;
 
+    @Temporal(value= TemporalType.TIMESTAMP)
+    private Date orderCreationTime;
+
     private int quality;
 
     private double price;
 
-    @ManyToOne
-    @JoinColumn(name = "productId")
-    private Product product;
+    private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "cartId")
-    @JsonIgnore
-    private Cart cart;
+    private int cartId;
+
+    private int productId;
+
+    /*private Date OrderEndTime;*/
+
+    private double waitTime;
+
+
 
     public OrderItem() {
     }

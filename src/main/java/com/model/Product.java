@@ -1,84 +1,169 @@
 package com.model;
 
-import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
-@Data
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
 @Entity
 @Table(name = "item")
+//@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 5186013952828648626L;
 
 	@Id
-	@Column(name = "Id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "productId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productId;
 	
 	@Column(name="category")
-	private String productCategory;
+	private String category;
 
-	@Column(name="Type")
-	private String productType;
+	/*@Column(name="Type")
+	private String productType;*/
+    @Column(name="subCategory")
+    private String subCategory;
 
-	@Column(name="Cuisine")
-	private String productCuisine;
+	@Column(name="cuisine")
+	private String cuisine;
 
 	@Column(name = "description")
-	private String productDescription;
+	private String description;
 	
 	/*@Column(name = "manufacturer")
 	private String productManufacturer;*/
 	
 	@NotEmpty(message = "Product Name is mandatory")
 	@Column(name = "name")
-	private String productName;
+	private String name;
 	
-	@NotNull(message="Please provide some price")
+	/*@NotNull(message="Please provide some price")
 	@Min(value = 100, message = "Minimum value should be greater than 100")
 	@Column(name = "price")
-	private double productPrice;
+	private double productPrice;*/
 	
-	@Column(name = "unit")
-	private int unitStock;
+	/*@Column(name = "unit")
+	private int unitStock;*/
 
-	@Column(name = "itemStatus")
-	private boolean itemStatus;
+	/*@Column(name = "itemStatus")
+	private boolean itemStatus;*/
 
-	@Transient
-	private MultipartFile productImage;
+    @Column(name = "isAdd")
+    private Boolean isAdd;
+
+	/*@Column(name= "preparationTime")
+	private double pTime;*/
+
+    @Column(name="selectedQuantity")
+	private  String selectedQuantity;
 
 
+	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	private List<ProductQuantityOptions> quantityOption;
 
-	public Product(String productCategory, String productType, String productCuisine, String productDescription, String productName, double productPrice, int unitStock,boolean itemStatus, MultipartFile productImage) {
-		this.productCategory = productCategory;
-		this.productType = productType;
-		this.productCuisine = productCuisine;
-		this.productDescription = productDescription;
-		//this.productManufacturer = productManufacturer;
-		this.productName = productName;
-		this.productPrice = productPrice;
-		this.unitStock = unitStock;
-		this.productImage = productImage;
-		this.itemStatus=itemStatus;
-	}
+	/*@Transient
+	private MultipartFile productImage;*/
+
+
 
 	public Product() {
 
 
 	}
 
+    public int getId() {
+        return this.productId;
+    }
+
+    public void setId(int Id) {
+        this.productId = Id;
+    }
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof Product;
+    }
+
+	public int getProductId() {
+		return this.productId;
+	}
+
+	public String getCategory() {
+		return this.category;
+	}
+
+	public String getSubCategory() {
+		return this.subCategory;
+	}
+
+	public String getCuisine() {
+		return this.cuisine;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public Boolean getIsAdd() {
+		return this.isAdd;
+	}
+
+	public String getSelectedQuantity() {
+		return this.selectedQuantity;
+	}
+
+	public List<ProductQuantityOptions> getQuantityOption() {
+		return this.quantityOption;
+	}
+
+	/*public MultipartFile getProductImage() {
+		return this.productImage;
+	}*/
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public void setSubCategory(String subCategory) {
+		this.subCategory = subCategory;
+	}
+
+	public void setCuisine(String cuisine) {
+		this.cuisine = cuisine;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setIsAdd(Boolean isAdd) {
+		this.isAdd = isAdd;
+	}
+
+	public void setSelectedQuantity(String selectedQuantity) {
+		this.selectedQuantity = selectedQuantity;
+	}
+
+	public void setQuantityOption(List<ProductQuantityOptions> quantityOption) {
+		this.quantityOption = quantityOption;
+	}
+
+	/*public void setProductImage(MultipartFile productImage) {
+		this.productImage = productImage;
+	}*/
 }

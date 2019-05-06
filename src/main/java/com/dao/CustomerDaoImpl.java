@@ -60,7 +60,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		return customerList;
 	}
 
-	public Customer getCustomerByemailId(String emailId) {
+	public Customer getCustomerByEmailId(String emailId) {
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery("from User where emailId=?");
 		query.setString(0, emailId);

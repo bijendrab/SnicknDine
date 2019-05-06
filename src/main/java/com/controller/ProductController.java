@@ -1,18 +1,15 @@
 
 package com.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +23,7 @@ import com.model.Product;
 import com.service.ProductService;
 
 import static java.lang.Boolean.TRUE;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class ProductController {
 
@@ -59,10 +56,13 @@ public class ProductController {
 	// which displays the list of products to the productList page
 
 	 //Product List using Angular
-	 @RequestMapping("/getAllProducts")
-	 public ModelAndView getAllProducts() {
+	 @CrossOrigin(origins = "http://localhost:4200")
+	 @RequestMapping(value="/getAllProducts", method = RequestMethod.GET)
+	 public String getAllProducts(Model model) {
 		List<Product> products = productService.getAllProducts();
-		return new ModelAndView("productListAngular", "products", products);
+		model.addAttribute("itemList", products);
+		return "jsonTemplate";
+		//return new ModelAndView("productListAngular", "products", products);
 	}
 
 	/*//		Normal ProductList view
@@ -119,40 +119,32 @@ public class ProductController {
 		//return "redirect:/getAllProducts";
 	}
 
-	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.GET)
-	public String getProductForm(Model model) {
-		Product product = new Product();
-		// New Arrivals
-		// set the category as 1 for the Book book
-		model.addAttribute("productFormObj", product);
-		return "addProduct";
-
-	}
-
-	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST)
-	public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
+    @CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+	//public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
+    public String addProduct(@RequestBody Product product, BindingResult result){
 		// Binding Result is used if the form that has any error then it will
 		// redirect to the same page without performing any functions
 		if (result.hasErrors())
 			return "addProduct";
-		product.setItemStatus(TRUE);
+		product.setIsAdd(TRUE);
 		productService.addProduct(product);
-		MultipartFile image = product.getProductImage();
+		/*MultipartFile image = product.getProductImage();
 		if (image != null && !image.isEmpty()) {
-			Path path = Paths
-					.get("C:/Users/bijbeher.ORADEV/Documents/workspace_JAVA/ShoppingCart-master/src/main/webapp/WEB-INF/resource/images/"
-							+ product.getProductId() + ".jpg");
+			*//*Path path = Path.getFileName("C:/Users/bijbeher.ORADEV/Documents/workspace_JAVA/ShoppingCart-master/src/main/webapp/WEB-INF/resource/images/"
+                    + product.getProductId() + ".jpg") {
+            };*//*
 
 			try {
-				image.transferTo(new File(path.toString()));
+				*//*image.transferTo(new File(path.toString()));*//*
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+			}*//* catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-		}
+		}*/
 		return "redirect:/getAllProducts";
 	}
 

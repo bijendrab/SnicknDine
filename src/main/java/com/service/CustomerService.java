@@ -10,6 +10,6 @@ public interface CustomerService {
 
 	List<Customer> getAllCustomers();
 
-	Customer getCustomerByemailId(String emailId);
+	Customer getCustomerByEmailId(String emailId);
 
 }

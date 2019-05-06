@@ -66,8 +66,8 @@
 					<li><a href="<c:url value="/index1" />"><span
 							class="glyphicon glyphicon-shopping-user"></span>Welcome..${pageContext.request.userPrincipal.name}</a></li>
 					<security:authorize access="hasRole('ROLE_ADMIN')">
-					<li><a href="<c:url value="/orderList" />"><span
-							class="glyphicon glyphicon-shopping-user"></span>OrderList</a></li>
+						<li><a href="<c:url value="/orderList" />"><span
+								class="glyphicon glyphicon-shopping-user"></span>OrderList</a></li>
 					</security:authorize>
 
 					<security:authorize access="hasRole('ROLE_USER')">

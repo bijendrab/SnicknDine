@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,26 +28,53 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         session.close();
     }
 
-    public List<Cart> getCustomerOrderByCustomerId() {
-        List<Cart> cart=null;
+    public List<OrderItem> getCustomerOrderByCustomerId() {
+        List<OrderItem> orderItems=null;
         Session session = sessionFactory.openSession();
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String emailId = user.getUsername();
         if (user.getAuthorities().iterator().next().toString().equals("ROLE_ADMIN")) {
-            cart = session.createCriteria(Cart.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-            System.out.println(cart);
+            orderItems = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+            setOrderWaitTime(orderItems);
+            System.out.println(orderItems);
         }
         else if(user.getAuthorities().iterator().next().toString().equals("ROLE_USER")){
-            Query query = session.createQuery("from User where emailId=?");
-            query.setString(0, emailId);
-            User users = (User) query.uniqueResult();
-            Customer customer = users.getCustomer();
+            Customer customer = getCustomer(session, emailId);
             System.out.println(customer.getCustomerId());
-            cart = session.createCriteria(Cart.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).add(Restrictions.eq("customer.customerId",customer.getCustomerId())).list();
-            System.out.println(cart.size());
+            orderItems = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).add(Restrictions.eq("cartId",customer.getCustomerId())).list();
+            setOrderWaitTime(orderItems);
+            System.out.println(orderItems.size());
+
         }
         session.flush();
         session.close();
-        return cart;
+        return orderItems;
+    }
+
+    public void setOrderWaitTime(List<OrderItem> orderItems) {
+        for (int i = 0; i < orderItems.size(); i++) {
+            long diff = new Date().getTime() - orderItems.get(i).getOrderCreationTime().getTime();
+            long diffMinutes = diff / (60 * 1000) % 60;
+            orderItems.get(i).setWaitTime(diffMinutes);
+        }
+    }
+
+    public Customer getCustomer(Session session, String emailId) {
+        Query query = session.createQuery("from User where emailId=?");
+        query.setString(0, emailId);
+        User users = (User) query.uniqueResult();
+        return users.getCustomer();
+    }
+
+    public void updateCustomerOrderItem(OrderItem orderitem){
+        Session session = sessionFactory.openSession();
+        System.out.println(orderitem.getStatus());
+        //OrderItem orderit = (OrderItem) session.get(OrderItem.class, orderitem.getProduct().getProductId());
+        orderitem.setStatus("processed");
+        //System.out.println(orderit.getCart().getCartId());
+        session.saveOrUpdate(orderitem);
+        session.flush();
+        session.close();
+
     }
 }

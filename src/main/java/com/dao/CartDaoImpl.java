@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -78,13 +79,17 @@ public class CartDaoImpl implements CartDao {
 	public void UpdateOrderItem(Cart cart) {
 		List<CartItem> cartItems = cart.getCartItem();
 		OrderItem orderItem = new OrderItem();
+        Date creationDate = new Date();
 		for (int i = 0; i < cartItems.size(); i++) {
 			orderItem.setQuality(cartItems.get(i).getQuality());
-			orderItem.setProduct(cartItems.get(i).getProduct());
+			orderItem.setProductId(cartItems.get(i).getProduct().getId());
 			orderItem.setPrice(cartItems.get(i).getPrice());
-			orderItem.setCart(cart);
+			orderItem.setCartId(cart.getCartId());
+			orderItem.setOrderCreationTime(creationDate);
+			orderItem.setStatus("Unprocessed");
+			//orderItem.setWaitTime(cartItems.get(i).getProduct().getPTime());
 			Session sessionUpdate = sessionFactory.openSession();
-			System.out.println(orderItem.getProduct().getProductId()+" "+orderItem.getPrice()+" "+ orderItem.getCart().getCartId());
+			System.out.println(orderItem.getProductId()+" "+orderItem.getPrice()+" "+ orderItem.getCartId());
 			sessionUpdate.save(orderItem);
 			sessionUpdate.flush();
 			sessionUpdate.close();

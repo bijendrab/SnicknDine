@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
-	xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
+	   xmlns:sec="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd 
        http://www.springframework.org/schema/security 
        http://www.springframework.org/schema/security/spring-security.xsd
@@ -25,7 +27,7 @@
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.dialect">com.config.dialect.CustomMySqlDialect</prop>
 
 				<!-- hibernate mapping to database automatically -->
 				<!-- when we use create-drop instead of update the table is created automatically 
@@ -53,6 +55,7 @@
 				<value>com.model.ShippingAddress</value>
 				<value>com.model.User</value>
 				<value>com.model.Queries</value>
+				<value>com.model.ProductQuantityOptions</value>
 			</list>
 		</property>
 
@@ -66,6 +69,7 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="corsFilter" class="com.config.CustomFilter" />
 
 	<!-- Spring - Security Purpose -->
 	<security:http auto-config="true" use-expressions="true">
@@ -84,6 +88,7 @@
 			username-parameter="j_username"
 			password-parameter="j_password" />
 		<security:logout logout-success-url="/login?logout" />
+
 	</security:http>
 
 	<security:authentication-manager>

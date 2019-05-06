@@ -1,21 +1,10 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cart")
@@ -35,51 +24,48 @@ public class Cart implements Serializable {
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<CartItem> cartItem;
 
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,fetch=FetchType.EAGER)
-	private Set<OrderItem> orderItem;
-
 	private double totalPrice;
 
+    public Cart() {
+	}
+
+	protected boolean canEqual(final Object other) {
+		return other instanceof Cart;
+	}
+
 	public int getCartId() {
-		return cartId;
+		return this.cartId;
+	}
+
+	public Customer getCustomer() {
+		return this.customer;
+	}
+
+	public List<CartItem> getCartItem() {
+		return this.cartItem;
+	}
+
+	public double getTotalPrice() {
+		return this.totalPrice;
 	}
 
 	public void setCartId(int cartId) {
 		this.cartId = cartId;
 	}
 
-	public Customer getCustomer() {
-		return customer;
-	}
-
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
-	public List<CartItem> getCartItem() {
-		return cartItem;
-	}
-	public Set<OrderItem> getOrderItem() {
-		return orderItem;
-	}
-
 	public void setCartItem(List<CartItem> cartItem) {
 		this.cartItem = cartItem;
-	}
-	public void setOrderItem(Set<OrderItem> orderItem) {
-		this.orderItem = orderItem;
-	}
-
-	public double getTotalPrice() {
-		return totalPrice;
 	}
 
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
-	public Cart() {
-	}
+
 
 	public Cart(int cartId, int customerId, double totalPrice) {
 		this.cartId = cartId;

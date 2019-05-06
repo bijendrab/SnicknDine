@@ -1,23 +1,20 @@
 package com.controller;
 
-import com.model.Product;
+import com.model.*;
 import com.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import com.model.Cart;
-import com.model.Customer;
-import com.model.CustomerOrder;
 import com.service.CartService;
 import com.service.CustomerOrderService;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class OrderController {
 
@@ -52,11 +49,23 @@ public class OrderController {
 		return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value = {"/orderList" })
-	public ModelAndView getCustomerOrder() {
+	public String getCustomerOrder(Model model) {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
-		Customer customer = customerService.getCustomerByemailId(emailId);
-		List<Cart> customerOrd = customerOrderService.getCustomerOrder();
-		return new ModelAndView("CustomerOrderPage", "customerOrd", customerOrd);
+		Customer customer = customerService.getCustomerByEmailId(emailId);
+		List<OrderItem> customerOrd = customerOrderService.getCustomerOrder();
+		model.addAttribute("orderList", customerOrd);
+		return "jsonTemplate";
 	}
+
+	@RequestMapping(value = "/updateOrderItem",method = RequestMethod.PUT,consumes="application/json")
+	public String updateCustomerOrder(@RequestBody OrderItem orderitem, Model model) {
+		/*if (result.hasErrors())
+			return "CustomerOrderPage";*/
+		orderitem.setStatus("Processed");
+		customerOrderService.updateCustomerOrder(orderitem);
+		model.addAttribute("updateOrderList", orderitem);
+		return "jsonTemplate";
+	}
+
 }

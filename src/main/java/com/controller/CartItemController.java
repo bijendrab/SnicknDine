@@ -72,7 +72,7 @@ public class CartItemController {
 	@RequestMapping("/cart/add/{productId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void addCartItem(@PathVariable(value = "productId") int productId) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		/*User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
 		//System.out.println("Username : " + emailId);
 		Customer customer = customerService.getCustomerByemailId(emailId);
@@ -95,7 +95,7 @@ public class CartItemController {
 		cartItem.setProduct(product);
 		cartItem.setPrice(product.getProductPrice() * 1);
 		cartItem.setCart(cart);
-		cartItemService.addCartItem(cartItem);
+		cartItemService.addCartItem(cartItem);*/
 	}
 
 	@RequestMapping("/cart/removeCartItem/{cartItemId}")
@@ -106,9 +106,9 @@ public class CartItemController {
 	@RequestMapping("/cart/decreaseCartItem/{productId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void removeCartItemQuantity(@PathVariable(value = "productId") int productId) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		/*User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
-		Customer customer = customerService.getCustomerByemailId(emailId);
+		Customer customer = customerService.getCustomerByEmailId(emailId);
 		Cart cart = customer.getCart();
 		List<CartItem> cartItems = cart.getCartItem();
 		Product product = productService.getProductById(productId);
@@ -125,13 +125,7 @@ public class CartItemController {
 				}
 				return;
 			}
-		}
-		/*CartItem cartItem = new CartItem();
-		cartItem.setQuality(1);
-		cartItem.setProduct(product);
-		cartItem.setPrice(product.getProductPrice() * 1);
-		cartItem.setCart(cart);
-		cartItemService.addCartItem(cartItem);*/
+		}*/
 	}
 
 	@RequestMapping("/cart/removeAllItems/{cartId}")

@@ -29,8 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getAllCustomers();
 	}
 
-	public Customer getCustomerByemailId(String emailId) {
-		return customerDao.getCustomerByemailId(emailId);
+	public Customer getCustomerByEmailId(String emailId) {
+		return customerDao.getCustomerByEmailId(emailId);
 	}
 
 }

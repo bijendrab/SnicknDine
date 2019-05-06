@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,7 +15,7 @@ import com.model.Cart;
 import com.model.Customer;
 import com.service.CartService;
 import com.service.CustomerService;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class CartController {
 
@@ -44,7 +45,7 @@ public class CartController {
 	public String getCartId(Model model){
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
-		Customer customer = customerService.getCustomerByemailId(emailId);
+		Customer customer = customerService.getCustomerByEmailId(emailId);
 		model.addAttribute("cartId", customer.getCart().getCartId());
 		return "cart";
 	}

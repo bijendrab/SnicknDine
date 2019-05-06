@@ -3,14 +3,11 @@ package com.service;
 import java.util.List;
 import java.util.Set;
 
-import com.model.Product;
+import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dao.CustomerOrderDao;
-import com.model.Cart;
-import com.model.CartItem;
-import com.model.CustomerOrder;
 
 @Service
 public class CustomerOrderServiceImpl implements CustomerOrderService {
@@ -37,8 +34,11 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 		}
 		return grandTotal;
 	}
-	public List<Cart> getCustomerOrder() {
+	public List<OrderItem> getCustomerOrder() {
 		return customerOrderDao.getCustomerOrderByCustomerId();
+	}
+	public void updateCustomerOrder(OrderItem orderitem){
+		customerOrderDao.updateCustomerOrderItem(orderitem);
 	}
 
 }

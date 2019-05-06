@@ -23,7 +23,7 @@
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="<c:url value="../resource/js/productController.js"/>"></script>
 </head>
-<body ng-app="myapp">
+<body ng-app="myapp" ng-controller="myController">
 <div class="container" id="CustomerOrderTable"
      style="width: 1145px; margin-bottom: 180px;">
     <security:authorize access="hasRole('ROLE_ADMIN')">
@@ -49,7 +49,16 @@
                 <td>${custord.customer.customerId}</td>
                 <td>${orditem.product.productName}</td>
                 <td>${orditem.quality}</td>
-                <td>NotProcessed</td>
+                <security:authorize access="hasRole('ROLE_ADMIN')">
+                <td>
+                    <select ng-model="status"  ng-options="type for type in resourceArray">
+                        <option value="">Other</option>
+                    </select>
+                </td>
+                </security:authorize>
+                <security:authorize access="hasRole('ROLE_USER')">
+                    <td>${orditem.status}</td>
+                </security:authorize>
             </tr>
             </c:forEach>
         </c:forEach>
