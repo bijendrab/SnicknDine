@@ -1,15 +1,17 @@
 package com.dao;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import com.model.ProductQuantityOptions;
 import org.hibernate.*;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.model.Product;
+
+import javax.xml.transform.Transformer;
 
 
 @Repository(value = "productDao")
@@ -28,24 +30,13 @@ public class ProductDaoImpl implements ProductDao {
 
 	public List<Product> getAllProducts() {
 		Session session = sessionFactory.openSession();
-		String getQuery="SELECT a.productId as productId, a.category as category, a.subCategory as subCategory," +
-				"a.cuisine as cuisine, a.description as description, a.name as name, a.isAdd as isAdd , a.selectedQuantity as selectedQuantity, " +
-               "CONCAT('[',GROUP_CONCAT('{option:', b.option, ', price:',b.price,',  quantity:',b.quantity,'}'),']') as quantityOption " +
-				"FROM Product as a join  a.quantityOption as b GROUP BY a.productId";
-		Query query = session.createQuery(getQuery).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-		List<Product> products = query.list();
-		System.out.println(products);
+		List<Product> products = session.createQuery("from Product").list();
 		session.flush();
-		// it will close the particular session after completing the process
 		session.close();
 		return products;
 	}
-
 	public Product getProductById(int productId) {
-
-		// Reading the records from the table
 		Session session = sessionFactory.openSession();
-		// select * from Product where isbn=i
 		Product product = (Product) session.get(Product.class, productId);
 		session.close();
 		return product;
@@ -56,7 +47,7 @@ public class ProductDaoImpl implements ProductDao {
 		Product product = (Product) session.get(Product.class, productId);
 		session.delete(product);
 		session.flush();
-		session.close();// close the session
+		session.close();
 	}
 
 	public void disableProduct(int productId) {
@@ -71,7 +62,7 @@ public class ProductDaoImpl implements ProductDao {
 		product.setIsAdd(status);
 		session.update(product);
 		session.flush();
-		session.close();// close the session
+		session.close();
 	}
 
 
@@ -92,5 +83,17 @@ public class ProductDaoImpl implements ProductDao {
 		session.flush();
 		session.close();
 	}
+
+
+
+
+	/*String getQuery="SELECT a.productId as productId, a.category as category, a.subCategory as subCategory," +
+				"a.cuisine as cuisine, a.description as description, a.name as name, a.isAdd as isAdd , a.selectedQuantity as selectedQuantity, " +
+               "CONCAT('[',GROUP_CONCAT('{\"option\":\"', b.option, '\", \"price\":',b.price,',  \"quantity\":',b.quantity,'}'),']') as quantityOption " +
+				"FROM Product as a join  a.quantityOption as b GROUP BY a.productId";
+		String getQuery="FROM Product as a GROUP BY a.productId";
+		Query query = session.createQuery(getQuery).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		Query query = session.createQuery(getQuery).setResultTransformer(Transformers.aliasToBean(Product.class));
+		List<Product> products=query.list();*/
 
 }

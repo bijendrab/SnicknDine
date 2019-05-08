@@ -17,7 +17,7 @@ public class Product implements Serializable {
 
 	@Id
 	@Column(name = "productId")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int productId;
 	
 	@Column(name="category")
@@ -62,7 +62,7 @@ public class Product implements Serializable {
 	private  String selectedQuantity;
 
 
-	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<ProductQuantityOptions> quantityOption;
 
 	/*@Transient
@@ -74,14 +74,6 @@ public class Product implements Serializable {
 
 
 	}
-
-    public int getId() {
-        return this.productId;
-    }
-
-    public void setId(int Id) {
-        this.productId = Id;
-    }
 
     protected boolean canEqual(final Object other) {
         return other instanceof Product;
@@ -166,4 +158,19 @@ public class Product implements Serializable {
 	/*public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}*/
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"productId=" + productId +
+				", category='" + category + '\'' +
+				", subCategory='" + subCategory + '\'' +
+				", cuisine='" + cuisine + '\'' +
+				", description='" + description + '\'' +
+				", name='" + name + '\'' +
+				", isAdd=" + isAdd +
+				", selectedQuantity='" + selectedQuantity + '\'' +
+				", quantityOption=" + quantityOption +
+				'}';
+	}
 }

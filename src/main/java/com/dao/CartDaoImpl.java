@@ -82,7 +82,7 @@ public class CartDaoImpl implements CartDao {
         Date creationDate = new Date();
 		for (int i = 0; i < cartItems.size(); i++) {
 			orderItem.setQuality(cartItems.get(i).getQuality());
-			orderItem.setProductId(cartItems.get(i).getProduct().getId());
+			orderItem.setProductId(cartItems.get(i).getProduct().getProductId());
 			orderItem.setPrice(cartItems.get(i).getPrice());
 			orderItem.setCartId(cart.getCartId());
 			orderItem.setOrderCreationTime(creationDate);

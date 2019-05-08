@@ -5,7 +5,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.model.ProductQuantityOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -51,26 +60,37 @@ public class ProductController {
 		return multipartResolver;
 	}
 
-	// Request Mapping
-
 	// which displays the list of products to the productList page
-
-	 //Product List using Angular
 	 @CrossOrigin(origins = "http://localhost:4200")
 	 @RequestMapping(value="/getAllProducts", method = RequestMethod.GET)
 	 public String getAllProducts(Model model) {
 		List<Product> products = productService.getAllProducts();
-		model.addAttribute("itemList", products);
+		List<HashMap<String, Object>> allItem=new ArrayList<>();
+		for (Product prods:products){
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("productId",prods.getProductId());
+			map.put("name",prods.getName());
+			map.put("description",prods.getDescription());
+			map.put("category",prods.getCategory());
+			map.put("subCategory",prods.getSubCategory());
+			map.put("selectedQuantity",prods.getSelectedQuantity());
+			map.put("cuisine",prods.getCuisine());
+			map.put("isAdd",prods.getIsAdd());
+			List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
+			for (ProductQuantityOptions quantO:prods.getQuantityOption()){
+				HashMap<String, Object> opt = new HashMap<>();
+				opt.put("option",quantO.getOption());
+				opt.put("price",quantO.getPrice());
+				opt.put("quantity",quantO.getQuantity());
+				quantityOptions.add(opt);
+			}
+			map.put("quantityOption",quantityOptions);
+			allItem.add(map);
+		}
+		model.addAttribute("itemList", allItem);
 		return "jsonTemplate";
-		//return new ModelAndView("productListAngular", "products", products);
 	}
 
-	/*//		Normal ProductList view
-	  @RequestMapping("/getAllProducts") public ModelAndView getAllProducts() {
-	  List<Product> products = productService.getAllProducts(); return new
-	  ModelAndView("productList", "products", products); }*/
-	 
-	
 	// this is used for getting the product by productId
 
 	@RequestMapping("getProductById/{productId}")
@@ -84,7 +104,8 @@ public class ProductController {
 
 		// Here the Path class is used to refer the path of the file
 
-		Path path = Paths.get("C:/Users/Ismail/workspace/ShoppingCart/src/main/webapp/WEB-INF/resource/images/products/"
+		/*Path path = Paths.get("C:/Users/Ismail/workspace/" +
+				"ShoppingCart/src/main/webapp/WEB-INF/resource/images/products/"
 				+ productId + ".jpg");
 
 		if (Files.exists(path)) {
@@ -93,7 +114,7 @@ public class ProductController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		productService.deleteProduct(productId);
 		// http://localhost:8080/shoppingCart/getAllProducts
@@ -153,9 +174,12 @@ public class ProductController {
 		Product product = productService.getProductById(productId);
 		return new ModelAndView("editProduct", "editProductObj", product);
 	}
-
-	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.POST)
-	public String editProduct(@ModelAttribute(value = "editProductObj") Product product) {
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String editProduct(@RequestBody Product product, BindingResult result) {
+		if (result.hasErrors())
+			return "addProduct";
+		//productService.addProduct(product);
 		productService.editProduct(product);
 		return "redirect:/getAllProducts";
 	}
