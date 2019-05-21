@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
@@ -63,7 +64,7 @@ public class Product implements Serializable {
 
 
 	@OneToMany(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.EAGER)
-	private List<ProductQuantityOptions> quantityOption;
+	private Set<ProductQuantityOptions> quantityOption;
 
 	/*@Transient
 	private MultipartFile productImage;*/
@@ -111,7 +112,7 @@ public class Product implements Serializable {
 		return this.selectedQuantity;
 	}
 
-	public List<ProductQuantityOptions> getQuantityOption() {
+	public Set<ProductQuantityOptions> getQuantityOption() {
 		return this.quantityOption;
 	}
 
@@ -151,7 +152,7 @@ public class Product implements Serializable {
 		this.selectedQuantity = selectedQuantity;
 	}
 
-	public void setQuantityOption(List<ProductQuantityOptions> quantityOption) {
+	public void setQuantityOption(Set<ProductQuantityOptions> quantityOption) {
 		this.quantityOption = quantityOption;
 	}
 

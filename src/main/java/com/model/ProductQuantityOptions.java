@@ -1,6 +1,5 @@
 package com.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -27,7 +26,6 @@ public class ProductQuantityOptions implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "productId")
-    /*@JsonIgnore*/
     private Product product;
 
     public ProductQuantityOptions() {

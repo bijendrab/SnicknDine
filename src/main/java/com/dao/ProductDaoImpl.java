@@ -1,17 +1,14 @@
 package com.dao;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import com.model.ProductQuantityOptions;
 import org.hibernate.*;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.model.Product;
 
-import javax.xml.transform.Transformer;
 
 
 @Repository(value = "productDao")
@@ -68,20 +65,27 @@ public class ProductDaoImpl implements ProductDao {
 
 	public void addProduct(Product product) {
 		Session session = sessionFactory.openSession();
-		Set<ProductQuantityOptions> pqo= new HashSet<ProductQuantityOptions>();
-		for (ProductQuantityOptions potion:product.getQuantityOption()){
-			potion.setProduct(product);
-			pqo.add(potion);
-		}
+		setProduct(product);
 		session.save(product);
+		session.flush();
 		session.close();
 	}
 
 	public void editProduct(Product product) {
 		Session session = sessionFactory.openSession();
-		session.update(product);
+		setProduct(product);
+		session.merge(product);
+		//session.update(product.getQuantityOption());
 		session.flush();
 		session.close();
+	}
+
+	public void setProduct(Product product) {
+		Set<ProductQuantityOptions> pqo = new HashSet<ProductQuantityOptions>();
+		for (ProductQuantityOptions potion : product.getQuantityOption()) {
+			potion.setProduct(product);
+			pqo.add(potion);
+		}
 	}
 
 

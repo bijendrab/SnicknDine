@@ -12,6 +12,7 @@ import com.service.CartService;
 import com.service.CustomerOrderService;
 
 import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -26,8 +27,8 @@ public class OrderController {
 	@Autowired
 	private CustomerOrderService customerOrderService;
 
-	@RequestMapping("/order/{cartId}")
-	public String createOrder(@PathVariable("cartId") int cartId) {
+	@RequestMapping(value="/order/{cartId}",method = RequestMethod.POST)
+	public String createOrder(@PathVariable("cartId") int cartId, Model model) {
 
 		/*CustomerOrder customerOrder = new CustomerOrder();
 
@@ -45,8 +46,12 @@ public class OrderController {
 		//customerOrder.setBillingAddress(customer.getBillingAddress());
 
 		//customerOrderService.addCustomerOrder(customerOrder);
-		System.out.println("bijendra");
-		return "redirect:/checkout?cartId=" + cartId;
+
+		Cart cart =cartService.validate(cartId);
+		List<Map<String, Object>> orderItems= cartService.update(cart);
+		model.addAttribute("OrderList", orderItems);
+		return "jsonTemplate";
+		//return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value = {"/orderList" })
 	public String getCustomerOrder(Model model) {

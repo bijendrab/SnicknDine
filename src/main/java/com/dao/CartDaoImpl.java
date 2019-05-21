@@ -1,10 +1,9 @@
 package com.dao;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.*;
 import com.service.CustomerService;
 import com.service.ProductService;
@@ -63,7 +62,7 @@ public class CartDaoImpl implements CartDao {
 		return cart;
 	}
 	@Transactional
-	public void update(Cart cart) {
+	public List<Map<String, Object>> update(Cart cart) {
 		//Cart cart = getCartByCartId(cartId);
 		int cartId = cart.getCartId();
 		double grandTotal = customerOrderService.getCustomerOrderGrandTotal(cartId);
@@ -72,28 +71,40 @@ public class CartDaoImpl implements CartDao {
 		session.saveOrUpdate(cart);
 		session.flush();
 		session.close();
-		UpdateOrderItem(cart);
+		List<Map<String, Object>> orderitems=UpdateOrderItem(cart);
 		removeFromCart(cart);
+		return orderitems;
 	}
 
-	public void UpdateOrderItem(Cart cart) {
+	public List<Map<String, Object>> UpdateOrderItem(Cart cart) {
 		List<CartItem> cartItems = cart.getCartItem();
+		List<Map<String, Object>> allOrderItem=new ArrayList<>();
+		ObjectMapper Obj = new ObjectMapper();
 		OrderItem orderItem = new OrderItem();
         Date creationDate = new Date();
 		for (int i = 0; i < cartItems.size(); i++) {
-			orderItem.setQuality(cartItems.get(i).getQuality());
-			orderItem.setProductId(cartItems.get(i).getProduct().getProductId());
+			orderItem.setQuantity(cartItems.get(i).getQuantity());
+			orderItem.setItemName(cartItems.get(i).getItemName());
 			orderItem.setPrice(cartItems.get(i).getPrice());
 			orderItem.setCartId(cart.getCartId());
 			orderItem.setOrderCreationTime(creationDate);
 			orderItem.setStatus("Unprocessed");
-			//orderItem.setWaitTime(cartItems.get(i).getProduct().getPTime());
+			orderItem.setQuantityOption(cartItems.get(i).getQuantityOption());
+			try {
+				String jsonStr = Obj.writeValueAsString(orderItem);
+				Map<String, Object> map = Obj.readValue(jsonStr, Map.class);
+				allOrderItem.add(map);
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
 			Session sessionUpdate = sessionFactory.openSession();
-			System.out.println(orderItem.getProductId()+" "+orderItem.getPrice()+" "+ orderItem.getCartId());
 			sessionUpdate.save(orderItem);
 			sessionUpdate.flush();
 			sessionUpdate.close();
 		}
+		return allOrderItem;
+
 	}
     @Transactional
 	public void removeFromCart(Cart cart) {
@@ -101,15 +112,12 @@ public class CartDaoImpl implements CartDao {
 		for (CartItem cartItem : cartItems) {
 			Session sessionDelete = sessionFactory.openSession();
 			CartItem cartItemDelete = (CartItem) sessionDelete.get(CartItem.class, cartItem.getCartItemId());
-			/*System.out.println(cartItemDelete);
-			sessionDelete.delete(cartItemDelete);
-            sessionDelete.getTransaction().commit();*/
             System.out.println("CartItemId :" +cartItem.getCartItemId());
             Query query = sessionDelete.createQuery("delete CartItem where cartItemId = :cartItemId");
             query.setParameter("cartItemId", cartItem.getCartItemId());
             int result = query.executeUpdate();
             if (result >= 0) {
-                System.out.println("Expensive products was removed");
+                System.out.println("products are removed");
             }
 			Cart cart1 = cartItemDelete.getCart();
 			List<CartItem> cartItems1 = cart1.getCartItem();
