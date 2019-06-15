@@ -46,17 +46,15 @@ public class ProductDaoImpl implements ProductDao {
 		session.flush();
 		session.close();
 	}
-
-	public void disableProduct(int productId) {
-		setProductStatus(productId,false);
-	}
-	public void enableProduct(int productId) {
-		setProductStatus(productId,true);
-	}
-	private void setProductStatus(int productId, boolean status){
+	public void setProductStatus(int productId){
 		Session session = sessionFactory.openSession();
 		Product product = (Product) session.get(Product.class, productId);
-		product.setIsAdd(status);
+		if(product.getIsEnabled().equals(true)){
+			product.setIsEnabled(false);
+		}
+		else{
+			product.setIsEnabled(true);
+		}
 		session.update(product);
 		session.flush();
 		session.close();
@@ -75,7 +73,6 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = sessionFactory.openSession();
 		setProduct(product);
 		session.merge(product);
-		//session.update(product.getQuantityOption());
 		session.flush();
 		session.close();
 	}

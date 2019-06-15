@@ -16,8 +16,6 @@ public interface ProductDao {
 	
 	void editProduct(Product product);
 
-	void disableProduct(int productId);
-
-	void enableProduct(int productId);
+	void setProductStatus(int productId);
 	
 }

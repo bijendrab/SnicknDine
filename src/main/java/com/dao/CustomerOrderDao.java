@@ -10,6 +10,6 @@ import java.util.List;
 public interface CustomerOrderDao {
 
 	void addCustomerOrder(CustomerOrder customerOrder);
-	public List<OrderItem> getCustomerOrderByCustomerId();
+	List<OrderItem> getCustomerOrderByCustomerId();
 	void updateCustomerOrderItem(OrderItem orderitem);
 }

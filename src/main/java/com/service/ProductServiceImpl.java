@@ -37,11 +37,8 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(int productId) {
 		productDao.deleteProduct(productId);
 	}
-	public void disableProduct(int productId) {
-		productDao.disableProduct(productId);
-	}
-	public void enableProduct(int productId) {
-		productDao.enableProduct(productId);
+	public void setProductStatus(int productId) {
+		productDao.setProductStatus(productId);
 	}
 
 	

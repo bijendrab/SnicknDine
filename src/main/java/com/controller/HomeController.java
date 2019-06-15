@@ -8,13 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.model.Queries;
 import com.service.QueriesService;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class HomeController {
 
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
 	@RequestMapping({ "/index", "/index1" })
 	public String sayIndex() {
 		return "index1";
@@ -25,6 +25,7 @@ public class HomeController {
 		return new ModelAndView("hello", "hello", "Hello Mr.Ismail");
 	}
 
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
 	@RequestMapping("/login")
 	public String login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout, Model model) {
@@ -34,6 +35,7 @@ public class HomeController {
 			model.addAttribute("logout", "You have logged out successfully");
 		return "login";
 	}
+
 
 	@RequestMapping("/aboutus")
 	public String sayAbout() {
@@ -61,4 +63,5 @@ public class HomeController {
 		return "login";
 
 	}
+
 }

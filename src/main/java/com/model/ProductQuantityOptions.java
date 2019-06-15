@@ -17,7 +17,7 @@ public class ProductQuantityOptions implements Serializable {
     private String option;
 
     @Column(name = "quantity")
-    private int quantity;
+    private String quantity;
 
     @NotNull(message="Please provide some price")
     @Min(value = 50, message = "Minimum value should be greater than 50")
@@ -43,7 +43,7 @@ public class ProductQuantityOptions implements Serializable {
         return this.option;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return this.quantity;
     }
 
@@ -63,7 +63,7 @@ public class ProductQuantityOptions implements Serializable {
         this.option = option;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 

@@ -41,7 +41,10 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         else if(user.getAuthorities().iterator().next().toString().equals("ROLE_USER")){
             Customer customer = getCustomer(session, emailId);
             System.out.println(customer.getCustomerId());
-            orderItems = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).add(Restrictions.eq("cartId",customer.getCustomerId())).list();
+            Criteria criteria  = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            criteria.createAlias("cart", "cart");
+            criteria.add(Restrictions.eq("cart.cartId",customer.getCustomerId()));
+            orderItems = criteria.list();
             setOrderWaitTime(orderItems);
             System.out.println(orderItems.size());
 

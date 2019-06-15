@@ -29,14 +29,17 @@ public class Customer implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "shippingAddressId")
+	@JsonIgnore
 	private ShippingAddress shippingAddress;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "billingAddressId")
+	@JsonIgnore
 	private BillingAddress billingAddress;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
+	@JsonIgnore
 	private User users;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

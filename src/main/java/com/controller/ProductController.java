@@ -10,29 +10,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.model.ProductQuantityOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.model.Product;
 import com.service.ProductService;
 
-import static java.lang.Boolean.TRUE;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class ProductController {
@@ -77,6 +70,9 @@ public class ProductController {
 			map.put("selectedQuantity",product.getSelectedQuantity());
 			map.put("cuisine",product.getCuisine());
 			map.put("isAdd",product.getIsAdd());
+			map.put("isVeg",product.getIsVeg());
+			map.put("isEnabled",product.getIsEnabled());
+			map.put("prepTime",product.getPrepTime());
 			List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
 			for (ProductQuantityOptions quantO:product.getQuantityOption()){
 				HashMap<String, Object> opt = new HashMap<>();
@@ -110,6 +106,9 @@ public class ProductController {
         map.put("selectedQuantity",product.getSelectedQuantity());
         map.put("cuisine",product.getCuisine());
         map.put("isAdd",product.getIsAdd());
+		map.put("isVeg",product.getIsVeg());
+		map.put("isEnabled",product.getIsEnabled());
+		map.put("prepTime",product.getPrepTime());
         List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
         for (ProductQuantityOptions quantO:product.getQuantityOption()){
             HashMap<String, Object> opt = new HashMap<>();
@@ -121,76 +120,42 @@ public class ProductController {
         map.put("quantityOption",quantityOptions);
         model.addAttribute("itemDetails", map);
         return "jsonTemplate";
-		//return new ModelAndView("productPage", "productObj", product);
 	}
-
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
 	@RequestMapping(value ="/admin/delete/{productId}",method = RequestMethod.DELETE)
-	public String deleteProduct(@PathVariable(value = "productId") int productId) {
+	public String deleteProduct(@PathVariable(value = "productId") int productId,Model model) {
 		productService.deleteProduct(productId);
-		return "redirect:/getAllProducts";
+		model.addAttribute("deleteItemDetails", "deleteItems");
+		return "jsonTemplate";
 	}
-	@RequestMapping("/admin/disable/{productId}")
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value ="/admin/enableDisable/{productId}",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void disableProduct(@PathVariable(value = "productId") int productId) {
-
-		// Here the Path class is used to refer the path of the file
-
-		productService.disableProduct(productId);
-		// http://localhost:8080/shoppingCart/getAllProducts
-		//return "redirect:/getAllProducts";
-	}
-	@RequestMapping("/admin/enable/{productId}")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void enableProduct(@PathVariable(value = "productId") int productId) {
-
-		// Here the Path class is used to refer the path of the file
-		productService.enableProduct(productId);
-		// http://localhost:8080/shoppingCart/getAllProducts
-		//return "redirect:/getAllProducts";
+	public void setProductItemStatus(@PathVariable(value = "productId") int productId) {
+		productService.setProductStatus(productId);
 	}
 
     @CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
 	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
 	//public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
-    public String addProduct(@RequestBody Product product, BindingResult result){
+    public String addProduct(@RequestBody Product product, BindingResult result,Model model){
 		// Binding Result is used if the form that has any error then it will
 		// redirect to the same page without performing any functions
 		if (result.hasErrors())
 			return "addProduct";
-		product.setIsAdd(TRUE);
 		productService.addProduct(product);
-		/*MultipartFile image = product.getProductImage();
-		if (image != null && !image.isEmpty()) {
-			*//*Path path = Path.getFileName("C:/Users/bijbeher.ORADEV/Documents/workspace_JAVA/ShoppingCart-master/src/main/webapp/WEB-INF/resource/images/"
-                    + product.getProductId() + ".jpg") {
-            };*//*
-
-			try {
-				*//*image.transferTo(new File(path.toString()));*//*
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			}*//* catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}*/
-		return "redirect:/getAllProducts";
+		model.addAttribute("addItemDetails", "addItems");
+		return "jsonTemplate";
 	}
 
-	@RequestMapping(value = "/admin/product/editProduct/{productId}")
-	public ModelAndView getEditForm(@PathVariable(value = "productId") int productId) {
-		Product product = productService.getProductById(productId);
-		return new ModelAndView("editProduct", "editProductObj", product);
-	}
 	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
 	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String editProduct(@RequestBody Product product, BindingResult result) {
+	public String editProduct(@RequestBody Product product, BindingResult result,Model model) {
 		if (result.hasErrors())
 			return "addProduct";
-		//productService.addProduct(product);
 		productService.editProduct(product);
-		return "redirect:/getAllProducts";
+		model.addAttribute("editItemDetails", "editItems");
+		return "jsonTemplate";
 	}
 
 	@RequestMapping("/getProductsList")

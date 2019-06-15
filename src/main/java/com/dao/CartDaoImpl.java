@@ -11,8 +11,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,10 +84,12 @@ public class CartDaoImpl implements CartDao {
 			orderItem.setQuantity(cartItems.get(i).getQuantity());
 			orderItem.setItemName(cartItems.get(i).getItemName());
 			orderItem.setPrice(cartItems.get(i).getPrice());
-			orderItem.setCartId(cart.getCartId());
+			//orderItem.setCartId(cart.getCartId());
 			orderItem.setOrderCreationTime(creationDate);
 			orderItem.setStatus("Unprocessed");
 			orderItem.setQuantityOption(cartItems.get(i).getQuantityOption());
+			orderItem.setProduct(cartItems.get(i).getProduct());
+			orderItem.setCart(cartItems.get(i).getCart());
 			try {
 				String jsonStr = Obj.writeValueAsString(orderItem);
 				Map<String, Object> map = Obj.readValue(jsonStr, Map.class);

@@ -27,8 +27,6 @@ public class OrderItem implements Serializable {
 
     private String status;
 
-    private int cartId;
-
     private String itemName;
 
     /*private Date OrderEndTime;*/
@@ -36,6 +34,45 @@ public class OrderItem implements Serializable {
     private double waitTime;
 
     private String quantityOption;
+
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    @JsonIgnore
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "cartId")
+    @JsonIgnore
+    private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    @JsonIgnore
+    private Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public OrderItem() {
     }
@@ -82,14 +119,6 @@ public class OrderItem implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
     }
 
     public String getItemName() {

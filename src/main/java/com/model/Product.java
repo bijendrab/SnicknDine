@@ -2,16 +2,13 @@ package com.model;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "item")
-//@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 5186013952828648626L;
@@ -24,8 +21,6 @@ public class Product implements Serializable {
 	@Column(name="category")
 	private String category;
 
-	/*@Column(name="Type")
-	private String productType;*/
     @Column(name="subCategory")
     private String subCategory;
 
@@ -35,29 +30,23 @@ public class Product implements Serializable {
 	@Column(name = "description")
 	private String description;
 	
-	/*@Column(name = "manufacturer")
-	private String productManufacturer;*/
-	
 	@NotEmpty(message = "Product Name is mandatory")
 	@Column(name = "name")
 	private String name;
-	
-	/*@NotNull(message="Please provide some price")
-	@Min(value = 100, message = "Minimum value should be greater than 100")
-	@Column(name = "price")
-	private double productPrice;*/
-	
-	/*@Column(name = "unit")
-	private int unitStock;*/
 
-	/*@Column(name = "itemStatus")
-	private boolean itemStatus;*/
 
     @Column(name = "isAdd")
     private Boolean isAdd;
 
-	/*@Column(name= "preparationTime")
-	private double pTime;*/
+
+	@Column(name = "isVeg")
+	private Boolean isVeg;
+
+	@Column(name = "isEnabled")
+	private Boolean isEnabled;
+
+	@Column(name = "prepTime")
+	private int prepTime;
 
     @Column(name="selectedQuantity")
 	private  String selectedQuantity;
@@ -66,17 +55,48 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<ProductQuantityOptions> quantityOption;
 
-	/*@Transient
-	private MultipartFile productImage;*/
+	/*@OneToMany(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	private Set<CartItem> cartItems;*/
 
 
+	/*public Set<CartItem> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(Set<CartItem> cartItems) {
+		this.cartItems = cartItems;
+	}*/
 
 	public Product() {
 
 
 	}
 
-    protected boolean canEqual(final Object other) {
+	public Boolean getIsVeg() {
+		return this.isVeg;
+	}
+
+	public void setIsVeg(Boolean isVeg) {
+		this.isVeg = isVeg;
+	}
+
+	public Boolean getIsEnabled() {
+		return this.isEnabled;
+	}
+
+	public void setIsEnabled(Boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
+	public int getPrepTime() {
+		return prepTime;
+	}
+
+	public void setPrepTime(int prepTime) {
+		this.prepTime = prepTime;
+	}
+
+	protected boolean canEqual(final Object other) {
         return other instanceof Product;
     }
 
@@ -170,8 +190,12 @@ public class Product implements Serializable {
 				", description='" + description + '\'' +
 				", name='" + name + '\'' +
 				", isAdd=" + isAdd +
+				", isVeg=" + isVeg +
+				", isEnabled=" + isEnabled +
+				", prepTime=" + prepTime +
 				", selectedQuantity='" + selectedQuantity + '\'' +
 				", quantityOption=" + quantityOption +
+				//", cartItems=" + cartItems +
 				'}';
 	}
 }
