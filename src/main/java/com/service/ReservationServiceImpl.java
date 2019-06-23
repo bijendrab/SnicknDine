@@ -46,6 +46,10 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getByTableId(Integer tableId, Date date){
         return reservationDao.getByTableId(tableId,date);
     }
+
+    public Reservation getByCustomerId(Integer custId){
+        return reservationDao.getByCustomerId(custId);
+    }
     public List<Reservation> getAllResBetweenDates(Date startDate, Date endDate) throws Exception{
         return reservationDao.getAllResBetweenDates(startDate,endDate);
     }

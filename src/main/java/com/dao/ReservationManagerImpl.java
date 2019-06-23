@@ -66,6 +66,7 @@ public class ReservationManagerImpl implements  ReservationManager{
         return null;
     }
 
+
     public RestTable isAvailable
             (Date date,
              List<RestTable> fittingTables,
@@ -99,5 +100,22 @@ public class ReservationManagerImpl implements  ReservationManager{
         //TODO: throw an exceptions
         return null;
     }
+    public Integer isTableAssigned
+            (Integer custId) {
+
+        Reservation allResForThisTable = reservationDao.getByCustomerId(custId);
+
+        if (allResForThisTable == null ) {    // if not reserved before
+            return 0;
+        }
+        else {    // if reserved already check for TS intersection
+            if (allResForThisTable.getRelatedCustomer().getCustomerId() == custId) {
+                    return allResForThisTable.getRelatedTable().getTableNumber();
+                }
+            }
+
+        return 0;
+    }
+
 }
 

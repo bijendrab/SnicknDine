@@ -1,6 +1,7 @@
 package com.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.model.*;
@@ -34,7 +35,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 		}
 		return grandTotal;
 	}
-	public List<OrderItem> getCustomerOrder() {
+	public List<Map<Integer,List<OrderItem>>> getCustomerOrder() {
 		return customerOrderDao.getCustomerOrderByCustomerId();
 	}
 	public void updateCustomerOrder(OrderItem orderitem){

@@ -23,10 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ReservationController {
     @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private TableService tableService;
-    @Autowired
     private CustomerService customerService;
 
     @Autowired
@@ -38,14 +34,7 @@ public class ReservationController {
             Exception {
 
         /* Check if Customer is valid */
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String emailId = user.getUsername();
-        Customer customer = customerService.getCustomerByEmailId(emailId);
-        //Optional<Customer> cs = customerService.getCustomerByEmailId(checkRequestDTO.getRelatedCustomer().getCustomerId());
-
-        if (customer==null) {
-            throw new Exception("Customer Is Not Valid");
-        }
+        Customer customer = getCustomer();
         checkRequestDTO.setRelatedCustomer(customer);
 
 
@@ -58,5 +47,35 @@ public class ReservationController {
         } else {
             throw new Exception();
         }
+    }
+
+
+    @RequestMapping(value="/checkReserve",method = RequestMethod.GET)
+    public String checkReserve(Model model)
+            throws
+            Exception {
+
+        /* Check if Customer is valid */
+        Customer customer = getCustomer();
+
+
+        /* Reserve if possible */
+        Integer res = resManager.isTableAssigned(customer.getCustomerId());
+
+
+        model.addAttribute("AssignedTable", res);
+        return "jsonTemplate";
+
+    }
+    private Customer getCustomer() throws Exception {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String emailId = user.getUsername();
+        Customer customer = customerService.getCustomerByEmailId(emailId);
+        //Optional<Customer> cs = customerService.getCustomerByEmailId(checkRequestDTO.getRelatedCustomer().getCustomerId());
+
+        if (customer == null) {
+            throw new Exception("Customer Is Not Valid");
+        }
+        return customer;
     }
 }

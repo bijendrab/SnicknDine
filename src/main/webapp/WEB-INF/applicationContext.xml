@@ -101,7 +101,7 @@
 			password-parameter="j_password" />
 		<security:logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
 		<security:session-management invalid-session-url="/login" session-fixation-protection="newSession" >
-			<security:concurrency-control max-sessions="3" error-if-maximum-exceeded="true" />
+			<security:concurrency-control max-sessions="100" error-if-maximum-exceeded="true" />
 		</security:session-management>
 
 	</security:http>

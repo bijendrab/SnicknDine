@@ -20,4 +20,7 @@ public interface ReservationManager {
              List<RestTable> fittingTables,
              TimeSpan reqTimeSpan,int tableNumber);
 
+    Integer isTableAssigned
+            (Integer custId);
+
 }

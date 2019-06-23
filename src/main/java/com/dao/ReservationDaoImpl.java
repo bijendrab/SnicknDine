@@ -111,6 +111,30 @@ public class ReservationDaoImpl implements ReservationDao {
 
         return null;
     }
+    @Override
+    public Reservation getByCustomerId
+            (Integer custId) {
+        Session session = sessionFactory.openSession();
+
+        String hql = "FROM Reservation AS Res " +
+                "WHERE Res.relatedCustomer.id = :custId";
+
+        Query query = session.
+                createQuery(hql).
+                setParameter("custId", custId);
+
+        String q = query.getQueryString();
+
+        @SuppressWarnings("unchecked")
+        List<Reservation> reservation = query.list();
+        session.close();
+
+        if (reservation != null && reservation.size() > 0) {
+            return reservation.get(0);
+        }
+
+        return null;
+    }
 
     @Override
     public List<Reservation> getAllResForDate

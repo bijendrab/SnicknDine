@@ -1,18 +1,15 @@
 package com.dao;
 
 import com.model.*;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 @Transactional
@@ -28,25 +25,54 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         session.close();
     }
 
-    public List<OrderItem> getCustomerOrderByCustomerId() {
-        List<OrderItem> orderItems=null;
+    public List<Map<Integer, List<OrderItem>>> getCustomerOrderByCustomerId() {
+        List<Map<Integer, List<OrderItem>>> orderItems = new ArrayList<>();
         Session session = sessionFactory.openSession();
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String emailId = user.getUsername();
         if (user.getAuthorities().iterator().next().toString().equals("ROLE_ADMIN")) {
-            orderItems = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+           /* orderItems = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
             setOrderWaitTime(orderItems);
-            System.out.println(orderItems);
-        }
-        else if(user.getAuthorities().iterator().next().toString().equals("ROLE_USER")){
+            System.out.println(orderItems);*/
+        } else if (user.getAuthorities().iterator().next().toString().equals("ROLE_USER")) {
             Customer customer = getCustomer(session, emailId);
             System.out.println(customer.getCustomerId());
-            Criteria criteria  = session.createCriteria(OrderItem.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-            criteria.createAlias("cart", "cart");
-            criteria.add(Restrictions.eq("cart.cartId",customer.getCustomerId()));
-            orderItems = criteria.list();
-            setOrderWaitTime(orderItems);
-            System.out.println(orderItems.size());
+
+            String hql = "SELECT Res.relatedTable.id FROM Reservation AS Res " +
+                    "WHERE Res.relatedCustomer.id = :customerId";
+
+            Integer tableId = (Integer) session.createQuery(hql).setParameter("customerId", customer.getCustomerId()).uniqueResult();
+
+            String hql1 = "from Order Ord JOIN Ord.accordingReservation Res " +
+                    "with Res.relatedTable.id=:tableId";
+
+            Iterator query = session.createQuery(hql1).setParameter("tableId", tableId).list().iterator();
+            Map<Integer, List<OrderItem>> orderHash = new HashMap<>();
+            List<OrderItem> oderList1 = new ArrayList<>();
+            List<OrderItem> oderList2 = new ArrayList<>();
+            while (query.hasNext()) {
+                Object[] row = (Object[]) query.next();
+                Order ord = (Order) row[0];
+
+
+                for (OrderItem ordItem : ord.getMenuItemOrders()) {
+                    if (ord.getAccordingReservation().getRelatedCustomer().getCustomerId() == customer.getCustomerId()) {
+                        oderList1.add(ordItem);
+                    } else {
+                        oderList2.add(ordItem);
+                    }
+                }
+
+            }
+            if (!oderList1.isEmpty()) {
+                orderHash.put(1, oderList1);
+                setOrderWaitTime(oderList1);
+            }
+            if (!oderList2.isEmpty()) {
+                orderHash.put(0, oderList2);
+                setOrderWaitTime(oderList2);
+            }
+            orderItems.add(orderHash);
 
         }
         session.flush();
@@ -55,10 +81,10 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
     }
 
     public void setOrderWaitTime(List<OrderItem> orderItems) {
-        for (int i = 0; i < orderItems.size(); i++) {
-            long diff = new Date().getTime() - orderItems.get(i).getOrderCreationTime().getTime();
+        for (OrderItem orderitem:orderItems) {
+            long diff = new Date().getTime() - orderitem.getOrderCreationTime().getTime();
             long diffMinutes = diff / (60 * 1000) % 60;
-            orderItems.get(i).setWaitTime(diffMinutes);
+            orderitem.setWaitTime(diffMinutes);
         }
     }
 
@@ -69,7 +95,7 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         return users.getCustomer();
     }
 
-    public void updateCustomerOrderItem(OrderItem orderitem){
+    public void updateCustomerOrderItem(OrderItem orderitem) {
         Session session = sessionFactory.openSession();
         System.out.println(orderitem.getStatus());
         //OrderItem orderit = (OrderItem) session.get(OrderItem.class, orderitem.getProduct().getProductId());

@@ -59,43 +59,19 @@ public class OrderController {
 		//return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value="/cart/checkout/",method = RequestMethod.POST)
-	public String RequestOrder(@RequestBody OrderRequestDTO order, BindingResult result, Model model) throws Exception {
-
-
-		Order createdOrder = orderRepo.processOrderRequest(order);
+	public String RequestOrder(Model model) throws Exception {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String emailId = user.getUsername();
+		Customer customer = customerService.getCustomerByEmailId(emailId);
+		Order createdOrder = orderRepo.processOrderRequest(customer.getCart().getCartId(),customer.getCustomerId());
 		model.addAttribute("OrderList", createdOrder);
 		return "jsonTemplate";
 		//return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value = {"/orderList" })
 	public String getCustomerOrder(Model model) {
-		//User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		//String emailId = user.getUsername();
-		//Customer customer = customerService.getCustomerByEmailId(emailId);
-		List<OrderItem> customerOrd = customerOrderService.getCustomerOrder();
-		List<HashMap<String, Object>> ordAllItems=new ArrayList<>();
-		for(OrderItem custOrd:customerOrd){
-			HashMap<String, Object> opt = new HashMap<>();
-			opt.put("orderItemId",custOrd.getOrderItemId());
-			opt.put("itemName",custOrd.getItemName());
-			opt.put("price",custOrd.getPrice());
-			opt.put("quantity",custOrd.getQuantity());
-			opt.put("quantityOption",custOrd.getQuantityOption());
-			opt.put("productId",custOrd.getProduct().getProductId());
-			opt.put("orderCreationTime",custOrd.getOrderCreationTime());
-			opt.put("waitTime",custOrd.getWaitTime());
-			List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
-			for (ProductQuantityOptions quantO:custOrd.getProduct().getQuantityOption()){
-				HashMap<String, Object> optOrderQuantityOptons = new HashMap<>();
-				optOrderQuantityOptons.put("option",quantO.getOption());
-				optOrderQuantityOptons.put("price",quantO.getPrice());
-				optOrderQuantityOptons.put("quantity",quantO.getQuantity());
-				quantityOptions.add(optOrderQuantityOptons);
-			}
-			opt.put("quantityOptions",quantityOptions);
-			ordAllItems.add(opt);
-		}
-		model.addAttribute("orderList", ordAllItems);
+		List<Map<Integer,List<OrderItem>>> customerOrd = customerOrderService.getCustomerOrder();
+		model.addAttribute("orderList", customerOrd);
 		return "jsonTemplate";
 	}
 

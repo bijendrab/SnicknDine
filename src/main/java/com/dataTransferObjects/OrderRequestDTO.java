@@ -8,8 +8,8 @@ import java.util.List;
 
 public class OrderRequestDTO implements Serializable {
 
-    @NotNull
-    private int reservationId;
+   /* @NotNull
+    private int reservationId;*/
 
     /*@NotNull
     private int orderId;*/
@@ -27,13 +27,13 @@ public class OrderRequestDTO implements Serializable {
         this.cartId = cartId;
     }
 
-    public int getReservationId() {
+    /*public int getReservationId() {
         return reservationId;
     }
 
     public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
-    }
+    }*/
 
     /*public int getOrderId() {on
         return orderId;

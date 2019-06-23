@@ -42,8 +42,8 @@ public class OrderServiceImpl implements  OrderService {
         return orderDao.findOrderByReservationInfo(res);
     }
 
-    public Order processOrderRequest(OrderRequestDTO orderReq) throws Exception{
-        return orderDao.processOrderRequest(orderReq);
+    public Order processOrderRequest(int cartId,int custId) throws Exception{
+        return orderDao.processOrderRequest(cartId,custId);
     }
 
     public float calculateTotalCost(Order order) throws Exception{

@@ -3,6 +3,7 @@ package com.dao;
 import com.dataTransferObjects.OrderRequestDTO;
 import com.model.*;
 import com.service.ReservationService;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class OrderDaoImpl implements OrderDao {
     private SessionFactory sessionFactory;
 
 
-    public Order processOrderRequest(OrderRequestDTO orderReq) throws Exception {
+    public Order processOrderRequest(int cartId,int custId) throws Exception {
 
-        Reservation accordingReservation = resRepo.getByResId(orderReq.getReservationId());
+        Reservation accordingReservation = resRepo.getByCustomerId(custId);
 
         if (accordingReservation == null) {
             // TODO: throw not valid reservation
@@ -36,11 +37,11 @@ public class OrderDaoImpl implements OrderDao {
 
         newOrder.setAccordingReservation(accordingReservation);
         newOrder.setStatus(OrderStatus.ON_HOLD);
-        Cart cart =cartdao.getCartByCartId(orderReq.getCartId());
+        Cart cart =cartdao.getCartByCartId(cartId);
         float totalPrice = 0;
         Date creationDate = new Date();
         for (CartItem mi : cart.getCartItem()) {
-            totalPrice += mi.getPrice() * mi.getQuantity();
+            totalPrice += mi.getPrice();
 
             OrderItem menuItem_Order = new OrderItem();
             menuItem_Order.setQuantity(mi.getQuantity());
@@ -60,6 +61,7 @@ public class OrderDaoImpl implements OrderDao {
         session.merge(newOrder);
         session.getTransaction().commit();
         session.close();
+        removeFromCart(cart);
 
         return newOrder;
     }
@@ -69,6 +71,24 @@ public class OrderDaoImpl implements OrderDao {
         for (OrderItem potion : order.getMenuItemOrders()) {
             potion.setOrder(order);
             pqo.add(potion);
+        }
+    }
+    public void removeFromCart(Cart cart) {
+        List<CartItem> cartItems = cart.getCartItem();
+        for (CartItem cartItem : cartItems) {
+            Session sessionDelete = sessionFactory.openSession();
+            CartItem cartItemDelete = (CartItem) sessionDelete.get(CartItem.class, cartItem.getCartItemId());
+            Query query = sessionDelete.createQuery("delete CartItem where cartItemId = :cartItemId");
+            query.setParameter("cartItemId", cartItem.getCartItemId());
+            int result = query.executeUpdate();
+            if (result >= 0) {
+                System.out.println("cart Items are removed");
+            }
+            Cart cart1 = cartItemDelete.getCart();
+            List<CartItem> cartItems1 = cart1.getCartItem();
+            cartItems1.remove(cartItemDelete);
+            sessionDelete.flush();
+            sessionDelete.close();
         }
     }
 

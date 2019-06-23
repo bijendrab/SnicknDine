@@ -21,7 +21,7 @@ public interface OrderDao {
 
     Order findOrderByReservationInfo(Reservation res);
 
-    Order processOrderRequest(OrderRequestDTO orderReq) throws Exception;
+    Order processOrderRequest(int cartId,int custId) throws Exception;
 
     float calculateTotalCost(Order order) throws Exception;
 

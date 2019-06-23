@@ -25,6 +25,8 @@ public interface ReservationDao {
 
     List<Reservation> getByTableId(Integer tableId, Date date);
 
+    Reservation getByCustomerId(Integer custId);
+
     List<Reservation> getAllResBetweenDates(Date startDate, Date endDate) throws Exception;
 
     List<Reservation> getAllResForDate(Date date);
