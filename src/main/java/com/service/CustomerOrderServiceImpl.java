@@ -41,5 +41,8 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 	public void updateCustomerOrder(OrderItem orderitem){
 		customerOrderDao.updateCustomerOrderItem(orderitem);
 	}
+	public void deleteCustomerOrderItem(OrderItem orderitem){
+		customerOrderDao.deleteCustomerOrderItem(orderitem);
+	}
 
 }

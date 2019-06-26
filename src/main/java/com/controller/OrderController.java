@@ -71,18 +71,58 @@ public class OrderController {
 	@RequestMapping(value = {"/orderList" })
 	public String getCustomerOrder(Model model) {
 		List<Map<Integer,List<OrderItem>>> customerOrd = customerOrderService.getCustomerOrder();
-		model.addAttribute("orderList", customerOrd);
+		List<Map<Integer,List<HashMap<String, Object>>>> orderedItems=new ArrayList<>();
+		for (Map<Integer, List<OrderItem>> map : customerOrd) {
+			Map<Integer,List<HashMap<String, Object>>>oiListMap=new HashMap<>();
+			for (Map.Entry<Integer,  List<OrderItem>> entry : map.entrySet()) {
+				List<HashMap<String, Object>> oIList=new ArrayList<>();
+				for(OrderItem oI:entry.getValue()){
+					HashMap<String, Object> opt = new HashMap<>();
+					opt.put("orderItemId",oI.getOrderItemId());
+					opt.put("orderCreationTime",oI.getOrderCreationTime());
+                    opt.put("quantity",oI.getQuantity());
+                    opt.put("price",oI.getPrice());
+                    opt.put("status",oI.getStatus());
+                    opt.put("itemName",oI.getItemName());
+                    opt.put("waitTime",oI.getWaitTime());
+                    opt.put("quantityOption",oI.getQuantityOption());
+					List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
+					for (ProductQuantityOptions quantO:oI.getProduct().getQuantityOption()){
+						HashMap<String, Object> optcart = new HashMap<>();
+						optcart.put("option",quantO.getOption());
+						optcart.put("price",quantO.getPrice());
+						optcart.put("quantity",quantO.getQuantity());
+						quantityOptions.add(optcart);
+					}
+					opt.put("quantityOptions",quantityOptions);
+					oIList.add(opt);
+				}
+				oiListMap.put(entry.getKey(),oIList);
+			}
+			orderedItems.add(oiListMap);
+		}
+		model.addAttribute("orderList", orderedItems);
 		return "jsonTemplate";
 	}
 
-	@RequestMapping(value = "/updateOrderItem",method = RequestMethod.PUT,consumes="application/json")
+	@RequestMapping(value = "/editOrderItem",method = RequestMethod.PUT,consumes="application/json")
 	public String updateCustomerOrder(@RequestBody OrderItem orderitem, Model model) {
 		/*if (result.hasErrors())
 			return "CustomerOrderPage";*/
-		orderitem.setStatus("Processed");
+		//orderitem.setStatus("Processed");
 		customerOrderService.updateCustomerOrder(orderitem);
 		model.addAttribute("updateOrderList", orderitem);
 		return "jsonTemplate";
 	}
+
+    @RequestMapping(value = "/deleteOrderItem",method = RequestMethod.DELETE,consumes="application/json")
+    public String deleteCustomerOrder(@RequestBody OrderItem orderitem, Model model) {
+		/*if (result.hasErrors())
+			return "CustomerOrderPage";*/
+        //orderitem.setStatus("Processed");
+        customerOrderService.deleteCustomerOrderItem(orderitem);
+        model.addAttribute("deleted", "item deleted");
+        return "jsonTemplate";
+    }
 
 }

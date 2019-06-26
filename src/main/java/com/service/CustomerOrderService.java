@@ -14,4 +14,5 @@ public interface CustomerOrderService {
 	double getCustomerOrderGrandTotal(int cartId);
 	List<Map<Integer,List<OrderItem>>> getCustomerOrder();
 	void updateCustomerOrder(OrderItem orderitem);
+	void deleteCustomerOrderItem(OrderItem orderitem);
 }

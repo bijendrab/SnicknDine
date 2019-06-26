@@ -97,13 +97,54 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
 
     public void updateCustomerOrderItem(OrderItem orderitem) {
         Session session = sessionFactory.openSession();
-        System.out.println(orderitem.getStatus());
-        //OrderItem orderit = (OrderItem) session.get(OrderItem.class, orderitem.getProduct().getProductId());
-        orderitem.setStatus("processed");
-        //System.out.println(orderit.getCart().getCartId());
-        session.saveOrUpdate(orderitem);
+        OrderItem orderOld = (OrderItem) session.get(OrderItem.class, orderitem.getOrderItemId());
+        int OrderId=orderOld.getOrder().getOrderId();
+        float oldPrice= (float)orderOld.getPrice ();
+        float newPrice=0;
+        for(ProductQuantityOptions qOps:orderOld.getProduct().getQuantityOption()){
+            if(orderitem.getQuantityOption().equals(qOps.getOption())){
+                newPrice= (float)(orderitem.getQuantity()*qOps.getPrice());
+                break;
+            }
+        }
+        orderitem.setPrice(newPrice);
+        orderitem.setOrderCreationTime(orderOld.getOrderCreationTime());
+        orderitem.setWaitTime(orderOld.getWaitTime());
+        orderitem.setStatus(orderOld.getStatus());
+        orderitem.setItemName(orderOld.getItemName());
+        orderitem.setCart(orderOld.getCart());
+        orderitem.setProduct(orderOld.getProduct());
+        orderitem.setOrder(orderOld.getOrder());
+        session.merge(orderitem);
+        Order order = (Order) session.get(Order.class, OrderId);
+        order.setTotalCost(order.getTotalCost()-oldPrice + newPrice);
+        session.merge(order);
         session.flush();
         session.close();
+
+    }
+    public void deleteCustomerOrderItem(OrderItem orderitem) {
+        Session sessionDelete1 = sessionFactory.openSession();
+        OrderItem orderOld = (OrderItem) sessionDelete1.get(OrderItem.class, orderitem.getOrderItemId());
+        int OrderId=orderOld.getOrder().getOrderId();
+        float oldPrice= (float)orderOld.getPrice ();
+        Order order = (Order) sessionDelete1.get(Order.class, OrderId);
+        float newPrice=order.getTotalCost()-oldPrice;
+        Query query = sessionDelete1.createQuery("delete OrderItem where orderItemId = :orderItemId");
+        query.setParameter("orderItemId", orderOld.getOrderItemId());
+        Query query1 = sessionDelete1.createQuery("update Order set totalCost= :newCost where orderId = :orderId");
+        query1.setParameter("orderId", order.getOrderId());
+        query1.setParameter("newCost",newPrice );
+        int result = query.executeUpdate();
+        int result1 = query1.executeUpdate();
+        if (result >= 0) {
+            System.out.println("Order Item is removed");
+        }
+        if (result1 >= 0) {
+            System.out.println("Order Item is removed");
+        }
+        sessionDelete1.flush();
+        sessionDelete1.close();
 
     }
 }

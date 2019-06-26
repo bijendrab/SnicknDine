@@ -13,4 +13,5 @@ public interface CustomerOrderDao {
 	void addCustomerOrder(CustomerOrder customerOrder);
 	List<Map<Integer,List<OrderItem>>> getCustomerOrderByCustomerId();
 	void updateCustomerOrderItem(OrderItem orderitem);
+	void deleteCustomerOrderItem(OrderItem orderitem);
 }
