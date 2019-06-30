@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
-	xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
+	   xmlns:sec="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd 
        http://www.springframework.org/schema/security 
        http://www.springframework.org/schema/security/spring-security.xsd
@@ -25,7 +27,7 @@
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.dialect">com.config.dialect.CustomMySqlDialect</prop>
 
 				<!-- hibernate mapping to database automatically -->
 				<!-- when we use create-drop instead of update the table is created automatically 
@@ -53,6 +55,13 @@
 				<value>com.model.ShippingAddress</value>
 				<value>com.model.User</value>
 				<value>com.model.Queries</value>
+				<value>com.model.ProductQuantityOptions</value>
+				<value>com.model.RestTable</value>
+				<value>com.model.Reservation</value>
+				<value>com.dataTransferObjects.CheckRequestDTO</value>
+				<value>com.dataTransferObjects.MenuItemOrderDTO</value>
+				<value>com.dataTransferObjects.OrderRequestDTO</value>
+				<value>com.model.Order</value>
 			</list>
 		</property>
 
@@ -73,17 +82,28 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/index1/**"
 			access="permitAll" />
-		<security:intercept-url pattern="/cart/**"
-			access="permitAll" />
+		<security:intercept-url pattern="/cart*/**"
+			access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/get*/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 		<security:intercept-url pattern="/admin*/**"
 			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/table*/**"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/reserve*/**"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/admin*/**"
+			access="hasRole('ROLE_ADMIN')" />
 		<security:form-login login-page="/login"
-			authentication-failure-url="/login?error" default-target-url="/index1"
+			authentication-failure-url="/login?error"
+			authentication-success-handler-ref="customAuthenticationSuccessHandler"
 			username-parameter="j_username"
 			password-parameter="j_password" />
-		<security:logout logout-success-url="/login?logout" />
+		<security:logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
+		<security:session-management invalid-session-url="/login" session-fixation-protection="newSession" >
+			<security:concurrency-control max-sessions="100" error-if-maximum-exceeded="true" />
+		</security:session-management>
+
 	</security:http>
 
 	<security:authentication-manager>
@@ -105,6 +125,7 @@
 
 	</security:authentication-manager>
 
+
 	<webflow-config:flow-executor id="flowExecutor"
 		flow-registry="flowRegistry">
 	</webflow-config:flow-executor>
@@ -121,5 +142,6 @@
 	<bean id="flowHandlerAdapter" class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
 	<property name="flowExecutor" ref="flowExecutor"></property>
 	</bean>
+	<bean id="customAuthenticationSuccessHandler" class="com.config.CustomAuthenticationSuccessHandler" />
 	
 </beans>

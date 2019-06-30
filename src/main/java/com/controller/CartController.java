@@ -1,20 +1,22 @@
 package com.controller;
 
+import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.model.Cart;
-import com.model.Customer;
 import com.service.CartService;
 import com.service.CustomerService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class CartController {
 
@@ -39,14 +41,38 @@ public class CartController {
 	public void setCartService(CartService cartService) {
 		this.cartService = cartService;
 	}
-	
-	@RequestMapping("cart/getCartById")
+
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value = "/cart/getCartById",method = RequestMethod.GET)
 	public String getCartId(Model model){
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
-		Customer customer = customerService.getCustomerByemailId(emailId);
-		model.addAttribute("cartId", customer.getCart().getCartId());
-		return "cart";
+		Customer customer = customerService.getCustomerByEmailId(emailId);
+		List<CartItem> cartItems = customer.getCart().getCartItem();
+		List<HashMap<String, Object>> cartAllItems=new ArrayList<>();
+		for(CartItem cartit:cartItems){
+			HashMap<String, Object> opt = new HashMap<>();
+			opt.put("cartItemId",cartit.getCartItemId());
+			opt.put("itemName",cartit.getItemName());
+			opt.put("price",cartit.getPrice());
+			opt.put("quantity",cartit.getQuantity());
+			opt.put("quantityOption",cartit.getQuantityOption());
+			opt.put("productId",cartit.getProduct().getProductId());
+			opt.put("category",cartit.getProduct().getCategory());
+			opt.put("subCategory",cartit.getProduct().getSubCategory());
+			List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
+			for (ProductQuantityOptions quantO:cartit.getProduct().getQuantityOption()){
+				HashMap<String, Object> optcart = new HashMap<>();
+				optcart.put("option",quantO.getOption());
+				optcart.put("price",quantO.getPrice());
+				optcart.put("quantity",quantO.getQuantity());
+				quantityOptions.add(optcart);
+			}
+			opt.put("quantityOptions",quantityOptions);
+			cartAllItems.add(opt);
+		}
+		model.addAttribute("cartItems", cartAllItems);
+		return "jsonTemplate";
 	}
 
 	@RequestMapping("/cart/getCart/{cartId}")

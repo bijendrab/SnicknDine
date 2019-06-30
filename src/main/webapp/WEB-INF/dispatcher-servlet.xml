@@ -19,16 +19,20 @@
 	<!-- class which has an annotations like @Component, @Controller, @Service, 
 		@Repository -->
 
-
+	<!-- JSON Support -->
+	<bean  class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
+	<bean name="jsonTemplate" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
 
 	<!-- Using this it get the actual view name by converting logical view name -->
 	<!-- for eg: logical view name is welcome -->
 	<!-- it will convert it to WEB-INF/Views/welcome.jsp -->
 
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/page/" />
 		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
 	</bean>
 
 	<!-- mvc:resources is to find the resource file like bootstrap,css,JQuery 

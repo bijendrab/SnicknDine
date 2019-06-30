@@ -6,7 +6,7 @@ import com.model.Product;
 
 public interface ProductService {
 
-	public List<Product> getAllProducts();
+	List<Product> getAllProducts();
 
 	Product getProductById(int productId);
 
@@ -16,8 +16,6 @@ public interface ProductService {
 	
 	void editProduct(Product product);
 
-	void disableProduct(int productId);
-
-	void enableProduct(int productId);
+	void setProductStatus(int productId);
 
 }

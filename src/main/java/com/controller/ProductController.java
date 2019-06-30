@@ -1,32 +1,32 @@
 
 package com.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import javax.validation.Valid;
-
+import com.model.ProductQuantityOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.model.Product;
 import com.service.ProductService;
 
-import static java.lang.Boolean.TRUE;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller
 public class ProductController {
 
@@ -54,118 +54,108 @@ public class ProductController {
 		return multipartResolver;
 	}
 
-	// Request Mapping
-
 	// which displays the list of products to the productList page
-
-	 //Product List using Angular
-	 @RequestMapping("/getAllProducts")
-	 public ModelAndView getAllProducts() {
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value="/getAllProducts", method = RequestMethod.GET)
+	 public String getAllProducts(Model model) {
 		List<Product> products = productService.getAllProducts();
-		return new ModelAndView("productListAngular", "products", products);
-	}
-
-	/*//		Normal ProductList view
-	  @RequestMapping("/getAllProducts") public ModelAndView getAllProducts() {
-	  List<Product> products = productService.getAllProducts(); return new
-	  ModelAndView("productList", "products", products); }*/
-	 
-	
-	// this is used for getting the product by productId
-
-	@RequestMapping("getProductById/{productId}")
-	public ModelAndView getProductById(@PathVariable(value = "productId") int productId) {
-		Product product = productService.getProductById(productId);
-		return new ModelAndView("productPage", "productObj", product);
-	}
-
-	@RequestMapping("/admin/delete/{productId}")
-	public String deleteProduct(@PathVariable(value = "productId") int productId) {
-
-		// Here the Path class is used to refer the path of the file
-
-		Path path = Paths.get("C:/Users/Ismail/workspace/ShoppingCart/src/main/webapp/WEB-INF/resource/images/products/"
-				+ productId + ".jpg");
-
-		if (Files.exists(path)) {
-			try {
-				Files.delete(path);
-			} catch (IOException e) {
-				e.printStackTrace();
+		List<HashMap<String, Object>> allItem=new ArrayList<>();
+		for (Product product:products){
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("productId",product.getProductId());
+			map.put("name",product.getName());
+			map.put("description",product.getDescription());
+			map.put("category",product.getCategory());
+			map.put("subCategory",product.getSubCategory());
+			map.put("selectedQuantity",product.getSelectedQuantity());
+			map.put("cuisine",product.getCuisine());
+			map.put("isAdd",product.getIsAdd());
+			map.put("isVeg",product.getIsVeg());
+			map.put("isEnabled",product.getIsEnabled());
+			map.put("prepTime",product.getPrepTime());
+			List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
+			for (ProductQuantityOptions quantO:product.getQuantityOption()){
+				HashMap<String, Object> opt = new HashMap<>();
+				opt.put("option",quantO.getOption());
+				opt.put("price",quantO.getPrice());
+				opt.put("quantity",quantO.getQuantity());
+				quantityOptions.add(opt);
 			}
+			map.put("quantityOption",quantityOptions);
+			allItem.add(map);
 		}
+		model.addAttribute("itemList", allItem);
+		return "jsonTemplate";
+	}
 
+	// this is used for getting the product by productId
+    @CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value="/getProductById/{productId}", method = RequestMethod.GET)
+	public String getProductById(@PathVariable(value = "productId") int productId,Model model) {
+        HashMap<String, Object> map = new HashMap<>();
+	    Product product = productService.getProductById(productId);
+	    if (product==null){
+            model.addAttribute("itemDetails", map);
+            return "jsonTemplate";
+        }
+        map.put("productId",product.getProductId());
+        map.put("name",product.getName());
+        map.put("description",product.getDescription());
+        map.put("category",product.getCategory());
+        map.put("subCategory",product.getSubCategory());
+        map.put("selectedQuantity",product.getSelectedQuantity());
+        map.put("cuisine",product.getCuisine());
+        map.put("isAdd",product.getIsAdd());
+		map.put("isVeg",product.getIsVeg());
+		map.put("isEnabled",product.getIsEnabled());
+		map.put("prepTime",product.getPrepTime());
+        List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
+        for (ProductQuantityOptions quantO:product.getQuantityOption()){
+            HashMap<String, Object> opt = new HashMap<>();
+            opt.put("option",quantO.getOption());
+            opt.put("price",quantO.getPrice());
+            opt.put("quantity",quantO.getQuantity());
+            quantityOptions.add(opt);
+        }
+        map.put("quantityOption",quantityOptions);
+        model.addAttribute("itemDetails", map);
+        return "jsonTemplate";
+	}
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value ="/admin/delete/{productId}",method = RequestMethod.DELETE)
+	public String deleteProduct(@PathVariable(value = "productId") int productId,Model model) {
 		productService.deleteProduct(productId);
-		// http://localhost:8080/shoppingCart/getAllProducts
-		return "redirect:/getAllProducts";
+		model.addAttribute("deleteItemDetails", "deleteItems");
+		return "jsonTemplate";
 	}
-	@RequestMapping("/admin/disable/{productId}")
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value ="/admin/enableDisable/{productId}",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void disableProduct(@PathVariable(value = "productId") int productId) {
-
-		// Here the Path class is used to refer the path of the file
-
-		productService.disableProduct(productId);
-		// http://localhost:8080/shoppingCart/getAllProducts
-		//return "redirect:/getAllProducts";
-	}
-	@RequestMapping("/admin/enable/{productId}")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void enableProduct(@PathVariable(value = "productId") int productId) {
-
-		// Here the Path class is used to refer the path of the file
-		productService.enableProduct(productId);
-		// http://localhost:8080/shoppingCart/getAllProducts
-		//return "redirect:/getAllProducts";
+	public void setProductItemStatus(@PathVariable(value = "productId") int productId) {
+		productService.setProductStatus(productId);
 	}
 
-	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.GET)
-	public String getProductForm(Model model) {
-		Product product = new Product();
-		// New Arrivals
-		// set the category as 1 for the Book book
-		model.addAttribute("productFormObj", product);
-		return "addProduct";
-
-	}
-
-	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST)
-	public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
+    @CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value = "/admin/product/addProduct", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+	//public String addProduct(@Valid @ModelAttribute(value = "productFormObj") Product product, BindingResult result) {
+    public String addProduct(@RequestBody Product product, BindingResult result,Model model){
 		// Binding Result is used if the form that has any error then it will
 		// redirect to the same page without performing any functions
 		if (result.hasErrors())
 			return "addProduct";
-		product.setItemStatus(TRUE);
 		productService.addProduct(product);
-		MultipartFile image = product.getProductImage();
-		if (image != null && !image.isEmpty()) {
-			Path path = Paths
-					.get("C:/Users/bijbeher.ORADEV/Documents/workspace_JAVA/ShoppingCart-master/src/main/webapp/WEB-INF/resource/images/"
-							+ product.getProductId() + ".jpg");
-
-			try {
-				image.transferTo(new File(path.toString()));
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return "redirect:/getAllProducts";
+		model.addAttribute("addItemDetails", "addItems");
+		return "jsonTemplate";
 	}
 
-	@RequestMapping(value = "/admin/product/editProduct/{productId}")
-	public ModelAndView getEditForm(@PathVariable(value = "productId") int productId) {
-		Product product = productService.getProductById(productId);
-		return new ModelAndView("editProduct", "editProductObj", product);
-	}
-
-	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.POST)
-	public String editProduct(@ModelAttribute(value = "editProductObj") Product product) {
+	@CrossOrigin(origins = {"http://localhost:4200","http://localhost:4201"})
+	@RequestMapping(value = "/admin/product/editProduct", method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String editProduct(@RequestBody Product product, BindingResult result,Model model) {
+		if (result.hasErrors())
+			return "addProduct";
 		productService.editProduct(product);
-		return "redirect:/getAllProducts";
+		model.addAttribute("editItemDetails", "editItems");
+		return "jsonTemplate";
 	}
 
 	@RequestMapping("/getProductsList")
