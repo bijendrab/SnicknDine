@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.dataTransferObjects.CheckRequestDTO;
+import com.dataTransferObjects.ImmediateRequestDTO;
 import com.dataTransferObjects.OrderRequestDTO;
 import com.model.*;
 import com.service.CustomerService;
@@ -59,11 +61,11 @@ public class OrderController {
 		//return "redirect:/checkout?cartId=" + cartId;
 	}
 	@RequestMapping(value="/cart/checkout/",method = RequestMethod.POST)
-	public String RequestOrder(Model model) throws Exception {
+	public String RequestOrder(@RequestBody ImmediateRequestDTO immediateRequestDTO, Model model) throws Exception {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String emailId = user.getUsername();
 		Customer customer = customerService.getCustomerByEmailId(emailId);
-		Order createdOrder = orderRepo.processOrderRequest(customer.getCart().getCartId(),customer.getCustomerId());
+		Order createdOrder = orderRepo.processOrderRequest(customer.getCart().getCartId(),customer.getCustomerId(),immediateRequestDTO);
 		model.addAttribute("OrderList", createdOrder);
 		return "jsonTemplate";
 		//return "redirect:/checkout?cartId=" + cartId;

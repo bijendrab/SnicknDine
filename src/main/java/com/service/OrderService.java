@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dataTransferObjects.ImmediateRequestDTO;
 import com.dataTransferObjects.OrderRequestDTO;
 import com.model.*;
 
@@ -21,7 +22,7 @@ public interface OrderService {
 
     Order findOrderByReservationInfo(Reservation res);
 
-    Order processOrderRequest(int cartId,int custId) throws Exception;
+    Order processOrderRequest(int cartId, int custId, ImmediateRequestDTO immediateReq) throws Exception;
 
     float calculateTotalCost(Order order) throws Exception;
 

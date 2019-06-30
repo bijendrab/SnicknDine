@@ -35,6 +35,17 @@ public class OrderItem implements Serializable {
 
     private String quantityOption;
 
+
+    private Boolean immediateStatus;
+
+    public Boolean getImmediateStatus() {
+        return immediateStatus;
+    }
+
+    public void setImmediateStatus(Boolean immediateStatus) {
+        this.immediateStatus = immediateStatus;
+    }
+
     @ManyToOne
     @JoinColumn(name = "productId")
     @JsonIgnore

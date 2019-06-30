@@ -1,8 +1,7 @@
 package com.dao;
 
-import com.dataTransferObjects.OrderRequestDTO;
+import com.dataTransferObjects.ImmediateRequestDTO;
 import com.model.*;
-import com.service.ReservationService;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,8 +21,7 @@ public class OrderDaoImpl implements OrderDao {
     private SessionFactory sessionFactory;
 
 
-    public Order processOrderRequest(int cartId,int custId) throws Exception {
-
+    public Order processOrderRequest(int cartId, int custId, ImmediateRequestDTO immediateReq) throws Exception {
         Reservation accordingReservation = resRepo.getByCustomerId(custId);
 
         if (accordingReservation == null) {
@@ -52,6 +50,12 @@ public class OrderDaoImpl implements OrderDao {
             menuItem_Order.setQuantityOption(mi.getQuantityOption());
             menuItem_Order.setProduct(mi.getProduct());
             menuItem_Order.setCart(mi.getCart());
+            for (Map<String,Object> x:immediateReq.getCartItems()){
+                if ((Integer)(x.get("cartItemId"))==mi.getCartItemId()){
+                    menuItem_Order.setImmediateStatus((Boolean)x.get("ImmidiateOption"));
+                    break;
+                }
+            }
 
             newOrder.getMenuItemOrders().add(menuItem_Order);
         }

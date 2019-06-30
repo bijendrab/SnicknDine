@@ -1,6 +1,7 @@
 package com.service;
 
 import com.dao.OrderDao;
+import com.dataTransferObjects.ImmediateRequestDTO;
 import com.dataTransferObjects.OrderRequestDTO;
 import com.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,8 @@ public class OrderServiceImpl implements  OrderService {
         return orderDao.findOrderByReservationInfo(res);
     }
 
-    public Order processOrderRequest(int cartId,int custId) throws Exception{
-        return orderDao.processOrderRequest(cartId,custId);
+    public Order processOrderRequest(int cartId,int custId,ImmediateRequestDTO immediateReq) throws Exception{
+        return orderDao.processOrderRequest(cartId,custId,immediateReq);
     }
 
     public float calculateTotalCost(Order order) throws Exception{
