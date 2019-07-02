@@ -20,6 +20,9 @@ import com.wityo.modules.user.service.UserService;
 import com.wityo.security.config.JwtTokenProvider;
 import com.wityo.security.dto.JwtSuccessDto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/user")
@@ -45,7 +48,11 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO customer){
-		return ResponseEntity.ok(userServiceImpl.saveUser(customer));
+		userServiceImpl.saveUser(customer);
+		Map<String,String> response = new HashMap<>();
+		response.put("Message", "New user registered successfully");
+		return ResponseEntity.accepted().body(response);
 	}
+
 
 }

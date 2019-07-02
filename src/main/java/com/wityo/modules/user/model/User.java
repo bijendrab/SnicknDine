@@ -32,7 +32,7 @@ public class User implements UserDetails, Serializable {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Customer customer;
 
 	public User() {

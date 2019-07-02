@@ -13,6 +13,8 @@ import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
 
+import static java.lang.Boolean.TRUE;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -32,18 +34,19 @@ public class UserServiceImpl implements UserService{
 		try {
 			User user = new User();
 			Customer customer = new Customer();
-			user.setEnabled(false);
 			user.setEmailId(newUser.getUsername());
-			user.setPassword(newUser.getPassword());
-			
+			//user.setPassword(newUser.getPassword());
+
 			User tempUser = userRepository.findByUsername(user.getUsername());
-			
+
 			if(tempUser == null) {
 				customer.setFirstName(newUser.getFirstName());
 				customer.setLastName(newUser.getLastName());
 				customer.setPhoneNumber(newUser.getPhoneNumber());
+				user.setEnabled(TRUE);
+				user.setPassword(encoder.encode(newUser.getPassword()));
 				user.setCustomer(customer);
-				user.setPassword(encoder.encode(user.getPassword()));
+				customer.setUser(user);
 				return userRepository.save(user);
 			} else {
 				throw new UsernameAlreadyExistsException("This username already exists, try with some other username");

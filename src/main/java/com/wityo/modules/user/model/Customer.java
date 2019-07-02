@@ -1,13 +1,9 @@
 package com.wityo.modules.user.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "customers")
 public class Customer {
 	
 	@Id
@@ -16,9 +12,10 @@ public class Customer {
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
-	
-	@OneToOne
-	@JoinColumn(name="user_id")
+
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="userId")
 	private User user;
 
 	public Customer() {}
