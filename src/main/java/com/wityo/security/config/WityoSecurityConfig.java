@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -60,8 +61,13 @@ public class WityoSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and().authorizeRequests()
 			.antMatchers("/api/user/**").permitAll()
 			.anyRequest().authenticated();
+		http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
+	@Bean
+	public JwtAuthenticationFilter authenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
 	
 
 }

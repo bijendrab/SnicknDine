@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.UserRepository;
 
 @Service
@@ -24,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 	}
 	
-	public UserDetails loadUserByUserId(Long userId) throws UsernameNotFoundException {
+	public User loadUserByUserId(Long userId) throws UsernameNotFoundException {
 		try {
 			return userRepo.findByUserId(userId);
 		} catch (Exception e) {

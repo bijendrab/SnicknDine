@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wityo.common.exception.WityoGenericException;
+import com.wityo.modules.user.dto.RegistrationDTO;
 import com.wityo.modules.user.exception.UsernameAlreadyExistsException;
+import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
@@ -27,10 +28,21 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User saveUser(User user) throws WityoGenericException {
+	public User saveUser(RegistrationDTO newUser) {
 		try {
+			User user = new User();
+			Customer customer = new Customer();
+			user.setEnabled(false);
+			user.setEmailId(newUser.getUsername());
+			user.setPassword(newUser.getPassword());
+			
 			User tempUser = userRepository.findByUsername(user.getUsername());
+			
 			if(tempUser == null) {
+				customer.setFirstName(newUser.getFirstName());
+				customer.setLastName(newUser.getLastName());
+				customer.setPhoneNumber(newUser.getPhoneNumber());
+				user.setCustomer(customer);
 				user.setPassword(encoder.encode(user.getPassword()));
 				return userRepository.save(user);
 			} else {
@@ -40,7 +52,7 @@ public class UserServiceImpl implements UserService{
 			if(e.getClass().equals(UsernameAlreadyExistsException.class)) {
 				throw new UsernameAlreadyExistsException(e.getMessage());
 			} else {
-				throw new WityoGenericException("Server not responding, please try again later");
+				throw new RuntimeException("Server not responding, please try again later");
 			}
 		}
 	}

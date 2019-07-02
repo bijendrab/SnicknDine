@@ -5,6 +5,11 @@ public class JwtSuccessDto {
 	private boolean success;
 	private String token;
 	
+	public JwtSuccessDto(boolean success, String token) {
+		super();
+		this.success = success;
+		this.token = token;
+	}
 	public boolean isSuccess() {
 		return success;
 	}
