@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import com.wityo.common.Constant;
 import com.wityo.modules.user.model.User;
@@ -19,6 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+@Component
 public class JwtTokenProvider {
 	
 	Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
