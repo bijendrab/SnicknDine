@@ -88,6 +88,7 @@ public class OrderController {
                     opt.put("itemName",oI.getItemName());
                     opt.put("waitTime",oI.getWaitTime());
                     opt.put("quantityOption",oI.getQuantityOption());
+                    opt.put("ImmediateOptionStatus",oI.getImmediateStatus());
 					List<HashMap<String, Object>> quantityOptions=new ArrayList<>();
 					for (ProductQuantityOptions quantO:oI.getProduct().getQuantityOption()){
 						HashMap<String, Object> optcart = new HashMap<>();

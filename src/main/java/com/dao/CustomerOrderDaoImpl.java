@@ -112,6 +112,7 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
         orderitem.setWaitTime(orderOld.getWaitTime());
         orderitem.setStatus(orderOld.getStatus());
         orderitem.setItemName(orderOld.getItemName());
+        orderitem.setImmediateStatus(orderOld.getImmediateStatus());
         orderitem.setCart(orderOld.getCart());
         orderitem.setProduct(orderOld.getProduct());
         orderitem.setOrder(orderOld.getOrder());
