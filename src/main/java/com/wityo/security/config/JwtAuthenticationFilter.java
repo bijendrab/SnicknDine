@@ -1,19 +1,17 @@
 package com.wityo.security.config;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.Box.Filler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,6 +29,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private CustomUserDetailsService customUserDetailService;
 	
+	Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+	
+	/*--------Method to process JWT from the HTTP Request-------------*/
 	private String getJwtFromRequest(HttpServletRequest request) {
 		String bearerToken = request.getHeader(Constant.HEADER_TOKEN_KEY);
 		if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(Constant.TOKEN_PREFIX)) {
@@ -39,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		return null;
 	}
 
-	/* ::::::::::::::::::::::All the request will go through this filter:::::::::::::::::::::: */
+	/* |||||||||||||||||||COMMON FILTER FOR APPLICATION|||||||||||||||||||||| */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -51,14 +52,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			 * 4. Authenticate the user
 			 */
 
-			/*This ftv headerw will only be present for 2 cases.
+			/* @Description This f-t-v header will only be present for 2 cases.
 			 * 1. When the user is being validated, if present jwt will be returned
 			 * 2. User is not present in DB, hence api call to register
 			 * 
 			 * After the above code is done, this header will not be present.
+			 * 
 			 * */
-			String ftv = request.getHeader("first-time-validation");
-			if(StringUtils.hasText(ftv) && ftv.equals("true")) {
+			String firstTimeCheck = request.getHeader("first-time-validation");
+			if(StringUtils.hasText(firstTimeCheck) && firstTimeCheck.equals("true")) {
 				filterChain.doFilter(request, response);
 			}else {
 				String jwt = getJwtFromRequest(request);
@@ -75,6 +77,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 		
 		}catch (Exception e) {
+			logger.info("Exception in filter: {}", e);
 		}
 		FilterErrorResponse errorResponse = new FilterErrorResponse();
 		errorResponse.setBody(null);
