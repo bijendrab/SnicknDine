@@ -7,21 +7,26 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.Box.Filler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.google.gson.Gson;
 import com.wityo.common.Constant;
+import com.wityo.common.exception.FilterErrorResponse;
 import com.wityo.modules.user.model.User;
 import com.wityo.security.service.CustomUserDetailsService;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtTokenProvider provider;
+	private JwtTokenProvider tokenProvider;
 	
 	@Autowired
 	private CustomUserDetailsService customUserDetailService;
@@ -45,18 +50,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			 * 3. Get Id from token
 			 * 4. Authenticate the user
 			 */
-			String token = getJwtFromRequest(request);
-			if(StringUtils.hasText(token) && provider.validateJwtToken(token)) {
-				Long userId = provider.getUserIdFromToken(token);
-				User userDetail = customUserDetailService.loadUserByUserId(userId);
-				UsernamePasswordAuthenticationToken auth
-					= new UsernamePasswordAuthenticationToken(userDetail, null, Collections.emptyList());
-				auth.setDetails(new WebAuthenticationDetailsSource()
-									.buildDetails(request));
+
+			/*This ftv headerw will only be present for 2 cases.
+			 * 1. When the user is being validated, if present jwt will be returned
+			 * 2. User is not present in DB, hence api call to register
+			 * 
+			 * After the above code is done, this header will not be present.
+			 * */
+			String ftv = request.getHeader("first-time-validation");
+			if(StringUtils.hasText(ftv) && ftv.equals("true")) {
+				filterChain.doFilter(request, response);
+			}else {
+				String jwt = getJwtFromRequest(request);
+				if(StringUtils.hasText(jwt) && tokenProvider.validateJwtToken(jwt)) {
+					Long userId = tokenProvider.getUserIdFromToken(jwt);
+					User userDetail = customUserDetailService.loadUserByUserId(userId);
+					if( userDetail == null) {
+						throw new UsernameNotFoundException("Invalid Session");
+					}
+					filterChain.doFilter(request, response);
+				} else {
+					throw new UsernameNotFoundException("Unauthorized");
+				}
 			}
+		
 		}catch (Exception e) {
 		}
-		filterChain.doFilter(request, response);
+		FilterErrorResponse errorResponse = new FilterErrorResponse();
+		errorResponse.setBody(null);
+		errorResponse.setMessage("You are not authorized to access this page!");
+		errorResponse.setStatus(String.valueOf(HttpStatus.UNAUTHORIZED));
+		errorResponse.setError(true);
+		
+		String jsonResp = new Gson().toJson(errorResponse);
+		response.setContentType("application/json");
+		response.setStatus(401);
+		response.getWriter().print(jsonResp);
+		return;
 	}
-
 }
