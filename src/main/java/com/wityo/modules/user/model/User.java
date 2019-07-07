@@ -26,8 +26,9 @@ public class User implements UserDetails, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long userId;
-	private String username;
-	private String password;
+	private String firstName;
+	private String lastName;
+	private Long phoneNumber;
 	private boolean enabled;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -47,11 +48,11 @@ public class User implements UserDetails, Serializable {
 	}
 
 	public String getEmailId() {
-		return username;
+		return firstName;
 	}
 
 	public void setEmailId(String emailId) {
-		this.username = emailId;
+		this.firstName = emailId;
 	}
 
 	public Customer getCustomer() {
@@ -66,8 +67,8 @@ public class User implements UserDetails, Serializable {
 		return serialVersionUID;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLastName(String password) {
+		this.lastName = password;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -95,6 +96,26 @@ public class User implements UserDetails, Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public Long getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(Long phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+	
 	@PrePersist
 	protected void onUserCreation() {
 		this.createdAt = LocalDateTime.now();
@@ -114,12 +135,12 @@ public class User implements UserDetails, Serializable {
 
 	@Override
 	public String getPassword() {
-		return this.password;
+		return this.lastName;
 	}
 
 	@Override
 	public String getUsername() {
-		return this.username;
+		return this.firstName;
 	}
 
 	@Override

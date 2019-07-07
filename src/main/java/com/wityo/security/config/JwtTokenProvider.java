@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.wityo.common.Constant;
@@ -27,19 +26,17 @@ public class JwtTokenProvider {
 	
 	/*---------------------------GENERATING THE TOKEN--------------------------------*/
 	
-	public String generateJwtToken(Authentication auth) {
-		
-		User user = (User)auth.getPrincipal();
+	public String generateJwtToken(User user) {
 		Date now = new Date(System.currentTimeMillis());
 		Date expiryDate = new Date(now.getTime() + Constant.EXPIRY_TIME);
 		String userId = Long.toString(user.getUserId());
-		String customerName = user.getCustomer().getFirstName() +" "+user.getCustomer().getLastName();
+		String customerName = user.getFirstName() +" "+user.getLastName();
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("id", userId);
 		claims.put("fullName", customerName);
+		claims.put("phoneNumber", user.getPhoneNumber());
 		claims.put("iat", now);
 		claims.put("expiryTime", expiryDate);
-		
 		return Jwts.builder()
 				   .setSubject(userId)
 				   .setClaims(claims)

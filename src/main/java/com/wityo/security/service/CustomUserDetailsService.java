@@ -17,19 +17,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		try {
-			return userRepo.findByUsername(username);
-		} catch (Exception e) {
-			throw new UsernameNotFoundException("No user found with this username");
-		}
+		return null;	
 	}
 	
 	public User loadUserByUserId(Long userId) throws UsernameNotFoundException {
 		try {
 			return userRepo.findByUserId(userId);
 		} catch (Exception e) {
-			throw new UsernameNotFoundException("No user found with this username");
+			throw new UsernameNotFoundException("No user found with this user id");
+		}
+	}
+	
+	public User loadUserByPhoneNumber(Long phoneNumber) {
+		try {
+			return userRepo.findByPhoneNumber(phoneNumber);
+		} catch (Exception e) {
+			throw new UsernameNotFoundException("No user found with this phone number");
 		}
 	}
 
