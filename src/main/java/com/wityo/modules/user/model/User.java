@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,6 +32,7 @@ public class User implements UserDetails, Serializable {
 	private String firstName;
 	private String lastName;
 	private String emailId;
+	@Column(unique = true)
 	private String phoneNumber;
 	private boolean enabled;
 	private LocalDateTime createdAt;
