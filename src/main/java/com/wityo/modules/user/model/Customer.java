@@ -2,8 +2,11 @@ package com.wityo.modules.user.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wityo.modules.cart.model.Cart;
+
 @Entity
-@Table(name = "customers")
+@Table(name = "customer")
 public class Customer {
 	
 	@Id
@@ -12,11 +15,17 @@ public class Customer {
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
+	private String emailId;
 
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="userId")
+	@JsonIgnore
 	private User user;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cart_id")
+	@JsonIgnore
+	private Cart cart;
 
 	public Customer() {}
 
@@ -51,6 +60,15 @@ public class Customer {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
 	public User getUser() {
 		return user;
@@ -60,4 +78,11 @@ public class Customer {
 		this.user = user;
 	}
 
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
 }

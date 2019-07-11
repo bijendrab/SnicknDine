@@ -1,6 +1,7 @@
 package com.wityo.security.config;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,6 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -62,22 +67,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			String firstTimeCheck = request.getHeader("first-time-validation");
 			if(StringUtils.hasText(firstTimeCheck) && firstTimeCheck.equals("true")) {
 				filterChain.doFilter(request, response);
+				return;
 			}else {
 				String jwt = getJwtFromRequest(request);
 				if(StringUtils.hasText(jwt) && tokenProvider.validateJwtToken(jwt)) {
 					Long userId = tokenProvider.getUserIdFromToken(jwt);
 					User userDetail = customUserDetailService.loadUserByUserId(userId);
+					Authentication auth = new UsernamePasswordAuthenticationToken(userDetail,null,Collections.emptyList());
+					SecurityContextHolder.getContext().setAuthentication(auth);
 					if( userDetail == null) {
 						throw new UsernameNotFoundException("Invalid Session");
 					}
 					filterChain.doFilter(request, response);
+					return;
 				} else {
 					throw new UsernameNotFoundException("Unauthorized");
 				}
 			}
 		
 		}catch (Exception e) {
-			logger.info("Exception in filter: {}", e);
+			logger.info("Exception in filter: {}", e.getMessage());
 		}
 		FilterErrorResponse errorResponse = new FilterErrorResponse();
 		errorResponse.setBody(null);

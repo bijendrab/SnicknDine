@@ -1,11 +1,16 @@
 package com.wityo.modules.user.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wityo.modules.cart.model.Cart;
+import com.wityo.modules.cart.model.CartItem;
+import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
+import com.wityo.modules.user.repository.CustomerRepository;
 import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
 
@@ -14,6 +19,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 	
 	@Override
 	public List<User> fetchAllUsers() {
@@ -35,6 +43,25 @@ public class UserServiceImpl implements UserService{
 
 	public User registerUser(User user) {
 		try {
+			Customer customer = new Customer();
+			customer.setCustomerId(user.getUserId());
+			customer.setEmailId(user.getEmailId());
+			customer.setFirstName(user.getFirstName());
+			customer.setLastName(user.getLastName());
+			customer.setPhoneNumber(user.getPhoneNumber());
+			customer.setUser(user);
+			Cart cart = new Cart();
+			customer.setCart(cart);
+			cart.setCustomer(customer);
+			user.setCustomer(customer);
+			
+			CartItem item = new CartItem();
+			item.setCart(cart);
+			item.setItemName("lala");
+			List<CartItem> items = new ArrayList<CartItem>();
+			items.add(item);
+			cart.setCartItems(items);
+			
 			User user1 = userRepository.save(user);
 			if(null != user1) {
 				return user1;

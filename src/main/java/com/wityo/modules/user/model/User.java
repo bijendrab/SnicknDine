@@ -28,7 +28,8 @@ public class User implements UserDetails, Serializable {
 	private Long userId;
 	private String firstName;
 	private String lastName;
-	private Long phoneNumber;
+	private String emailId;
+	private String phoneNumber;
 	private boolean enabled;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -39,37 +40,102 @@ public class User implements UserDetails, Serializable {
 	public User() {
 	}
 
+	
 	public Long getUserId() {
 		return userId;
 	}
+
+
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public String getEmailId() {
+
+
+	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setEmailId(String emailId) {
-		this.firstName = emailId;
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
+
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
 
 	public Customer getCustomer() {
 		return customer;
 	}
 
+
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
-	public void setLastName(String password) {
-		this.lastName = password;
-	}
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -78,44 +144,9 @@ public class User implements UserDetails, Serializable {
 	public boolean getEnabled() {
 		return this.enabled;
 	}
-	
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public Long getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(Long phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-	
 	@PrePersist
 	protected void onUserCreation() {
 		this.createdAt = LocalDateTime.now();
@@ -129,7 +160,6 @@ public class User implements UserDetails, Serializable {
 	/*-------------SPRING SECURITY METHODS------------------------*/
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

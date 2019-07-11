@@ -56,7 +56,7 @@ public class JwtTokenProvider {
 		try {
 			Jwts.parser()
 				.setSigningKey(Constant.API_SECRET)
-				.parsePlaintextJws(token);
+				.parseClaimsJws(token);
 			return true;
 		} catch (SignatureException e) {
 		} catch (MalformedJwtException e) {			
