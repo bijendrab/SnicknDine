@@ -1,5 +1,8 @@
 package com.wityo.modules.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="productId")
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
