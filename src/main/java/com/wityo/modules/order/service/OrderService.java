@@ -1,5 +1,6 @@
 package com.wityo.modules.order.service;
 
+import com.wityo.modules.order.dto.ImmediateRequestDto;
 import com.wityo.modules.order.model.Order;
 import com.wityo.modules.order.model.OrderStatus;
 import com.wityo.modules.order.model.Reservation;
@@ -14,5 +15,5 @@ public interface OrderService {
 	Order confirmOrder(Long orderId);
 	Order addItemToOrder(Order order, Product newItem, Long itemOrderedNumber);
 	Order findOrderByReservation(Reservation resevation);
-	Order processOrderRequest(Long cartId, Long customerId);
+	Order processOrderRequest(Long cartId, Long customerId, ImmediateRequestDto requestDto);
 }
