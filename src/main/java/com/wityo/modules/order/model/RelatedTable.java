@@ -7,23 +7,23 @@ import javax.persistence.Id;
 import javax.validation.constraints.Min;
 
 @Entity
-public class RestaurantTable {
+public class RelatedTable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer restaurantTableId;
+	private Integer relatedTableId;
 	@Min(2)
 	private Integer numberOfSeats;
 	private Integer tableNumber;
 	
-	public RestaurantTable() {}
+	public RelatedTable() {}
 
-	public Integer getRestaurantTableId() {
-		return restaurantTableId;
+	public Integer getRelatedTableId() {
+		return relatedTableId;
 	}
 
-	public void setRestaurantTableId(Integer relatedTableId) {
-		this.restaurantTableId = relatedTableId;
+	public void setRelatedTableId(Integer relatedTableId) {
+		this.relatedTableId = relatedTableId;
 	}
 
 	public Integer getNumberOfSeats() {

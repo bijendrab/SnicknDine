@@ -12,7 +12,6 @@ import com.wityo.modules.cart.exception.InvalidCartException;
 import com.wityo.modules.cart.exception.NoCartFoundException;
 import com.wityo.modules.cart.exception.UnableToUpdateCartException;
 import com.wityo.modules.cart.model.Cart;
-import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartRepository;
 import com.wityo.modules.cart.service.CartService;
 import com.wityo.modules.user.model.Customer;
@@ -48,17 +47,6 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<Map<String, Object>> updateCart(Cart cart) throws UnableToUpdateCartException {
 		return null;		
-	}
-	
-	public double getTotalCartAmount() {
-		User userDetail = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerService.getCustomerByPhoneNumber(userDetail.getPhoneNumber());
-		Cart cart = customer.getCart();
-		double grandTotal = 0;
-		for(CartItem cartItem : cart.getCartItems()) {
-			grandTotal = grandTotal + cartItem.getPrice();
-		}
-		return grandTotal;
 	}
 
 }

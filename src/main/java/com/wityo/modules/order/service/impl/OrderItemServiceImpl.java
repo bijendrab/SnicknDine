@@ -24,24 +24,10 @@ public class OrderItemServiceImpl {
 	@Autowired
 	OrderItemRepository orderItemRepository;
 	
-	
-	/*
-	 * 
-	 * @Description:- This method is used to fetch all the orders that the user has made,
-	 * including the current order 
-	 * 
-	 * */
-	List<Map<Long, List<OrderItem>>> getCustomerOrderList(){
+	List<Map<Integer, List<OrderItem>>> getCustomerOrderList(){
 		return null;
 	}
 
-	
-	/*
-	 * @Description: Call this method when you want to update an Order Item after the order is placed,
-	 * provided it is eligible for getting updated.
-	 * 
-	 * @Note: Only productQuantityOption and item quantity can be updated from the front end.
-	 * */
 	public Order updateOrder_orderItem(OrderItem orderItem) {
 		Optional<OrderItem> optionalOI = orderItemRepository.findById(orderItem.getOrderItemId());
 		if(optionalOI.isPresent()) {
@@ -71,11 +57,6 @@ public class OrderItemServiceImpl {
 		return null;
 	}
 	
-	/*
-	 * @Description: Call this method when you want to delete an Order Item after the order is placed,
-	 * provided it is eligible for getting updated.
-	 * 
-	 * */
 	public Order deleteCustomerOrderItem(Long orderItemId) {
 		Optional<OrderItem> optionalOI = orderItemRepository.findById(orderItemId);
 		if(optionalOI.isPresent()) {

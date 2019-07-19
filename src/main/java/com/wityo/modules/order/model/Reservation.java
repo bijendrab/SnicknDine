@@ -34,13 +34,13 @@ public class Reservation {
 	
 	@ManyToOne
 	@JoinColumn(name = "related_table_id")
-	private RestaurantTable relatedTable;
+	private RelatedTable relatedTable;
 	
 	public Reservation() {}
 
 	public Reservation(Long reservationId, LocalDate submissionDate, LocalDate reservationDate,
 			@NotNull TimeSpan reservationTime, String otherRequirement, Customer relatedCustomer,
-			RestaurantTable relatedTable) {
+			RelatedTable relatedTable) {
 		this.reservationId = reservationId;
 		this.submissionDate = submissionDate;
 		this.reservationDate = reservationDate;
@@ -98,11 +98,11 @@ public class Reservation {
 		this.relatedCustomer = relatedCustomer;
 	}
 
-	public RestaurantTable getRelatedTable() {
+	public RelatedTable getRelatedTable() {
 		return relatedTable;
 	}
 
-	public void setRelatedTable(RestaurantTable relatedTable) {
+	public void setRelatedTable(RelatedTable relatedTable) {
 		this.relatedTable = relatedTable;
 	}
 
