@@ -17,7 +17,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long orderId;
-	private double totalCost;
+	private float totalCost;
 	private OrderStatus status;
 	@OneToOne
 	@JoinColumn(name = "reservation_id")
@@ -30,7 +30,7 @@ public class Order {
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
-	public double getTotalCost() {
+	public float getTotalCost() {
 		return totalCost;
 	}
 	public void setTotalCost(float totalCost) {
@@ -53,9 +53,6 @@ public class Order {
 	}
 	public void setMenuItemOrders(Set<OrderItem> menuItemOrders) {
 		this.menuItemOrders = menuItemOrders;
-	}
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
 	}
 
 }

@@ -9,6 +9,5 @@ import com.wityo.modules.order.model.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	
 	public Order findByOrderId(Long orderId);
-	public Order findByReservationId(Long reservationId);
 
 }
