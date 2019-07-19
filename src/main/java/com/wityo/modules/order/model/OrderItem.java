@@ -23,7 +23,7 @@ public class OrderItem {
 	private String status;
 	private String itemName;
 	private double waitTime;
-	private String quantityOption;
+	private String quantityOptions;
 	private Boolean immediateStatus;
 	
 	@ManyToOne
@@ -91,12 +91,12 @@ public class OrderItem {
 		this.waitTime = waitTime;
 	}
 
-	public String getQuantityOption() {
-		return quantityOption;
+	public String getQuantityOptions() {
+		return quantityOptions;
 	}
 
-	public void setQuantityOption(String quantityOptions) {
-		this.quantityOption = quantityOptions;
+	public void setQuantityOptions(String quantityOptions) {
+		this.quantityOptions = quantityOptions;
 	}
 
 	public Boolean getImmediateStatus() {

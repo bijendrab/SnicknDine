@@ -1,7 +1,6 @@
 package com.wityo.modules.order.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -133,21 +132,5 @@ public class OrderServiceImpl implements OrderService {
 		order.setTotalCost(totalPrice);
 		return orderRepository.save(order);
 	}
-	
-	
-	public List<Map<Integer, List<OrderItem>>> getUserOrdersForOrderList(){
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return null;
-	}
-	
-	public boolean deleteCustomerOrderItem(Long orderItemId) {
-		Optional<OrderItem> optionalOi = orderItemRepository.findById(orderItemId);
-		if(optionalOi.isPresent()) {
-			orderItemRepository.deleteById(orderItemId);
-			return true;
-		}
-		return false;
-	}
-	
 	
 }
