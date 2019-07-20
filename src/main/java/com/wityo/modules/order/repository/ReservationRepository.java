@@ -8,6 +8,6 @@ import com.wityo.modules.order.model.Reservation;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 	
-	Reservation findByCustomerId(Long id);
+//	Reservation findByCustomerId(Long id);
 
 }

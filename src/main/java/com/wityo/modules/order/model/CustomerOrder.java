@@ -10,25 +10,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-public class Order {
+@Table(name = "customer_order")
+public class CustomerOrder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long orderId;
+	private Long customerOrderId;
 	private double totalCost;
 	private OrderStatus status;
 	@OneToOne
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
-	@OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customerOrder",cascade = CascadeType.ALL)
 	private Set<OrderItem> menuItemOrders;
-	public Long getOrderId() {
-		return orderId;
+	public Long getCustomerOrderId() {
+		return customerOrderId;
 	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setCustomerOrderId(Long orderId) {
+		this.customerOrderId = orderId;
 	}
 	public double getTotalCost() {
 		return totalCost;

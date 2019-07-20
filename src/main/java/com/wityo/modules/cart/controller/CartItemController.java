@@ -59,7 +59,7 @@ public class CartItemController {
 	 * @Description: Function to remove all CartItems from user's cart
 	 * 
 	 * */
-	@DeleteMapping("/delete/{cartItemId}")
+	@DeleteMapping("/delete/cartitems")
 	public ResponseEntity<?> removeAllCartItems(){
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Map<String, Object> response = new HashMap<String, Object>();

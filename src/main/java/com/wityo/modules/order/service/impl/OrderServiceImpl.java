@@ -13,12 +13,12 @@ import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartRepository;
 import com.wityo.modules.order.dto.ImmediateRequestDto;
-import com.wityo.modules.order.model.Order;
+import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.model.OrderItem;
 import com.wityo.modules.order.model.OrderStatus;
 import com.wityo.modules.order.model.Reservation;
+import com.wityo.modules.order.repository.CustomerOrderRepository;
 import com.wityo.modules.order.repository.OrderItemRepository;
-import com.wityo.modules.order.repository.OrderRepository;
 import com.wityo.modules.order.repository.ReservationRepository;
 import com.wityo.modules.order.service.OrderService;
 import com.wityo.modules.product.model.Product;
@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
 	private CartRepository cartRepository;
 	
 	@Autowired
-	private OrderRepository orderRepository;
+	private CustomerOrderRepository orderRepository;
 	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
@@ -51,20 +51,20 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Reservation findReservationByOrder(Order order) {
+	public Reservation findReservationByOrder(CustomerOrder order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order saveOrderForReservation(Reservation reservation, Order newOrder) {
+	public CustomerOrder saveOrderForReservation(Reservation reservation, CustomerOrder newOrder) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order getOrderById(Long id) {
-		Optional<Order> optionalOrder = orderRepository.findById(id);
+	public CustomerOrder getOrderById(Long id) {
+		Optional<CustomerOrder> optionalOrder = orderRepository.findById(id);
 		if(optionalOrder.isPresent()) {
 			return optionalOrder.get();
 		}
@@ -72,66 +72,67 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order changeOrderStatus(Order order, OrderStatus orderStatus) {
+	public CustomerOrder changeOrderStatus(CustomerOrder order, OrderStatus orderStatus) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order confirmOrder(Long orderId) {
+	public CustomerOrder confirmOrder(Long orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order addItemToOrder(Order order, Product newItem, Long itemOrderedNumber) {
+	public CustomerOrder addItemToOrder(CustomerOrder order, Product newItem, Long itemOrderedNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order findOrderByReservation(Reservation resevation) {
+	public CustomerOrder findOrderByReservation(Reservation resevation) {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Reservation reservation = reservationRepository.findByCustomerId(user.getCustomer().getCustomerId());
-		Order order = orderRepository.findByReservationId(reservation.getReservationId());
-		return order;
+//		Reservation reservation = reservationRepository.findByCustomerId(user.getCustomer().getCustomerId());
+//		CustomerOrder order = orderRepository.findByReservationId(reservation.getReservationId());
+		return null;
 	}
 
 	@Override
-	public Order processOrderRequest(Long cartId, Long customerId, ImmediateRequestDto requestDto) {
+	public CustomerOrder processOrderRequest(Long cartId, Long customerId, ImmediateRequestDto requestDto) {
 
-		Reservation reservation = reservationRepository.findByCustomerId(customerId);
-		Order order = new Order();
-		order.setReservation(reservation);
-		order.setStatus(OrderStatus.ON_HOLD);
-		Cart cart = null;
-		Optional<Cart> optionalCart = cartRepository.findById(cartId);
-		double totalPrice = 0;
-		if(optionalCart.isPresent()) {
-			cart = optionalCart.get();
-		}
-		LocalDateTime orderCreationTime = LocalDateTime.now();
-		for(CartItem cartItem : cart.getCartItems()) {
-			totalPrice += cartItem.getPrice();
-			OrderItem orderItem = new OrderItem();
-			orderItem.setQuantity(cartItem.getQuantity());
-			orderItem.setItemName(cartItem.getItemName());
-			orderItem.setPrice(cartItem.getPrice());
-			orderItem.setOrderCreationTime(orderCreationTime);
-			orderItem.setStatus("Unprocessed");
-			orderItem.setProduct(cartItem.getProduct());
-			orderItem.setCart(cart);
-			orderItem.setOrder(order);
-			for(Map<String, Object> iRItem : requestDto.getCartItemsForImmediateOrder()) {
-				if(iRItem.get("cartItemId") == cartItem.getCartItemId()) {
-					orderItem.setImmediateStatus((Boolean)iRItem.get("immediateStatus"));
-					break;
-				}
-			}
-			order.getMenuItemOrders().add(orderItem);
-		};
-		order.setTotalCost(totalPrice);
-		return orderRepository.save(order);
+//		Reservation reservation = reservationRepository.findByCustomerId(customerId);
+//		CustomerOrder order = new CustomerOrder();
+//		order.setReservation(reservation);
+//		order.setStatus(OrderStatus.ON_HOLD);
+//		Cart cart = null;
+//		Optional<Cart> optionalCart = cartRepository.findById(cartId);
+//		double totalPrice = 0;
+//		if(optionalCart.isPresent()) {
+//			cart = optionalCart.get();
+//		}
+//		LocalDateTime orderCreationTime = LocalDateTime.now();
+//		for(CartItem cartItem : cart.getCartItems()) {
+//			totalPrice += cartItem.getPrice();
+//			OrderItem orderItem = new OrderItem();
+//			orderItem.setQuantity(cartItem.getQuantity());
+//			orderItem.setItemName(cartItem.getItemName());
+//			orderItem.setPrice(cartItem.getPrice());
+//			orderItem.setOrderCreationTime(orderCreationTime);
+//			orderItem.setStatus("Unprocessed");
+//			orderItem.setProduct(cartItem.getProduct());
+//			orderItem.setCart(cart);
+//			orderItem.setCustomerOrder(order);
+//			for(Map<String, Object> iRItem : requestDto.getCartItemsForImmediateOrder()) {
+//				if(iRItem.get("cartItemId") == cartItem.getCartItemId()) {
+//					orderItem.setImmediateStatus((Boolean)iRItem.get("immediateStatus"));
+//					break;
+//				}
+//			}
+//			order.getMenuItemOrders().add(orderItem);
+//		};
+//		order.setTotalCost(totalPrice);
+//		return orderRepository.save(order);
+		return null;
 	}
 	
 	

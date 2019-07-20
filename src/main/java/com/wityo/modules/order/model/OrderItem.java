@@ -2,6 +2,7 @@ package com.wityo.modules.order.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,17 +22,18 @@ public class OrderItem {
 	private int quantity;
 	private double price;
 	private String status;
+
 	private String itemName;
 	private double waitTime;
 	private String quantityOption;
 	private Boolean immediateStatus;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Product product;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Cart cart;
-	@ManyToOne
-	private Order order;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private CustomerOrder customerOrder;
 	
 	public OrderItem() {}
 
@@ -123,12 +125,12 @@ public class OrderItem {
 		this.cart = cart;
 	}
 
-	public Order getOrder() {
-		return order;
+	public CustomerOrder getCustomerOrder() {
+		return customerOrder;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setCustomerOrder(CustomerOrder customerOrder) {
+		this.customerOrder = customerOrder;
 	}
 	
 }

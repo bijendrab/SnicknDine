@@ -1,5 +1,6 @@
 package com.wityo.modules.cart.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class CartItem {
 	private int quantity;
 	private double price;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id")
 	@JsonIgnore
 	private Cart cart;

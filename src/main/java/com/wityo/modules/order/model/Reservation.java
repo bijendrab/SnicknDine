@@ -2,6 +2,8 @@ package com.wityo.modules.order.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import com.wityo.modules.user.model.Customer;
 public class Reservation {
 
 	@Id
+	@Column(name = "reservation_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long reservationId;
 	private LocalDate submissionDate;
@@ -28,13 +31,13 @@ public class Reservation {
 	
 	private String otherRequirement;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id")
-	private Customer relatedCustomer;
+	private Customer customer;
 	
-	@ManyToOne
-	@JoinColumn(name = "related_table_id")
-	private RestaurantTable relatedTable;
+	@ManyToOne(cascade = CascadeType.ALL)	
+	@JoinColumn(name = "restaurant_table_id")
+	private RestaurantTable restaurantTable;
 	
 	public Reservation() {}
 
@@ -46,8 +49,8 @@ public class Reservation {
 		this.reservationDate = reservationDate;
 		this.reservationTime = reservationTime;
 		this.otherRequirement = otherRequirement;
-		this.relatedCustomer = relatedCustomer;
-		this.relatedTable = relatedTable;
+		this.customer = relatedCustomer;
+		this.restaurantTable = relatedTable;
 	}
 
 	public Long getReservationId() {
@@ -90,20 +93,20 @@ public class Reservation {
 		this.otherRequirement = otherRequirement;
 	}
 
-	public Customer getRelatedCustomer() {
-		return relatedCustomer;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setRelatedCustomer(Customer relatedCustomer) {
-		this.relatedCustomer = relatedCustomer;
+	public void setCustomer(Customer relatedCustomer) {
+		this.customer = relatedCustomer;
 	}
 
-	public RestaurantTable getRelatedTable() {
-		return relatedTable;
+	public RestaurantTable getRestaurantTable() {
+		return restaurantTable;
 	}
 
-	public void setRelatedTable(RestaurantTable relatedTable) {
-		this.relatedTable = relatedTable;
+	public void setRestaurantTable(RestaurantTable relatedTable) {
+		this.restaurantTable = relatedTable;
 	}
 
 }
