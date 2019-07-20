@@ -46,7 +46,7 @@ public class CartItemServiceImpl {
 					}
 				});
 				cartItemRepository.save(newCartItem);
-				return "Item successfully added to cart";
+				return "added";
 			} else {
 				userCartItems.parallelStream().forEach(cartItem -> {
 					if(productId == cartItem.getProduct().getProductId()) {
@@ -66,11 +66,11 @@ public class CartItemServiceImpl {
 						});
 					}
 				});
-				return "Cart Item updated successfully";
+				return "updated";
 			}
 		}catch (Exception e) {
 		}
-		return null;
+		return "error";
 		
 	}
 	
