@@ -40,25 +40,14 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 	
-	public String updateOrderItem(OrderItem orderItem) {
-		Optional<OrderItem> optionalItem = orderItemRepository.findById(orderItem.getOrderItemId());
-		OrderItem existingOrderItem = null;
-		if(optionalItem.isPresent()) {
-			existingOrderItem = optionalItem.get();
-			return "updated";
-		}
-		return "not updated";
-	}
 
 	@Override
 	public Reservation findReservationByOrder(CustomerOrder order) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public CustomerOrder saveOrderForReservation(Reservation reservation, CustomerOrder newOrder) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -73,71 +62,66 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public CustomerOrder changeOrderStatus(CustomerOrder order, OrderStatus orderStatus) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public CustomerOrder confirmOrder(Long orderId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public CustomerOrder addItemToOrder(CustomerOrder order, Product newItem, Long itemOrderedNumber) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public CustomerOrder findOrderByReservation(Reservation resevation) {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		Reservation reservation = reservationRepository.findByCustomerId(user.getCustomer().getCustomerId());
-//		CustomerOrder order = orderRepository.findByReservationId(reservation.getReservationId());
-		return null;
+		Reservation reservation = reservationRepository.findByCustomer(user.getCustomer().getCustomerId());
+		CustomerOrder order = orderRepository.findByReservation(reservation.getReservationId());
+		return order;
 	}
 
 	@Override
 	public CustomerOrder processOrderRequest(Long cartId, Long customerId, ImmediateRequestDto requestDto) {
-
-//		Reservation reservation = reservationRepository.findByCustomerId(customerId);
-//		CustomerOrder order = new CustomerOrder();
-//		order.setReservation(reservation);
-//		order.setStatus(OrderStatus.ON_HOLD);
-//		Cart cart = null;
-//		Optional<Cart> optionalCart = cartRepository.findById(cartId);
-//		double totalPrice = 0;
-//		if(optionalCart.isPresent()) {
-//			cart = optionalCart.get();
-//		}
-//		LocalDateTime orderCreationTime = LocalDateTime.now();
-//		for(CartItem cartItem : cart.getCartItems()) {
-//			totalPrice += cartItem.getPrice();
-//			OrderItem orderItem = new OrderItem();
-//			orderItem.setQuantity(cartItem.getQuantity());
-//			orderItem.setItemName(cartItem.getItemName());
-//			orderItem.setPrice(cartItem.getPrice());
-//			orderItem.setOrderCreationTime(orderCreationTime);
-//			orderItem.setStatus("Unprocessed");
-//			orderItem.setProduct(cartItem.getProduct());
-//			orderItem.setCart(cart);
-//			orderItem.setCustomerOrder(order);
-//			for(Map<String, Object> iRItem : requestDto.getCartItemsForImmediateOrder()) {
-//				if(iRItem.get("cartItemId") == cartItem.getCartItemId()) {
-//					orderItem.setImmediateStatus((Boolean)iRItem.get("immediateStatus"));
-//					break;
-//				}
-//			}
-//			order.getMenuItemOrders().add(orderItem);
-//		};
-//		order.setTotalCost(totalPrice);
-//		return orderRepository.save(order);
-		return null;
+		Reservation reservation = reservationRepository.findByCustomer(customerId);
+		CustomerOrder order = new CustomerOrder();
+		order.setReservation(reservation);
+		order.setStatus(OrderStatus.ON_HOLD);
+		Cart cart = null;
+		Optional<Cart> optionalCart = cartRepository.findById(cartId);
+		double totalPrice = 0;
+		if(optionalCart.isPresent()) {
+			cart = optionalCart.get();
+		}
+		LocalDateTime orderCreationTime = LocalDateTime.now();
+		for(CartItem cartItem : cart.getCartItems()) {
+			totalPrice += cartItem.getPrice();
+			OrderItem orderItem = new OrderItem();
+			orderItem.setQuantity(cartItem.getQuantity());
+			orderItem.setItemName(cartItem.getItemName());
+			orderItem.setPrice(cartItem.getPrice());
+			orderItem.setOrderCreationTime(orderCreationTime);
+			orderItem.setStatus("Unprocessed");
+			orderItem.setProduct(cartItem.getProduct());
+			orderItem.setCart(cart);
+			orderItem.setCustomerOrder(order);
+			for(Map<String, Object> iRItem : requestDto.getCartItemsForImmediateOrder()) {
+				if(iRItem.get("cartItemId") == cartItem.getCartItemId()) {
+					orderItem.setImmediateStatus((Boolean)iRItem.get("immediateStatus"));
+					break;
+				}
+			}
+			order.getMenuItemOrders().add(orderItem);
+		};
+		order.setTotalCost(totalPrice);
+		return orderRepository.save(order);
 	}
 	
 	
 	public List<Map<Integer, List<OrderItem>>> getUserOrdersForOrderList(){
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return null;
 	}
 	

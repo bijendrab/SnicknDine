@@ -1,5 +1,25 @@
 package com.wityo.modules.product.service;
 
-public interface ProductService {
+import java.util.List;
+import java.util.Map;
 
+import com.wityo.common.exception.WityoGenericException;
+import com.wityo.modules.product.exception.DuplicateProductException;
+import com.wityo.modules.product.exception.EditProductException;
+import com.wityo.modules.product.exception.NoProductsFoundException;
+import com.wityo.modules.product.exception.ProductAdditionException;
+import com.wityo.modules.product.exception.ProductNotFoundException;
+import com.wityo.modules.product.exception.ProductStatusChangeException;
+import com.wityo.modules.product.exception.UnableToDeleteProductException;
+import com.wityo.modules.product.model.Product;
+
+public interface ProductService {
+	
+	public List<Map<String, Object>> fetchAllProducts() throws NoProductsFoundException, WityoGenericException;
+	public Map<String, Object> getProductById(Long productId) throws ProductNotFoundException, WityoGenericException;
+	public boolean deleteProductById(Long productId) throws UnableToDeleteProductException;
+	public boolean changeProductStatusById(Long productId)throws ProductStatusChangeException;
+	public Product addProduct(Product product) throws ProductAdditionException, DuplicateProductException;
+	public Product updateProduct(Product latestProduct) throws EditProductException;
+	
 }

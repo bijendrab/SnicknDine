@@ -5,4 +5,12 @@ public class Constant {
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_TOKEN_KEY = "Authorization";
 	public static final Long EXPIRY_TIME = 300_0000L;
+	
+	
+	/*-----------------------------Constants for API MAPPING--------------------------------*/
+	public static final String PRODUCT_API = "/api/product";
+	public static final String CART_API = "/api/cart";
+	public static final String ORDER_API = "/api/order";
+	public static final String ORDER_ITEM_API = "/api/orderitem";
+	/*-----------------------------Constants for API MAPPING--------------------------------*/
 }

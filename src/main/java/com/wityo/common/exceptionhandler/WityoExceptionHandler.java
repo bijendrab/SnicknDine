@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+
 @ControllerAdvice
 @RestController
 public class WityoExceptionHandler {
 	
 	@ExceptionHandler
-	public ResponseEntity<?> handleAllControllerExceptions(Exception ex){
+	public String handleAllControllerExceptions(Exception ex){
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("errorMessage", ex.getMessage());
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		String responsee = new Gson().toJson(response);
+		return responsee;
 	}
 
 }
