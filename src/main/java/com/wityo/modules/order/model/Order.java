@@ -33,9 +33,6 @@ public class Order {
 	public double getTotalCost() {
 		return totalCost;
 	}
-	public void setTotalCost(float totalCost) {
-		this.totalCost = totalCost;
-	}
 	public OrderStatus getStatus() {
 		return status;
 	}
