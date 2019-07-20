@@ -9,7 +9,7 @@ import com.wityo.modules.cart.exception.UnableToUpdateCartException;
 import com.wityo.modules.cart.model.Cart;
 
 public interface CartService {
-	public Cart getCartById(Long cartId) throws NoCartFoundException;
+	public Cart getCart() throws NoCartFoundException;
 	public Cart validateCartById(Long cartId) throws InvalidCartException;
 	public List<Map<String, Object>> updateCart(Cart cart) throws UnableToUpdateCartException;
 }
