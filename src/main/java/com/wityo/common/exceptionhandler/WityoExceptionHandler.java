@@ -8,19 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.google.gson.Gson;
+import com.wityo.common.exception.WityoGenericException;
 
 @ControllerAdvice
 @RestController
-public class WityoExceptionHandler {
+public class WityoExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler
-	public String handleAllControllerExceptions(Exception ex){
+	public ResponseEntity<?> handleAllControllerExceptions(WityoGenericException ex, WebRequest request){
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("errorMessage", ex.getMessage());
-		String responsee = new Gson().toJson(response);
-		return responsee;
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 	}
 
 }
