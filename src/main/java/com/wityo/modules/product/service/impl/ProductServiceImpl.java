@@ -1,9 +1,6 @@
 package com.wityo.modules.product.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import com.wityo.modules.product.exception.ProductNotFoundException;
 import com.wityo.modules.product.exception.ProductStatusChangeException;
 import com.wityo.modules.product.exception.UnableToDeleteProductException;
 import com.wityo.modules.product.model.Product;
-import com.wityo.modules.product.model.ProductQuantityOption;
 import com.wityo.modules.product.repository.ProductRepository;
 import com.wityo.modules.product.service.ProductService;
 import com.wityo.modules.user.repository.CustomerRepository;
@@ -36,29 +32,13 @@ public class ProductServiceImpl implements ProductService {
 	 * @Description: Method to fetch all products in the database.
 	 * 
 	 * */
-	public List<Map<String, Object>> fetchAllProducts() throws NoProductsFoundException, WityoGenericException{
+	public List<Product> fetchAllProducts() throws NoProductsFoundException, WityoGenericException{
 		try {
 			List<Product> products = productRepository.findAll();
 			if(products.size() == 0) {
 				throw new NoProductsFoundException("");
 			}
-			List<Map<String, Object>> responseBody = new ArrayList<Map<String,Object>>();
-			for(Product product : products) {
-				Map<String, Object> productMap = new HashMap<String, Object>();
-				productMap.put("productId",product.getProductId());
-				productMap.put("name",product.getProductName());
-				productMap.put("description",product.getDescription());
-				productMap.put("category",product.getCategory());
-				productMap.put("subCategory",product.getSubCategory());
-				productMap.put("selectedQuantity",product.getSelectedQuantity());
-				productMap.put("cuisine",product.getCuisine());
-				productMap.put("isAdd",product.isAdd());
-				productMap.put("isVeg",product.isVeg());
-				productMap.put("isEnabled",product.isEnabled());
-				productMap.put("prepTime",product.getPreparationTime());
-				responseBody.add(productMap);
-			};
-			return responseBody;
+			return products;
 		} catch (Exception e) {
 			if(e.getClass().equals(NoProductsFoundException.class)) {
 				throw new NoProductsFoundException("No products found in the database, add some products first");
@@ -71,34 +51,11 @@ public class ProductServiceImpl implements ProductService {
 	 * @Description: Method to fetch a product by product id.
 	 * 
 	 * */
-	public Map<String, Object> getProductById(Long productId) throws ProductNotFoundException, WityoGenericException {
+	public Product getProductById(Long productId) throws ProductNotFoundException, WityoGenericException {
 		try {
 			Optional<Product> oProduct = productRepository.findById(productId);
 			if(oProduct.isPresent()) {
-				Product product = oProduct.get();
-				Map<String, Object> productResponse = new HashMap<String, Object>();
-				List<Map<String, Object>> quantityOption = new ArrayList<Map<String,Object>>();
-				productResponse.put("productId",product.getProductId());
-		        productResponse.put("name",product.getProductName());
-		        productResponse.put("description",product.getDescription());
-		        productResponse.put("category",product.getCategory());
-		        productResponse.put("subCategory",product.getSubCategory());
-		        productResponse.put("selectedQuantity",product.getSelectedQuantity());
-		        productResponse.put("cuisine",product.getCuisine());
-		        productResponse.put("isAdd",product.isAdd());
-		        productResponse.put("isVeg",product.isVeg());
-				productResponse.put("isEnabled",product.isEnabled());
-				productResponse.put("prepTime",product.getPreparationTime());
-		        
-		        for(ProductQuantityOption pqo : product.getProductQuantityOptions()) {
-		        	Map<String, Object> pMap = new HashMap<String, Object>();
-		        	pMap.put("option", pqo.getQuantityOption());
-		        	pMap.put("price", pqo.getPrice());
-		        	pMap.put("quantity", pqo.getQuantity());
-		        	quantityOption.add(pMap);
-		        }
-		        productResponse.put("quantityOption", quantityOption);
-				return productResponse;
+				return oProduct.get();
 			}
 			throw new ProductNotFoundException("");
 		} catch (Exception e) {

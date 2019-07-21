@@ -1,7 +1,5 @@
 package com.wityo.modules.cart.service.impl;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public List<Map<String, Object>> updateCart(Cart cart) throws UnableToUpdateCartException {
+	public Cart updateCart(Cart cart) throws UnableToUpdateCartException {
 		return null;		
 	}
 	

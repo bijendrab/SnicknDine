@@ -1,7 +1,6 @@
 package com.wityo.modules.order.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,6 +21,7 @@ import com.wityo.modules.order.repository.OrderItemRepository;
 import com.wityo.modules.order.repository.ReservationRepository;
 import com.wityo.modules.order.service.OrderService;
 import com.wityo.modules.product.model.Product;
+import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 
 @Service
@@ -40,11 +40,6 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 	
-
-	@Override
-	public Reservation findReservationByOrder(CustomerOrder order) {
-		return null;
-	}
 
 	@Override
 	public CustomerOrder saveOrderForReservation(Reservation reservation, CustomerOrder newOrder) {
@@ -84,13 +79,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public CustomerOrder processOrderRequest(Long cartId, Long customerId, ImmediateRequestDto requestDto) {
-		Reservation reservation = reservationRepository.findByCustomer(customerId);
+	public CustomerOrder placeOrder(Customer customer, ImmediateRequestDto requestDto) {
+		Reservation reservation = reservationRepository.findByCustomer(customer.getCustomerId());
 		CustomerOrder order = new CustomerOrder();
 		order.setReservation(reservation);
 		order.setStatus(OrderStatus.ON_HOLD);
 		Cart cart = null;
-		Optional<Cart> optionalCart = cartRepository.findById(cartId);
+		Optional<Cart> optionalCart = cartRepository.findById(customer.getCart().getCartId());
 		double totalPrice = 0;
 		if(optionalCart.isPresent()) {
 			cart = optionalCart.get();
@@ -120,11 +115,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	
-	public List<Map<Integer, List<OrderItem>>> getUserOrdersForOrderList(){
-//		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return null;
-	}
-	
 	public boolean deleteCustomerOrderItem(Long orderItemId) {
 		Optional<OrderItem> optionalOi = orderItemRepository.findById(orderItemId);
 		if(optionalOi.isPresent()) {
@@ -133,5 +123,18 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public CustomerOrder getCustomersOrder() {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer customer = user.getCustomer();
+		Reservation reservation = reservationRepository.findByCustomer(customer.getCustomerId());
+		CustomerOrder order = orderRepository.findByReservation(reservation.getReservationId());
+		return order;
+	}
+
+	@Override
+	public Reservation findReservationByOrder(CustomerOrder order) {
+		return null;
+	}
 }

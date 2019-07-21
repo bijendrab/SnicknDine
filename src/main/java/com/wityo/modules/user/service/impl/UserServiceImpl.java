@@ -10,7 +10,6 @@ import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
-import com.wityo.modules.user.repository.CustomerRepository;
 import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
 
@@ -19,9 +18,6 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private CustomerRepository customerRepository;
 	
 	@Override
 	public List<User> fetchAllUsers() {

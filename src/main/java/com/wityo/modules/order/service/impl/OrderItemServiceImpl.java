@@ -1,7 +1,6 @@
 package com.wityo.modules.order.service.impl;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.model.OrderItem;
-import com.wityo.modules.order.repository.OrderItemRepository;
 import com.wityo.modules.order.repository.CustomerOrderRepository;
+import com.wityo.modules.order.repository.OrderItemRepository;
+import com.wityo.modules.order.service.OrderItemService;
+import com.wityo.modules.product.model.Product;
 import com.wityo.modules.product.model.ProductQuantityOption;
 
 //CustomerOrderService old = OrderItemService new
 
 @Service
-public class OrderItemServiceImpl {
+public class OrderItemServiceImpl implements OrderItemService{
 	
 	@Autowired
 	CustomerOrderRepository orderRepository;
@@ -31,7 +32,7 @@ public class OrderItemServiceImpl {
 	 * including the current order 
 	 * 
 	 * */
-	List<Map<Long, List<OrderItem>>> getCustomerOrderList(){
+	public List<CustomerOrder> getCustomerOrderList(){
 		return null;
 	}
 
@@ -51,7 +52,7 @@ public class OrderItemServiceImpl {
 			double oldOrderItemCost = orderItemTbu.getPrice();
 			double updatedItemCost = 0.0;
 			/*
-			 * Loop through the product quantity option ofr the product hold by OrderItem and then when match
+			 * Loop through the product quantity option of the product hold by OrderItem and then when match
 			 * is found multiply the quantity with the product quantity option price
 			 * 
 			 * */
@@ -91,4 +92,7 @@ public class OrderItemServiceImpl {
 		return null;
 	}
 	
+	public CustomerOrder addItemToOrder(CustomerOrder order, Product newItem, Long itemOrderedNumber) {
+		return null;
+	}
 }
