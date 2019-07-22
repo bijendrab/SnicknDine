@@ -2,8 +2,8 @@ package com.wityo.modules.reservation.dto;
 
 import java.time.LocalDate;
 
-import com.wityo.modules.order.model.RestaurantTable;
 import com.wityo.modules.order.model.TimeSpan;
+import com.wityo.modules.table.model.RestaurantTable;
 
 public class ReservatioDto {
 

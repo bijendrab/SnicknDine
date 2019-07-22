@@ -13,8 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import com.wityo.modules.order.model.RestaurantTable;
 import com.wityo.modules.order.model.TimeSpan;
+import com.wityo.modules.table.model.RestaurantTable;
 import com.wityo.modules.user.model.Customer;
 
 @Entity

@@ -1,4 +1,4 @@
-package com.wityo.modules.order.model;
+package com.wityo.modules.table.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
