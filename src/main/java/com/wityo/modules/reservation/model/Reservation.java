@@ -1,4 +1,4 @@
-package com.wityo.modules.order.model;
+package com.wityo.modules.reservation.model;
 
 import java.time.LocalDate;
 
@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.wityo.modules.order.model.RestaurantTable;
+import com.wityo.modules.order.model.TimeSpan;
 import com.wityo.modules.user.model.Customer;
 
 @Entity

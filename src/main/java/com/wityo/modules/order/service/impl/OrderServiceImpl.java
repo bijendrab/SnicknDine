@@ -15,12 +15,12 @@ import com.wityo.modules.order.dto.ImmediateRequestDto;
 import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.model.OrderItem;
 import com.wityo.modules.order.model.OrderStatus;
-import com.wityo.modules.order.model.Reservation;
 import com.wityo.modules.order.repository.CustomerOrderRepository;
 import com.wityo.modules.order.repository.OrderItemRepository;
-import com.wityo.modules.order.repository.ReservationRepository;
 import com.wityo.modules.order.service.OrderService;
 import com.wityo.modules.product.model.Product;
+import com.wityo.modules.reservation.model.Reservation;
+import com.wityo.modules.reservation.repository.ReservationRepository;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 
@@ -73,14 +73,19 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public CustomerOrder findOrderByReservation(Reservation resevation) {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Reservation reservation = reservationRepository.findByCustomer(user.getCustomer().getCustomerId());
+		Reservation reservation = reservationRepository.findByCustomerId(user.getCustomer().getCustomerId());
 		CustomerOrder order = orderRepository.findByReservation(reservation.getReservationId());
 		return order;
 	}
 
+	
+	/*
+	 * @Description: Method to place customer's order
+	 * 
+	 * */
 	@Override
 	public CustomerOrder placeOrder(Customer customer, ImmediateRequestDto requestDto) {
-		Reservation reservation = reservationRepository.findByCustomer(customer.getCustomerId());
+		Reservation reservation = reservationRepository.findByCustomerId(customer.getCustomerId());
 		CustomerOrder order = new CustomerOrder();
 		order.setReservation(reservation);
 		order.setStatus(OrderStatus.ON_HOLD);
@@ -114,7 +119,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.save(order);
 	}
 	
-	
+	/*
+	 * @Description: Method to remove orderItem from Order
+	 * 
+	 * */	
 	public boolean deleteCustomerOrderItem(Long orderItemId) {
 		Optional<OrderItem> optionalOi = orderItemRepository.findById(orderItemId);
 		if(optionalOi.isPresent()) {
@@ -124,11 +132,15 @@ public class OrderServiceImpl implements OrderService {
 		return false;
 	}
 
+	/*
+	 * @Description: Method to fetch the customer's current order
+	 * 
+	 * */	
 	@Override
 	public CustomerOrder getCustomersOrder() {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = user.getCustomer();
-		Reservation reservation = reservationRepository.findByCustomer(customer.getCustomerId());
+		Reservation reservation = reservationRepository.findByCustomerId(customer.getCustomerId());
 		CustomerOrder order = orderRepository.findByReservation(reservation.getReservationId());
 		return order;
 	}

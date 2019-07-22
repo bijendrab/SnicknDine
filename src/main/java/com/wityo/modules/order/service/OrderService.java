@@ -3,8 +3,8 @@ package com.wityo.modules.order.service;
 import com.wityo.modules.order.dto.ImmediateRequestDto;
 import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.model.OrderStatus;
-import com.wityo.modules.order.model.Reservation;
 import com.wityo.modules.product.model.Product;
+import com.wityo.modules.reservation.model.Reservation;
 import com.wityo.modules.user.model.Customer;
 
 public interface OrderService {

@@ -11,18 +11,18 @@ public class RestaurantTable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer restaurantTableId;
+	private Long restaurantTableId;
 	@Min(2)
 	private Integer numberOfSeats;
 	private Integer tableNumber;
 	
 	public RestaurantTable() {}
 
-	public Integer getRestaurantTableId() {
+	public Long getRestaurantTableId() {
 		return restaurantTableId;
 	}
 
-	public void setRestaurantTableId(Integer relatedTableId) {
+	public void setRestaurantTableId(Long relatedTableId) {
 		this.restaurantTableId = relatedTableId;
 	}
 
