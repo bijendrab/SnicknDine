@@ -9,6 +9,6 @@ import com.wityo.modules.user.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	public User findByUserId(Long userId);
-	public User findByPhoneNumber(Long phoneNumber);
+	public User findByPhoneNumber(String phoneNumber);
 
 }

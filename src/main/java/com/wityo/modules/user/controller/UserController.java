@@ -32,7 +32,7 @@ public class UserController {
 
 	@PostMapping("/validate")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO dto) {
-		User result = userServiceImpl.validateUser(Long.parseLong(dto.getPhoneNumber()));
+		User result = userServiceImpl.validateUser(dto.getPhoneNumber());
 		Map<String, Object> response = new HashMap<String, Object>();
 		if (result != null) {
 			response = ResponseCreator.successResponseCreator(

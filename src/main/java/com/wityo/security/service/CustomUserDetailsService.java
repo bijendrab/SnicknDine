@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 	}
 	
-	public User loadUserByPhoneNumber(Long phoneNumber) {
+	public User loadUserByPhoneNumber(String phoneNumber) {
 		try {
 			return userRepo.findByPhoneNumber(phoneNumber);
 		} catch (Exception e) {
