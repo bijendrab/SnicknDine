@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 	
-	public User validateUser(Long phoneNumber) {
+	public User validateUser(String phoneNumber) {
 		try {
 			User user1 = userRepository.findByPhoneNumber(phoneNumber);
 			if(null != user1) {

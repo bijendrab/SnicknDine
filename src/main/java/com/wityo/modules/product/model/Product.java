@@ -5,12 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="productId")
@@ -28,7 +23,7 @@ public class Product {
 	private boolean isEnabled;
 	private int preparationTime;
 	private String selectedQuantity;
-	@OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", orphanRemoval = true,fetch= FetchType.EAGER)
 	private Set<ProductQuantityOption> productQuantityOptions;
 	public Product() {}
 	public Long getProductId() {

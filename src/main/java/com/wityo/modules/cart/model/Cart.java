@@ -2,14 +2,7 @@ package com.wityo.modules.cart.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -24,7 +17,7 @@ public class Cart {
 	private Long cartId;
 	private double totalPrice;
 	
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cart",fetch= FetchType.EAGER)
 	private List<CartItem> cartItems;
 	
 	@OneToOne

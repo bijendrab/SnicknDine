@@ -6,11 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wityo.common.Constant;
 import com.wityo.common.ResponseCreator;
@@ -18,6 +14,7 @@ import com.wityo.modules.user.dto.LoginRequestDTO;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.service.UserService;
 import com.wityo.security.config.JwtTokenProvider;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @CrossOrigin("*")
@@ -30,9 +27,13 @@ public class UserController {
 	@Autowired
 	private JwtTokenProvider tokenProvider;
 
+	@Autowired
+	RestTemplate restTemplate;
+
+
 	@PostMapping("/validate")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO dto) {
-		User result = userServiceImpl.validateUser(Long.parseLong(dto.getPhoneNumber()));
+		User result = userServiceImpl.validateUser(dto.getPhoneNumber());
 		Map<String, Object> response = new HashMap<String, Object>();
 		if (result != null) {
 			response = ResponseCreator.successResponseCreator(
@@ -60,6 +61,14 @@ public class UserController {
 					null, true, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/getMenu")
+	public String getMenu(){
+		String result = restTemplate.getForObject
+				("http://localhost:8080/api/restaurant/getMenu", String.class);
+		return result;
+
 	}
 
 	private String generateTokenForUser(User user) {
