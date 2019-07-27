@@ -13,7 +13,4 @@ public class RestaurantListDto {
 	public void setRestaurantDetails(Map<Long, String> restaurantDetails) {
 		this.restaurantDetails = restaurantDetails;
 	}
-	
-	
-	
 }

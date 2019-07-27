@@ -1,8 +1,7 @@
 package com.wityo.modules.restaurant.service.impl;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -17,12 +16,13 @@ public class RestaurantServerServiceImpl {
 	
 	public RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException{
 		try {
+			ParameterizedTypeReference<RestaurantListDto> responseType = new ParameterizedTypeReference<RestaurantListDto>() {};
 			RestaurantListDto restaurantList = webClient
 				.build()
 				.get()
-				.uri("http://localhost:8081/restaurant-list")
+				.uri("http://localhost:8081/api/restaurant/restaurant-id-list")
 				.retrieve()
-				.bodyToMono(RestaurantListDto.class)
+				.bodyToMono(responseType)
 				.block();
 			if(restaurantList.getRestaurantDetails().size() == 0)
 				throw new NoRestaurantFoundException("Empty response from server");
