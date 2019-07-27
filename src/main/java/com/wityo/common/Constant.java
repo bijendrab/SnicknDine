@@ -12,5 +12,6 @@ public class Constant {
 	public static final String CART_API = "/api/cart";
 	public static final String ORDER_API = "/api/order";
 	public static final String ORDER_ITEM_API = "/api/orderitem";
+	public static final String RESTAURANT_SERVER_API = "/api/restaurant";
 	/*-----------------------------Constants for API MAPPING--------------------------------*/
 }
