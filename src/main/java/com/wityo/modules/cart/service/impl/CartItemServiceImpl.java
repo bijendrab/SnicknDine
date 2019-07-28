@@ -27,7 +27,7 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired
 	ProductRepository productRepository;
 
-	public String addOrUpdateCart(Long productId, String quantityOptions) {
+	public String addOrUpdateCart(String productId, String quantityOptions) {
 		try {
 			User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Customer customer = userDetail.getCustomer();
@@ -55,7 +55,7 @@ public class CartItemServiceImpl implements CartItemService{
 				// Getting the cartItem which contains the product in the user's cartItems
 				// object
 				CartItem tempCartItem = userCartItems.parallelStream()
-						.filter(cartItem -> productId == cartItem.getProduct().getProductId()).findFirst().orElse(null);
+						.filter(cartItem -> productId.equals(cartItem.getProduct().getProductId())).findFirst().orElse(null);
 
 				if (tempCartItem != null) {
 					Product tempProduct = tempCartItem.getProduct();
@@ -109,7 +109,7 @@ public class CartItemServiceImpl implements CartItemService{
 		Customer customer = userDetail.getCustomer();
 		Cart cart = customer.getCart();
 		for(CartItem cartItem : cart.getCartItems()) {
-			if(productId == cartItem.getProduct().getProductId()) {
+			if(productId.equals(cartItem.getProduct().getProductId())) {
 				int updatedQuantity = cartItem.getQuantity() - 1;
 				if(updatedQuantity == 0) {
 					cartItemRepository.deleteById(cartItem.getCartItemId());

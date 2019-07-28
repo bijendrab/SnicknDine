@@ -15,9 +15,9 @@ import com.wityo.modules.product.model.Product;
 public interface ProductService {
 	
 	public List<Product> fetchAllProducts() throws NoProductsFoundException, WityoGenericException;
-	public Product getProductById(Long productId) throws ProductNotFoundException, WityoGenericException;
-	public boolean deleteProductById(Long productId) throws UnableToDeleteProductException;
-	public boolean changeProductStatusById(Long productId)throws ProductStatusChangeException;
+	public Product getProductById(String productId) throws ProductNotFoundException, WityoGenericException;
+	public boolean deleteProductById(String productId) throws UnableToDeleteProductException;
+	public boolean changeProductStatusById(String productId)throws ProductStatusChangeException;
 	public Product addProduct(Product product) throws ProductAdditionException, DuplicateProductException;
 	public Product updateProduct(Product latestProduct) throws EditProductException;
 	

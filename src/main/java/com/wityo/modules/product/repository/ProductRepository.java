@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.wityo.modules.product.model.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, String> {
 	
-	public Product findByProductId(Long productId);
+	public Product findByProductId(String productId);
 	public Optional<Product> findByProductName(String productName);
 
 }

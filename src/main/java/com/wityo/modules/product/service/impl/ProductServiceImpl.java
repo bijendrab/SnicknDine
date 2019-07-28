@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 	 * @Description: Method to fetch a product by product id.
 	 * 
 	 * */
-	public Product getProductById(Long productId) throws ProductNotFoundException, WityoGenericException {
+	public Product getProductById(String productId) throws ProductNotFoundException, WityoGenericException {
 		try {
 			Optional<Product> oProduct = productRepository.findById(productId);
 			if(oProduct.isPresent()) {
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 	 * @Description: Method to delete a product by product id.
 	 * 
 	 * */
-	public boolean deleteProductById(Long productId) throws UnableToDeleteProductException{
+	public boolean deleteProductById(String productId) throws UnableToDeleteProductException{
 		try {
 			productRepository.deleteById(productId);
 			return true;
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
 	 * @Description: Method to change status of product(isEnabled to true or false).
 	 * 
 	 * */
-	public boolean changeProductStatusById(Long productId)throws ProductStatusChangeException {
+	public boolean changeProductStatusById(String productId)throws ProductStatusChangeException {
 		try {
 			Optional<Product> oProduct = productRepository.findById(productId);
 			Product product = oProduct.get();

@@ -1,13 +1,10 @@
 package com.wityo.modules.restaurant.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.wityo.common.Constant;
-import com.wityo.modules.product.model.Product;
 import com.wityo.modules.restaurant.Exception.NoRestaurantFoundException;
 import com.wityo.modules.restaurant.dto.RestaurantListDto;
 import com.wityo.modules.restaurant.dto.RestaurantMenuListDto;
@@ -45,7 +42,7 @@ public class RestaurantServerServiceImpl implements RestaurantServerService{
 	public RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId) {
 		try {
 			RestaurantMenuListDto menuList = restTemplate.getForObject
-			(Constant.RESTAURANT_SERVER_URL+"api/menu/"+restaurantId, RestaurantMenuListDto.class);
+			(Constant.RESTAURANT_SERVER_URL+"api/menu/fetchmenu/"+restaurantId, RestaurantMenuListDto.class);
 			return menuList;
 		} catch (Exception e) {
 			throw new NoRestaurantFoundException(e.getMessage());

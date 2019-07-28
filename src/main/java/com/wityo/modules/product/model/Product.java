@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long productId;
+	private String productId;
 	private String category;
 	private String subCategory;
 	private String cuisine;
@@ -26,10 +26,10 @@ public class Product {
 	@OneToMany(mappedBy = "product", orphanRemoval = true,fetch= FetchType.EAGER)
 	private Set<ProductQuantityOption> productQuantityOptions;
 	public Product() {}
-	public Long getProductId() {
+	public String getProductId() {
 		return productId;
 	}
-	public void setProductId(Long productId) {
+	public void setProductId(String productId) {
 		this.productId = productId;
 	}
 	public String getCategory() {

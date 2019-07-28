@@ -33,7 +33,7 @@ public class CartItemController {
 	@PostMapping("/addupdate/{productId}/{quantityOption}")
 	public ResponseEntity<?> addOrUpdateCartItem(@PathVariable String productId, @PathVariable String quantityOption){
 		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("message", cartItemService.addOrUpdateCart(Long.parseLong(productId),quantityOption));
+		response.put("message", cartItemService.addOrUpdateCart(productId,quantityOption));
 		response.put("body", "");
 		response.put("status", HttpStatus.ACCEPTED);
 		response.put("error", false);

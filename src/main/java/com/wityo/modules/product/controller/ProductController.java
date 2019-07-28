@@ -59,7 +59,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/get/{productId}")
-	public ResponseEntity<?> getProductById(@PathVariable Long productId){
+	public ResponseEntity<?> getProductById(@PathVariable String productId){
 		try {
 			return productResponseBuilder(
 					"Product",
@@ -110,7 +110,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/delete/{productId}")
-	public ResponseEntity<?> deleteProductById(@PathVariable Long productId){
+	public ResponseEntity<?> deleteProductById(@PathVariable String productId){
 		try {
 			return productResponseBuilder(
 					"Product deleted.",
@@ -127,7 +127,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/updatestatus/{productId}")
-	public ResponseEntity<?> updateProductStatus(@PathVariable Long productId){
+	public ResponseEntity<?> updateProductStatus(@PathVariable String productId){
 		try {
 			return productResponseBuilder(
 					"Product status updated.",
