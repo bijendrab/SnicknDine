@@ -42,7 +42,7 @@ public class RestaurantServerServiceImpl implements RestaurantServerService{
 	public RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId) {
 		try {
 			RestaurantMenuListDto menuList = restTemplate.getForObject
-			(Constant.RESTAURANT_SERVER_URL+"api/menu/fetchmenu/"+restaurantId, RestaurantMenuListDto.class);
+			(Constant.RESTAURANT_SERVER_URL+"api/menu/"+restaurantId, RestaurantMenuListDto.class);
 			return menuList;
 		} catch (Exception e) {
 			throw new NoRestaurantFoundException(e.getMessage());
