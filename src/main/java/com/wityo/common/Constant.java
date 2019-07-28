@@ -14,4 +14,8 @@ public class Constant {
 	public static final String ORDER_ITEM_API = "/api/orderitem";
 	public static final String RESTAURANT_SERVER_API = "/api/restaurant";
 	/*-----------------------------Constants for API MAPPING--------------------------------*/
+	
+	/*-----------------------------Constants for server address--------------------------------*/
+	public static final String RESTAURANT_SERVER_URL = "http://localhost:8081/";
+	/*-----------------------------Constants for server addesss--------------------------------*/
 }
