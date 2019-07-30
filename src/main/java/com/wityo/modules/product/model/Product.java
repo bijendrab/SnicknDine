@@ -1,17 +1,8 @@
 package com.wityo.modules.product.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import java.util.Set;
 
-import javax.persistence.*;
-
-@Entity
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="productId")
 public class Product {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String productId;
 	private String category;
 	private String subCategory;
@@ -23,7 +14,6 @@ public class Product {
 	private boolean isEnabled;
 	private int preparationTime;
 	private String selectedQuantity;
-	@OneToMany(mappedBy = "product", orphanRemoval = true,fetch= FetchType.EAGER)
 	private Set<ProductQuantityOption> productQuantityOptions;
 	public Product() {}
 	public String getProductId() {

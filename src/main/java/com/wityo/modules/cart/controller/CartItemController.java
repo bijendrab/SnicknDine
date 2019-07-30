@@ -24,7 +24,6 @@ public class CartItemController {
 	
 	@Autowired
 	private CartItemService cartItemService;		
-
 	
 	/*
 	 * @Description: Function to add/update CartItem in user's cart.

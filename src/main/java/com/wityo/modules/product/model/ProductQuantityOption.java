@@ -1,31 +1,10 @@
 package com.wityo.modules.product.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-@Entity
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="productQuantityOptionId")
-@Table(name="item_quantity")
 public class ProductQuantityOption {
-	@Id
-	@Column(name = "pqo_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long productQuantityOptionId;
 	private String quantityOption;
 	private String quantity;
 	private double price;
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "product_id")
 	private Product product;
 	
 	public ProductQuantityOption() {
