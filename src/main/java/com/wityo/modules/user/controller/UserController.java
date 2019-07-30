@@ -38,8 +38,8 @@ public class UserController {
 		if (result != null) {
 			response = ResponseCreator.successResponseCreator(
 					"User is present in record, user validated and JWT assigned.", generateTokenForUser(result), false,
-					HttpStatus.FOUND);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.FOUND);
+					HttpStatus.OK);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		} else {
 			response = ResponseCreator.successResponseCreator("User not found in record, redirect to registration page",
 					null, true, HttpStatus.NOT_FOUND);
