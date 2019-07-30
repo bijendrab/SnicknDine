@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
@@ -28,20 +27,22 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired
 	ProductRepository productRepository;
 
-	public String addOrUpdateCart(Product product, String quantityOptions) {
+	public String addOrUpdateCart(String productId, String quantityOptions) {
 		try {
 			User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Customer customer = userDetail.getCustomer();
 			Cart cart = customer.getCart();
+			Product product = productRepository.findByProductId(productId);
 
 			List<CartItem> userCartItems = cart.getCartItems();
+
 			if (userCartItems.size() == 0) {
 				userCartItems = new ArrayList<CartItem>();
 				CartItem newCartItem = new CartItem();
 				newCartItem.setCart(cart);
 				newCartItem.setItemName(product.getProductName());
 				newCartItem.setQuantity(1);
-				newCartItem.setProductJson(new Gson().toJson(product));
+				newCartItem.setProduct(product);
 				product.getProductQuantityOptions().forEach(qOption -> {
 					if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
 						newCartItem.setPrice(qOption.getPrice() * 1);
@@ -53,19 +54,11 @@ public class CartItemServiceImpl implements CartItemService{
 			} else {
 				// Getting the cartItem which contains the product in the user's cartItems
 				// object
-				String productId = product.getProductId();
-				CartItem tempCartItem = null;
-				for(CartItem cartItem : userCartItems) {
-					String productJson = cartItem.getProductJson();
-					Product p = new Gson().fromJson(productJson, Product.class);
-					if(productId.equalsIgnoreCase(p.getProductId())) {
-						tempCartItem = cartItem;
-						break;
-					}
-				}
+				CartItem tempCartItem = userCartItems.parallelStream()
+						.filter(cartItem -> productId.equals(cartItem.getProduct().getProductId())).findFirst().orElse(null);
+
 				if (tempCartItem != null) {
-					String productJson = tempCartItem.getProductJson();
-					Product tempProduct = new Gson().fromJson(productJson, Product.class);
+					Product tempProduct = tempCartItem.getProduct();
 					Set<ProductQuantityOption> productQuantityOptions = tempProduct.getProductQuantityOptions();
 					for (ProductQuantityOption qOption : productQuantityOptions) {
 						if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)
@@ -116,16 +109,14 @@ public class CartItemServiceImpl implements CartItemService{
 		Customer customer = userDetail.getCustomer();
 		Cart cart = customer.getCart();
 		for(CartItem cartItem : cart.getCartItems()) {
-			String productJson = cartItem.getProductJson();
-			Product product = new Gson().fromJson(productJson, Product.class);
-			if(productId.equals(product.getProductId())) {
+			if(productId.equals(cartItem.getProduct().getProductId())) {
 				int updatedQuantity = cartItem.getQuantity() - 1;
 				if(updatedQuantity == 0) {
 					cartItemRepository.deleteById(cartItem.getCartItemId());
 					return "cart updated";
 				}
 				cartItem.setQuantity(updatedQuantity);
-				for(ProductQuantityOption qOption : product.getProductQuantityOptions()) {
+				for(ProductQuantityOption qOption : cartItem.getProduct().getProductQuantityOptions()) {
 					if(qOption.getQuantityOption().equalsIgnoreCase(quantityOption) 
 							&& cartItem.getQuantityOption().equalsIgnoreCase(quantityOption)) {
 						cartItem.setPrice(updatedQuantity * qOption.getPrice());
