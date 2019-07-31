@@ -1,12 +1,13 @@
 package com.wityo.modules.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ProductQuantityOption {
 	private Long productQuantityOptionId;
 	private String quantityOption;
 	private String quantity;
 	private double price;
-	private Product product;
-	
+
 	public ProductQuantityOption() {
 	}
 
@@ -40,13 +41,5 @@ public class ProductQuantityOption {
 
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
 	}
 }
