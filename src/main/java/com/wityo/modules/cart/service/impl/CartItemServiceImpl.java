@@ -111,7 +111,7 @@ public class CartItemServiceImpl implements CartItemService{
 		return "failure";
 	}
 	
-	public String reduceCartItem(Long productId, String quantityOption){
+	public String reduceCartItem(String productId, String quantityOption){
 		User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = userDetail.getCustomer();
 		Cart cart = customer.getCart();

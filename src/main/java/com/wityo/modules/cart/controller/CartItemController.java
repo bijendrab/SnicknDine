@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wityo.modules.cart.service.CartItemService;
+import com.wityo.modules.product.model.Product;
 import com.wityo.modules.user.model.User;
 
 @RestController
@@ -29,10 +31,10 @@ public class CartItemController {
 	 * @Description: Function to add/update CartItem in user's cart.
 	 * 
 	 * */
-	@PostMapping("/addupdate/{productId}/{quantityOption}")
-	public ResponseEntity<?> addOrUpdateCartItem(@PathVariable String productId, @PathVariable String quantityOption){
+	@PostMapping("/addupdate/{quantityOption}")
+	public ResponseEntity<?> addOrUpdateCartItem(@RequestBody Product product, @PathVariable String quantityOption){
 		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("message", cartItemService.addOrUpdateCart(productId,quantityOption));
+		response.put("message", cartItemService.addOrUpdateCart(product,quantityOption));
 		response.put("body", "");
 		response.put("status", HttpStatus.ACCEPTED);
 		response.put("error", false);
@@ -75,7 +77,7 @@ public class CartItemController {
 	 * 
 	 * */
 	@DeleteMapping("/decrement/{productId}/{quantityOption}")
-	public ResponseEntity<?> decrementCartItemQuantity(@PathVariable Long productId, @PathVariable String quantityOption){
+	public ResponseEntity<?> decrementCartItemQuantity(@PathVariable String productId, @PathVariable String quantityOption){
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", cartItemService.reduceCartItem(productId, quantityOption));
 		response.put("body", "");
