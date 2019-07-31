@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.wityo.modules.cart.model.Cart;
-import com.wityo.modules.product.model.Product;
 
 @Entity
 public class OrderItem {
@@ -27,9 +26,7 @@ public class OrderItem {
 	private double waitTime;
 	private String quantityOption;
 	private Boolean immediateStatus;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Product product;
+	private String productJson;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Cart cart;
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -109,13 +106,6 @@ public class OrderItem {
 		this.immediateStatus = immediateStatus;
 	}
 
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
 
 	public Cart getCart() {
 		return cart;
@@ -132,5 +122,12 @@ public class OrderItem {
 	public void setCustomerOrder(CustomerOrder customerOrder) {
 		this.customerOrder = customerOrder;
 	}
-	
+
+	public String getProductJson() {
+		return productJson;
+	}
+
+	public void setProductJson(String productJson) {
+		this.productJson = productJson;
+	}
 }

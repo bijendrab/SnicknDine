@@ -2,10 +2,12 @@ package com.wityo.modules.order.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.model.OrderItem;
 import com.wityo.modules.order.repository.CustomerOrderRepository;
@@ -56,13 +58,14 @@ public class OrderItemServiceImpl implements OrderItemService{
 			 * is found multiply the quantity with the product quantity option price
 			 * 
 			 * */
-			for(ProductQuantityOption pqo : orderItemTbu.getProduct().getProductQuantityOptions()) {
+			Set<ProductQuantityOption> productQuantityOptions = new Gson().fromJson(orderItemTbu.getProductJson(), Product.class).getProductQuantityOptions();
+			for(ProductQuantityOption pqo : productQuantityOptions) {
 				if(orderItem.getQuantityOption().equals(pqo.getQuantityOption())) {
 					updatedItemCost = orderItem.getQuantity() * pqo.getPrice(); 
 					break;
 				}
 			}
-			orderItemTbu.setProduct(orderItem.getProduct());
+			orderItemTbu.setProductJson(orderItem.getProductJson());
 			orderItemTbu.setPrice(updatedItemCost);
 			double updatedOrderCost = orderTbu.getTotalCost() - oldOrderItemCost + updatedItemCost;
 			orderTbu.setTotalCost(updatedOrderCost);

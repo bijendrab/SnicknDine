@@ -15,7 +15,6 @@ import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
 import com.wityo.modules.product.model.Product;
 import com.wityo.modules.product.model.ProductQuantityOption;
-import com.wityo.modules.product.repository.ProductRepository;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 
@@ -25,8 +24,6 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired
 	CartItemRepository cartItemRepository;
 
-	@Autowired
-	ProductRepository productRepository;
 
 	public String addOrUpdateCart(Product product, String quantityOptions) {
 		try {

@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
 			orderItem.setPrice(cartItem.getPrice());
 			orderItem.setOrderCreationTime(orderCreationTime);
 			orderItem.setStatus("Unprocessed");
-			orderItem.setProduct(cartItem.getProduct());
+			orderItem.setProductJson(cartItem.getProductJson());
 			orderItem.setCart(cart);
 			orderItem.setCustomerOrder(order);
 			for(Map<String, Object> iRItem : requestDto.getCartItemsForImmediateOrder()) {
