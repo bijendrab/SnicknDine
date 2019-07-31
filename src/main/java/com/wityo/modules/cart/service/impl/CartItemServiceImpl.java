@@ -32,57 +32,52 @@ public class CartItemServiceImpl implements CartItemService{
 			Cart cart = customer.getCart();
 
 			List<CartItem> userCartItems = cart.getCartItems();
-			if (userCartItems.size() == 0) {
-				userCartItems = new ArrayList<CartItem>();
-				CartItem newCartItem = new CartItem();
-				newCartItem.setCart(cart);
-				newCartItem.setItemName(product.getProductName());
-				newCartItem.setQuantity(1);
-				newCartItem.setProductJson(new Gson().toJson(product));
-				product.getProductQuantityOptions().forEach(qOption -> {
-					if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
-						newCartItem.setPrice(qOption.getPrice() * 1);
-						newCartItem.setQuantityOption(quantityOptions);
-					}
-				});
-				cartItemRepository.save(newCartItem);
-				return "added";
-			} else {
-				// Getting the cartItem which contains the product in the user's cartItems
-				// object
-				String productId = product.getProductId();
-				CartItem tempCartItem = null;
-				for(CartItem cartItem : userCartItems) {
-					String productJson = cartItem.getProductJson();
-					Product p = new Gson().fromJson(productJson, Product.class);
-					if(productId.equalsIgnoreCase(p.getProductId())) {
-						tempCartItem = cartItem;
+			String productId = product.getProductId();
+			CartItem tempCartItem = null;
+			for(CartItem cartItem : userCartItems) {
+				String productJson = cartItem.getProductJson();
+				Product p = new Gson().fromJson(productJson, Product.class);
+				if(productId.equalsIgnoreCase(p.getProductId())) {
+					tempCartItem = cartItem;
+					break;
+				}
+			}
+			if (tempCartItem != null) {
+				String productJson = tempCartItem.getProductJson();
+				Product tempProduct = new Gson().fromJson(productJson, Product.class);
+				Set<ProductQuantityOption> productQuantityOptions = tempProduct.getProductQuantityOptions();
+				for (ProductQuantityOption qOption : productQuantityOptions) {
+					if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)
+							&& tempCartItem.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
+						tempCartItem.setQuantity(tempCartItem.getQuantity() + 1);
+						tempCartItem.setPrice(tempCartItem.getQuantity() * qOption.getPrice());
+						cartItemRepository.save(tempCartItem);
 						break;
 					}
-				}
-				if (tempCartItem != null) {
-					String productJson = tempCartItem.getProductJson();
-					Product tempProduct = new Gson().fromJson(productJson, Product.class);
-					Set<ProductQuantityOption> productQuantityOptions = tempProduct.getProductQuantityOptions();
-					for (ProductQuantityOption qOption : productQuantityOptions) {
-						if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)
-								&& tempCartItem.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
-							tempCartItem.setQuantity(tempCartItem.getQuantity() + 1);
-							tempCartItem.setPrice(tempCartItem.getQuantity() * qOption.getPrice());
-							cartItemRepository.save(tempCartItem);
-							break;
-						}
-						if (!qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)
-								&& tempCartItem.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
-							tempCartItem.setPrice(tempCartItem.getQuantity() * qOption.getPrice());
-							tempCartItem.setQuantityOption(qOption.getQuantityOption());
-							cartItemRepository.save(tempCartItem);
-							break;
-						}
+					if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)
+							&& !tempCartItem.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
+						tempCartItem.setPrice(tempCartItem.getQuantity() * qOption.getPrice());
+						tempCartItem.setQuantityOption(qOption.getQuantityOption());
+						cartItemRepository.save(tempCartItem);
+						break;
 					}
 				}
 				return "updated";
 			}
+			CartItem newCartItem = new CartItem();
+			newCartItem.setCart(cart);
+			newCartItem.setItemName(product.getProductName());
+			newCartItem.setQuantity(1);
+			newCartItem.setProductJson(new Gson().toJson(product));
+			product.getProductQuantityOptions().forEach(qOption -> {
+				if (qOption.getQuantityOption().equalsIgnoreCase(quantityOptions)) {
+					newCartItem.setPrice(qOption.getPrice() * 1);
+					newCartItem.setQuantityOption(quantityOptions);
+				}
+			});
+			cartItemRepository.save(newCartItem);
+			return "added";
+
 		} catch (Exception e) {
 		}
 		return "error";
