@@ -1,10 +1,14 @@
 package com.wityo.modules.cart.model;
 
+import java.util.List;
+
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -29,10 +33,9 @@ public class CartItem {
 	@JoinColumn(name = "cart_id")
 	@JsonIgnore
 	private Cart cart;
-
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	 
+    @Lob
+    private String productJson;
 	
 	public CartItem() {}
 
@@ -84,11 +87,12 @@ public class CartItem {
 		this.cart = cart;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getProductJson() {
+		return productJson;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductJson(String productJson) {
+		this.productJson = productJson;
 	}
+
 }
