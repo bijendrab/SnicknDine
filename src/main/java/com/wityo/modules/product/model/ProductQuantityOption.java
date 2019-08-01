@@ -1,7 +1,5 @@
 package com.wityo.modules.product.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class ProductQuantityOption {
 	private Long productQuantityOptionId;
 	private String quantityOption;
