@@ -55,10 +55,10 @@ public class UserController {
 			response = ResponseCreator.successResponseCreator(
 					"User is registere and JWT is assigned.", generateTokenForUser(registeredUser), false,
 					HttpStatus.FOUND);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		} else {
 			response = ResponseCreator.successResponseCreator("Unable to register user. Try again after sometime",
-					null, true, HttpStatus.NOT_FOUND);
+					null, true, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
