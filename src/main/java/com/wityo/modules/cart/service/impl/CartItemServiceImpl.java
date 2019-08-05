@@ -117,8 +117,7 @@ public class CartItemServiceImpl implements CartItemService{
 				}
 				cartItem.setQuantity(updatedQuantity);
 				for(ProductQuantityOption qOption : product.getProductQuantityOptions()) {
-					if(qOption.getQuantityOption().equalsIgnoreCase(quantityOption) 
-							&& cartItem.getQuantityOption().equalsIgnoreCase(quantityOption)) {
+					if(cartItem.getQuantityOption().equalsIgnoreCase(quantityOption)) {
 						cartItem.setPrice(updatedQuantity * qOption.getPrice());
 						cartItemRepository.save(cartItem);
 						return "cart updated";
