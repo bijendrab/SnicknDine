@@ -1,25 +1,19 @@
 package com.wityo.modules.order.model;
 
-import java.time.LocalDateTime;
-
-import com.wityo.modules.cart.model.Cart;
+import java.util.Date;
 
 public class OrderItem {
 	
 	private Long orderItemId;
-	private LocalDateTime orderCreationTime;
+	private Date orderCreationTime;
 	private int quantity;
 	private double price;
 	private String status;
-
 	private String itemName;
 	private double waitTime;
 	private String quantityOption;
 	private Boolean immediateStatus;
-	private String productJson;
-	private Cart cart;
-	private CustomerOrder customerOrder;
-	
+
 	public OrderItem() {}
 
 	public Long getOrderItemId() {
@@ -28,14 +22,6 @@ public class OrderItem {
 
 	public void setOrderItemId(Long orderItemId) {
 		this.orderItemId = orderItemId;
-	}
-
-	public LocalDateTime getOrderCreationTime() {
-		return orderCreationTime;
-	}
-
-	public void setOrderCreationTime(LocalDateTime orderCreationTime) {
-		this.orderCreationTime = orderCreationTime;
 	}
 
 	public int getQuantity() {
@@ -94,28 +80,12 @@ public class OrderItem {
 		this.immediateStatus = immediateStatus;
 	}
 
-
-	public Cart getCart() {
-		return cart;
+	public Date getOrderCreationTime() {
+		return orderCreationTime;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setOrderCreationTime(Date orderCreationTime) {
+		this.orderCreationTime = orderCreationTime;
 	}
-
-	public CustomerOrder getCustomerOrder() {
-		return customerOrder;
-	}
-
-	public void setCustomerOrder(CustomerOrder customerOrder) {
-		this.customerOrder = customerOrder;
-	}
-
-	public String getProductJson() {
-		return productJson;
-	}
-
-	public void setProductJson(String productJson) {
-		this.productJson = productJson;
-	}
+	
 }
