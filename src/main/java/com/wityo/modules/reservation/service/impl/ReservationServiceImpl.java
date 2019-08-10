@@ -1,16 +1,12 @@
 package com.wityo.modules.reservation.service.impl;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import com.wityo.modules.reservation.dto.ReservatioDto;
-import com.wityo.modules.reservation.exception.ReservationVerificationException;
-import com.wityo.modules.reservation.exception.UnableToReserveTableException;
-import com.wityo.modules.reservation.model.Reservation;
-import com.wityo.modules.reservation.repository.ReservationRepository;
+import com.wityo.common.Constant;
+import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.service.ReservationService;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
@@ -18,39 +14,51 @@ import com.wityo.modules.user.model.User;
 @Service
 public class ReservationServiceImpl implements ReservationService{
 	
-	@Autowired
-	ReservationRepository reservationRepository;
 	
-	public Reservation reserveTable(ReservatioDto reservationDto) throws UnableToReserveTableException{
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	/*
+	 * @Description: Method to check if the user has reserved table or not: API call is going to Restaurant Server  
+	 **/
+	public int checkReservation(Long restaurantId) {
+		return checkReservationStatus(restaurantId);
+	}
+
+	/*
+	 * @Description: Method to check if the user has reserved table or not: API call is going to Restaurant Server  
+	 **/
+	public int checkReservationStatus(Long restaurantId) {
 		try {
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Customer customer = user.getCustomer();
-			Reservation reservation = new Reservation();
-			reservation.setCustomer(customer);
-			reservation.setOtherRequirement(reservationDto.getOtherRequirement());
-			reservation.setReservationDate(LocalDate.now());
-			reservation.setReservationTime(reservationDto.getReservationTime());
-			reservation.setRestaurantTable(reservation.getRestaurantTable());
-			reservation.setSubmissionDate(LocalDate.now());
-			return reservationRepository.save(reservation);
+			Integer reservationStatus = restTemplate
+					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/reservation/"+restaurantId+"/check-reservation",
+							customer,
+							Integer.class);
+			return reservationStatus;
 		}catch (Exception e) {
-			throw new UnableToReserveTableException("Unable to book table at the moment, please try again!");
+			// exception to be thrown
 		}
+		return 0;
 	}
 	
-	public Long checkIfTableReserved() throws ReservationVerificationException{
+	
+	/*
+	 * @Description: Method to reserve table for user  
+	 *
+	 **/
+	public ReservationDetailsDTO reserveTable( Long restaurantId, ReservationDetailsDTO reservation) {
 		try {
-			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Customer customer = user.getCustomer();
-			Reservation reservation = reservationRepository.findByCustomerId(customer.getCustomerId());
-			if(reservation.getRestaurantTable() == null) {
-				return 0L; 
-			} else {
-				return reservation.getRestaurantTable().getRestaurantTableId();
-			}
-		} catch (Exception e) {
-			 throw new ReservationVerificationException("Unable to verify reservation at the moment, please try again!");
+			ReservationDetailsDTO dto = restTemplate
+					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/reservation/"+restaurantId+"/reserve",
+							reservation,
+							ReservationDetailsDTO.class);
+			return dto;
+		}catch (Exception e) {
+			// exception to be thrown
 		}
+		return null;
 	}
 
 }

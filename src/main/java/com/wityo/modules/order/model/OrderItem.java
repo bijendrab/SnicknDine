@@ -2,20 +2,10 @@ package com.wityo.modules.order.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
 import com.wityo.modules.cart.model.Cart;
 
-@Entity
 public class OrderItem {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long orderItemId;
 	private LocalDateTime orderCreationTime;
 	private int quantity;
@@ -27,9 +17,7 @@ public class OrderItem {
 	private String quantityOption;
 	private Boolean immediateStatus;
 	private String productJson;
-	@ManyToOne(cascade = CascadeType.ALL)
 	private Cart cart;
-	@ManyToOne(cascade = CascadeType.ALL)
 	private CustomerOrder customerOrder;
 	
 	public OrderItem() {}

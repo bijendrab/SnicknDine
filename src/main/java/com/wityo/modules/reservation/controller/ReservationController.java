@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wityo.modules.reservation.dto.ReservatioDto;
+import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.service.ReservationService;
 
 @RestController
@@ -24,37 +24,23 @@ public class ReservationController {
 	@Autowired
 	ReservationService reservationService;
 	
-	@PostMapping("/reserve")
-	public ResponseEntity<?> reserveUserTable(@RequestBody ReservatioDto reservation){
+	@GetMapping("/check-reservation/{restaurantId}")
+	public ResponseEntity<?> checkReservation(@PathVariable Long restaurantId){
 		Map<String, Object> response = new HashMap<String, Object>();
-		try {
-			response.put("message", "Reservation successful");
-			response.put("body", reservationService.reserveTable(reservation));
-			response.put("error", false);
-			response.put("status", HttpStatus.ACCEPTED);			
-		} catch (Exception e) {
-			response.put("message", e.getMessage());
-			response.put("body", null);
-			response.put("error", false);
-			response.put("status", HttpStatus.EXPECTATION_FAILED);
-		}
-		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		response.putIfAbsent("message", "Reservation status");
+		response.put("body", reservationService.checkReservationStatus(restaurantId));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@GetMapping("/check-reservation")
-	public ResponseEntity<?> checkIfPreviouslyReserved(){
+	@GetMapping("/reserve-table/{restaurantId}")
+	public ResponseEntity<?> reserveTable(@PathVariable Long restaurantId, @RequestBody ReservationDetailsDTO reservation){
 		Map<String, Object> response = new HashMap<String, Object>();
-		try {
-			response.put("message", "Reservation successful");
-			response.put("body", reservationService.checkIfTableReserved());
-			response.put("error", false);
-			response.put("status", HttpStatus.ACCEPTED);			
-		} catch (Exception e) {
-			response.put("message", e.getMessage());
-			response.put("body", null);
-			response.put("error", false);
-			response.put("status", HttpStatus.EXPECTATION_FAILED);
-		}
-		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		response.putIfAbsent("message", "New reservation successful");
+		response.put("body", reservationService.reserveTable(restaurantId, reservation));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.ACCEPTED);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 }

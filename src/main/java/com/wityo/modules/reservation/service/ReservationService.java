@@ -1,11 +1,8 @@
 package com.wityo.modules.reservation.service;
 
-import com.wityo.modules.reservation.dto.ReservatioDto;
-import com.wityo.modules.reservation.exception.ReservationVerificationException;
-import com.wityo.modules.reservation.exception.UnableToReserveTableException;
-import com.wityo.modules.reservation.model.Reservation;
+import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 
 public interface ReservationService {
-	public Reservation reserveTable(ReservatioDto reservationDto) throws UnableToReserveTableException;
-	public Long checkIfTableReserved() throws ReservationVerificationException;
+	public int checkReservationStatus(Long restaurantId);
+	public ReservationDetailsDTO reserveTable(Long restaurantId, ReservationDetailsDTO reservation);
 }

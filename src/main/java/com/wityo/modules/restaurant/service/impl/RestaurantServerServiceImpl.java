@@ -18,27 +18,20 @@ public class RestaurantServerServiceImpl implements RestaurantServerService{
 	
 	@Autowired
 	private RestTemplate restTemplate;
+
 	
+/*=================================RESTAURANT LIST REST CALLS================================================*/	
 	public RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException{
 		try {
-//			ParameterizedTypeReference<RestaurantListDto> responseType = new ParameterizedTypeReference<RestaurantListDto>() {};
-//			RestaurantListDto restaurantList = webClient
-//				.build()
-//				.get()
-//				.uri("http://localhost:8081/api/restaurant/restaurant-id-list")
-//				.retrieve()
-//				.bodyToMono(RestaurantListDto.class)
-//				.block();
-//			if(restaurantList.getRestaurantDetails().size() == 0)
-//				throw new NoRestaurantFoundException("Empty response from server");
-//			return restaurantList;
 			return restTemplate.getForObject
 			("http://localhost:8081/api/restaurant/restaurant-id-list", RestaurantListDto.class);
 		} catch (Exception e) {
 			throw new NoRestaurantFoundException(e.getMessage());
 		}
 	}
+/*=================================RESTAURANT LIST REST CALLS================================================*/
 	
+/*=================================RESTAURANT MENU MODULE REST CALLS================================================*/
 	public RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId) {
 		try {
 			RestaurantMenuListDto menuList = restTemplate.getForObject
@@ -48,4 +41,6 @@ public class RestaurantServerServiceImpl implements RestaurantServerService{
 			throw new NoRestaurantFoundException(e.getMessage());
 		}
 	}
+/*=================================RESTAURANT MENU MODULE REST CALLS================================================*/	
+	
 }
