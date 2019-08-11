@@ -6,12 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wityo.common.Constant;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
@@ -25,7 +20,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-	@GetMapping("/checkout/{restaurantId}")
+	@PostMapping("/checkout/{restaurantId}")
 	public ResponseEntity<?> placeOrder(@PathVariable Long restaurantId, @RequestBody PlaceOrderDTO order){
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.putIfAbsent("message", "Reservation status");

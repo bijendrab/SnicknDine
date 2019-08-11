@@ -12,7 +12,7 @@ import com.wityo.modules.table.service.TableService;
 @RequestMapping("/api/table")
 public class TableController {
 	
-	@Autowired
-	TableService tableService;
+	/*@Autowired
+	TableService tableService;*/
 
 }
