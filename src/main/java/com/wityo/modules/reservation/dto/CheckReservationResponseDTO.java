@@ -4,12 +4,21 @@ import com.wityo.modules.table.model.RestaurantTable;
 
 import java.util.Set;
 
-public class ReservationResponseDTO {
+public class CheckReservationResponseDTO {
 
     private Integer reservationStatus;
     private Set<RestaurantTable> restaurantTable;
 
-    public Integer getReservationStatus() {
+    public CheckReservationResponseDTO() {}
+    
+    public CheckReservationResponseDTO(Integer reservationStatus, Set<RestaurantTable> restaurantTable) {
+	this.reservationStatus = reservationStatus;
+	this.restaurantTable = restaurantTable;
+    }
+
+
+
+	public Integer getReservationStatus() {
         return reservationStatus;
     }
 
@@ -24,4 +33,6 @@ public class ReservationResponseDTO {
     public void setRestaurantTable(Set<RestaurantTable> restaurantTable) {
         this.restaurantTable = restaurantTable;
     }
+    
+    
 }

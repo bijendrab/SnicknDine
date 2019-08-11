@@ -1,11 +1,16 @@
 package com.wityo.modules.reservation.service.impl;
 
+import java.util.Collections;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.wityo.common.Constant;
+import com.wityo.modules.reservation.dto.CheckReservationResponseDTO;
 import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.service.ReservationService;
 import com.wityo.modules.user.model.Customer;
@@ -14,33 +19,26 @@ import com.wityo.modules.user.model.User;
 @Service
 public class ReservationServiceImpl implements ReservationService{
 	
-	
 	@Autowired
 	private RestTemplate restTemplate;
+	private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 	
 	/*
 	 * @Description: Method to check if the user has reserved table or not: API call is going to Restaurant Server  
 	 **/
-	public int checkReservation(Long restaurantId) {
-		return checkReservationStatus(restaurantId);
-	}
-
-	/*
-	 * @Description: Method to check if the user has reserved table or not: API call is going to Restaurant Server  
-	 **/
-	public int checkReservationStatus(Long restaurantId) {
+	public CheckReservationResponseDTO checkReservationStatus(Long restaurantId) {
 		try {
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Customer customer = user.getCustomer();
-			Integer reservationStatus = restTemplate
+			CheckReservationResponseDTO response = restTemplate
 					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/reservation/"+restaurantId+"/check-reservation",
 							customer,
-							Integer.class);
-			return reservationStatus;
+							CheckReservationResponseDTO.class);
+			return response;
 		}catch (Exception e) {
-			// exception to be thrown
+			logger.error("Exception in checkReservationStatus inside ReservationServiceImpl:- {}", e);
 		}
-		return 0;
+		return new CheckReservationResponseDTO(0, Collections.emptySet());
 	}
 	
 	
@@ -56,9 +54,8 @@ public class ReservationServiceImpl implements ReservationService{
 							ReservationDetailsDTO.class);
 			return dto;
 		}catch (Exception e) {
-			// exception to be thrown
+			logger.error("Exception in reserveTabe inside ReservationServiceImpl:- {}", e);
 		}
 		return null;
 	}
-
 }
