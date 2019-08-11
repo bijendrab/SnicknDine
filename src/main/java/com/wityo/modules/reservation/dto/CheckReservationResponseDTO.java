@@ -2,16 +2,17 @@ package com.wityo.modules.reservation.dto;
 
 import com.wityo.modules.table.model.RestaurantTable;
 
-import java.util.Set;
+import java.util.List;
+import java.util.List;
 
 public class CheckReservationResponseDTO {
 
     private Integer reservationStatus;
-    private Set<RestaurantTable> restaurantTable;
+    private List<RestaurantTable> restaurantTable;
 
     public CheckReservationResponseDTO() {}
     
-    public CheckReservationResponseDTO(Integer reservationStatus, Set<RestaurantTable> restaurantTable) {
+    public CheckReservationResponseDTO(Integer reservationStatus, List<RestaurantTable> restaurantTable) {
 	this.reservationStatus = reservationStatus;
 	this.restaurantTable = restaurantTable;
     }
@@ -22,15 +23,15 @@ public class CheckReservationResponseDTO {
         return reservationStatus;
     }
 
-    public void setReservationStatus(Integer reservationStatus) {
+    public void ListReservationStatus(Integer reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
 
-    public Set<RestaurantTable> getRestaurantTable() {
+    public List<RestaurantTable> getRestaurantTable() {
         return restaurantTable;
     }
 
-    public void setRestaurantTable(Set<RestaurantTable> restaurantTable) {
+    public void ListRestaurantTable(List<RestaurantTable> restaurantTable) {
         this.restaurantTable = restaurantTable;
     }
     

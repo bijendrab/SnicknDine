@@ -38,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService{
 		}catch (Exception e) {
 			logger.error("Exception in checkReservationStatus inside ReservationServiceImpl:- {}", e);
 		}
-		return new CheckReservationResponseDTO(0, Collections.emptySet());
+		return new CheckReservationResponseDTO(0, Collections.emptyList());
 	}
 	
 	
