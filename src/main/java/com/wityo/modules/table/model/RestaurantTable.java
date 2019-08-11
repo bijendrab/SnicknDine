@@ -6,40 +6,45 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 
-@Entity
+
 public class RestaurantTable {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long restaurantTableId;
-	@Min(2)
-	private Integer numberOfSeats;
-	private Integer tableNumber;
+
+	private Long id;
+	private Long tableNumber;
+	private Integer tableSize;
+	private Integer qrCode;
 	
 	public RestaurantTable() {}
 
-	public Long getRestaurantTableId() {
-		return restaurantTableId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setRestaurantTableId(Long relatedTableId) {
-		this.restaurantTableId = relatedTableId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Integer getNumberOfSeats() {
-		return numberOfSeats;
-	}
-
-	public void setNumberOfSeats(Integer numberOfSeats) {
-		this.numberOfSeats = numberOfSeats;
-	}
-
-	public Integer getTableNumber() {
+	public Long getTableNumber() {
 		return tableNumber;
 	}
 
-	public void setTableNumber(Integer tableNumber) {
+	public void setTableNumber(Long tableNumber) {
 		this.tableNumber = tableNumber;
 	}
-	
+
+	public Integer getTableSize() {
+		return tableSize;
+	}
+
+	public void setTableSize(Integer tableSize) {
+		this.tableSize = tableSize;
+	}
+
+	public Integer getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(Integer qrCode) {
+		this.qrCode = qrCode;
+	}
 }
