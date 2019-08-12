@@ -1,29 +1,26 @@
 package com.wityo.modules.reservation.dto;
 
-import com.wityo.modules.table.model.RestaurantTable;
+import java.util.List;
 
-import java.util.List;
-import java.util.List;
+import com.wityo.modules.table.model.RestaurantTable;
 
 public class CheckReservationResponseDTO {
 
-    private Integer reservationStatus;
+    private Boolean reservationStatus;
     private List<RestaurantTable> restaurantTable;
 
     public CheckReservationResponseDTO() {}
     
-    public CheckReservationResponseDTO(Integer reservationStatus, List<RestaurantTable> restaurantTable) {
+    public CheckReservationResponseDTO(Boolean reservationStatus, List<RestaurantTable> restaurantTable) {
 	this.reservationStatus = reservationStatus;
 	this.restaurantTable = restaurantTable;
     }
 
-
-
-	public Integer getReservationStatus() {
+	public Boolean getReservationStatus() {
         return reservationStatus;
     }
 
-    public void ListReservationStatus(Integer reservationStatus) {
+    public void ListReservationStatus(Boolean reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
 
