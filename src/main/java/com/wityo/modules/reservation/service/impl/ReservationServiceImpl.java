@@ -48,6 +48,9 @@ public class ReservationServiceImpl implements ReservationService{
 	 **/
 	public ReservationDetailsDTO reserveTable( Long restaurantId, ReservationDetailsDTO reservation) {
 		try {
+			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Customer customer = user.getCustomer();
+			reservation.setCustomerInfo(customer);
 			ReservationDetailsDTO dto = restTemplate
 					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/reservation/"+restaurantId+"/reserve",
 							reservation,
