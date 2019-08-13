@@ -24,6 +24,7 @@ public class CartItem {
 	private String quantityOption;
 	private int quantity;
 	private double price;
+	private Boolean immediateStatus=Boolean.FALSE;
 	
 	@ManyToOne
 	@JoinColumn(name = "cart_id")
@@ -91,4 +92,11 @@ public class CartItem {
 		this.productJson = productJson;
 	}
 
+	public Boolean getImmediateStatus() {
+		return immediateStatus;
+	}
+
+	public void setImmediateStatus(Boolean immediateStatus) {
+		this.immediateStatus = immediateStatus;
+	}
 }

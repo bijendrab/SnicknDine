@@ -1,5 +1,7 @@
 package com.wityo.modules.order.service.impl;
 
+import com.wityo.modules.cart.repository.CartItemRepository;
+import com.wityo.modules.cart.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,12 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	RestTemplate restTemplate;
+
+	@Autowired
+	CartItemService cartItemService;
+
+	@Autowired
+	CartItemRepository cartItemRepository;
 	
 	public CustomerOrder placeCustomerOrder(PlaceOrderDTO order, Long restaurantId) {
 		try {
@@ -27,7 +35,11 @@ public class OrderServiceImpl implements OrderService {
 					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/order/checkout/"+restaurantId,
 							order,
 							CustomerOrder.class);
-			return placedOrder;
+			if(placedOrder!=null) {
+				order.getCartItems().parallelStream()
+							.forEach(cartItem -> cartItemRepository.deleteById(cartItem.getCartItemId()));
+				return placedOrder;
+			}
 		}catch (Exception e) {
 			// exception to be thrown
 		}

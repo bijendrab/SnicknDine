@@ -51,12 +51,12 @@ public class UserServiceImpl implements UserService{
 			cart.setCustomer(customer);
 			user.setCustomer(customer);
 			
-			CartItem item = new CartItem();
+			/*CartItem item = new CartItem();
 			item.setCart(cart);
 			item.setItemName("lala");
 			List<CartItem> items = new ArrayList<CartItem>();
 			items.add(item);
-			cart.setCartItems(items);
+			cart.setCartItems(items);*/
 			
 			User user1 = userRepository.save(user);
 			if(null != user1) {
