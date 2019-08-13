@@ -36,16 +36,10 @@ public class OrderServiceImpl implements OrderService {
 							order,
 							CustomerOrder.class);
 			if(placedOrder!=null) {
-				order.getCartItems().parallelStream()
-							.forEach(cartItem -> cartItemRepository.deleteById(cartItem.getCartItemId()));
+				cartItemRepository.deleteCartItemsByCartId(customer.getCart().getCartId());
 				return placedOrder;
 			}
-		}catch (Exception e) {
-			// exception to be thrown
-		}
+		}catch (Exception e) {}
 		return null;
-		
 	}
-	
-
 }
