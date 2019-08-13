@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class OrderItem {
 	
-	private Long orderItemId;
+	private String orderItemId;
 	private Date orderCreationTime;
 	private int quantity;
 	private double price;
@@ -13,14 +13,15 @@ public class OrderItem {
 	private double waitTime;
 	private String quantityOption;
 	private Boolean immediateStatus;
+	private String customerCartItems;
 
 	public OrderItem() {}
 
-	public Long getOrderItemId() {
+	public String getOrderItemId() {
 		return orderItemId;
 	}
 
-	public void setOrderItemId(Long orderItemId) {
+	public void setOrderItemId(String orderItemId) {
 		this.orderItemId = orderItemId;
 	}
 
@@ -87,5 +88,12 @@ public class OrderItem {
 	public void setOrderCreationTime(Date orderCreationTime) {
 		this.orderCreationTime = orderCreationTime;
 	}
-	
+
+	public String getCustomerCartItems() {
+		return customerCartItems;
+	}
+
+	public void setCustomerCartItems(String customerCartItems) {
+		this.customerCartItems = customerCartItems;
+	}
 }

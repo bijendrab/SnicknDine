@@ -1,11 +1,16 @@
 package com.wityo.modules.table.model;
 
+import com.wityo.modules.reservation.model.Reservation;
+
+import java.util.List;
+
 public class RestaurantTable {
 
 	private Long id;
 	private Long tableNumber;
 	private Integer tableSize;
 	private Integer qrCode;
+	private Long restId;
 	
 	public RestaurantTable() {}
 
@@ -39,5 +44,14 @@ public class RestaurantTable {
 
 	public void setQrCode(Integer qrCode) {
 		this.qrCode = qrCode;
+	}
+
+
+	public Long getRestId() {
+		return restId;
+	}
+
+	public void setRestId(Long restId) {
+		this.restId = restId;
 	}
 }

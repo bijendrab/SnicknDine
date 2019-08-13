@@ -1,17 +1,18 @@
 package com.wityo.modules.order.dto;
 
+import com.wityo.modules.order.model.CustomerOrder;
+
 import java.util.List;
 
-import javax.persistence.criteria.Order;
 
 public class TableOrdersResponse {
 	
-	List<Order> tableOrders;
-	public List<Order> getTableOrders() {
+	List<CustomerOrder> tableOrders;
+	public List<CustomerOrder> getTableOrders() {
 		return tableOrders;
 	}
 
-	public void setTableOrders(List<Order> tableOrders) {
+	public void setTableOrders(List<CustomerOrder> tableOrders) {
 		this.tableOrders = tableOrders;
 	}
 }
