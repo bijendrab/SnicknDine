@@ -29,4 +29,14 @@ public class OrderController {
 		response.put("status", HttpStatus.OK);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/get-order/{restaurantId}")
+	public ResponseEntity<?> getOrdersForTable(@PathVariable Long restaurantId){
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.putIfAbsent("message", "Reservation status");
+		response.put("body", orderService.getCustomerTableOrders(restaurantId));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
 }
