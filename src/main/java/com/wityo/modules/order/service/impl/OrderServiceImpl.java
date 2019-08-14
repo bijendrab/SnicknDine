@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
 			Customer customer = user.getCustomer();
 			order.setCustomer(customer);
 			CustomerOrder placedOrder = restTemplate
-					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/order/checkout/"+restaurantId,
+					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/customerOrder/checkout/"+restaurantId,
 							order,
 							CustomerOrder.class);
 			if(placedOrder!=null) {

@@ -1,5 +1,6 @@
 package com.wityo.modules.reservation.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.wityo.modules.order.model.TimeSpan;
@@ -7,8 +8,8 @@ import com.wityo.modules.table.model.RestaurantTable;
 
 public class Reservation {
 	private Long id;
-	private Date submissionDate;
-	private Date reservationDate;
+	private LocalDate submissionDate;
+	private LocalDate reservationDate;
 	private TimeSpan reservationTime;
 	private String otherRequirements;
 	private String customerInfo;
@@ -19,16 +20,16 @@ public class Reservation {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Date getSubmissionDate() {
+	public LocalDate getSubmissionDate() {
 		return submissionDate;
 	}
-	public void setSubmissionDate(Date submissionDate) {
+	public void setSubmissionDate(LocalDate submissionDate) {
 		this.submissionDate = submissionDate;
 	}
-	public Date getReservationDate() {
+	public LocalDate getReservationDate() {
 		return reservationDate;
 	}
-	public void setReservationDate(Date reservationDate) {
+	public void setReservationDate(LocalDate reservationDate) {
 		this.reservationDate = reservationDate;
 	}
 	public TimeSpan getReservationTime() {

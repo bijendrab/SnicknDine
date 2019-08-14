@@ -33,7 +33,7 @@ public class OrderController {
 	@GetMapping("/get-order/{restaurantId}")
 	public ResponseEntity<?> getOrdersForTable(@PathVariable Long restaurantId){
 		Map<String, Object> response = new HashMap<String, Object>();
-		response.putIfAbsent("message", "Reservation status");
+		response.putIfAbsent("message", "Table Order Items");
 		response.put("body", orderService.getCustomerTableOrders(restaurantId));
 		response.put("error", Boolean.FALSE);
 		response.put("status", HttpStatus.OK);
