@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
 					TableOrdersResponse.class);
 			return response;
 		} catch (Exception e) {
-			// TODO: handle exception
+			// exception
 		}
 		return null;
 	}

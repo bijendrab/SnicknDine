@@ -1,13 +1,11 @@
 package com.wityo.modules.user.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wityo.modules.cart.model.Cart;
-import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.UserRepository;

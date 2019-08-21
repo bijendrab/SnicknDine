@@ -14,6 +14,7 @@ public class Product {
 	private boolean isEnabled;
 	private int preparationTime;
 	private String selectedQuantity;
+	private int sequenceId;
 	private Set<ProductQuantityOption> productQuantityOptions;
 	public Product() {}
 	public String getProductId() {
@@ -88,7 +89,10 @@ public class Product {
 	public void setProductQuantityOptions(Set<ProductQuantityOption> productQuantityOptions) {
 		this.productQuantityOptions = productQuantityOptions;
 	}
-	
-	
-
+	public int getSequenceId() {
+		return sequenceId;
+	}
+	public void setSequenceId(int sequenceId) {
+		this.sequenceId = sequenceId;
+	}
 }

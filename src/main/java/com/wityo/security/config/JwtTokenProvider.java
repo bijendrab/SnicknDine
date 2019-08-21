@@ -35,6 +35,7 @@ public class JwtTokenProvider {
 		claims.put("id", userId);
 		claims.put("fullName", customerName);
 		claims.put("phoneNumber", user.getPhoneNumber());
+		claims.put("emailId", user.getEmailId());
 		claims.put("iat", now);
 		claims.put("expiryTime", expiryDate);
 		return Jwts.builder()

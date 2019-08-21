@@ -1,9 +1,5 @@
 package com.wityo.modules.table.model;
 
-import com.wityo.modules.reservation.model.Reservation;
-
-import java.util.List;
-
 public class RestaurantTable {
 
 	private Long id;

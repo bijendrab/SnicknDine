@@ -1,7 +1,6 @@
 package com.wityo.modules.reservation.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.wityo.modules.order.model.TimeSpan;
 import com.wityo.modules.table.model.RestaurantTable;
