@@ -33,6 +33,7 @@ public class JwtTokenProvider {
 		String customerName = user.getFirstName() +" "+user.getLastName();
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("id", userId);
+		claims.put("customerId",user.getCustomer().getCustomerId());
 		claims.put("fullName", customerName);
 		claims.put("phoneNumber", user.getPhoneNumber());
 		claims.put("emailId", user.getEmailId());
