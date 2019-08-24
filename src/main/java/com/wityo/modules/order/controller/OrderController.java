@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.wityo.common.Constant;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
+import com.wityo.modules.order.dto.UpdateOrderItemDTO;
 import com.wityo.modules.order.service.OrderService;
 
 @CrossOrigin("*")
@@ -35,6 +36,26 @@ public class OrderController {
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.putIfAbsent("message", "Table Order Items");
 		response.put("body", orderService.getCustomerTableOrders(restaurantId));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+	
+	@PutMapping("/update-ordered-item/{restaurantId}")
+	public ResponseEntity<?> updateOrderedItem(@RequestBody UpdateOrderItemDTO orderItem, @PathVariable Long restaurantId){
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.putIfAbsent("message", "Order Item: "+orderItem.getOrderItemId()+" updated!");
+		response.put("body", orderService.updateCustomerOrderedItem(orderItem, restaurantId));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete-ordered-item/{restaurantId}")
+	public ResponseEntity<?> deleteOrderedItem(@RequestBody UpdateOrderItemDTO orderItem, @PathVariable Long restaurantId){
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.putIfAbsent("message", "Order Item: "+orderItem.getOrderItemId()+" deleted!");
+		response.put("body", orderService.deleteCustomerOrderedItem(orderItem, restaurantId));
 		response.put("error", Boolean.FALSE);
 		response.put("status", HttpStatus.OK);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
