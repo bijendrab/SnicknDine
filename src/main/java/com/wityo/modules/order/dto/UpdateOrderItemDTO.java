@@ -3,21 +3,21 @@ package com.wityo.modules.order.dto;
 import com.wityo.modules.user.model.Customer;
 
 public class UpdateOrderItemDTO {
-	
-	private int orderItemId;
-	private String quantity;
+
+	private String orderItemId;
+	private int quantity;
 	private String quantityOption;
 	Customer customer;
-	public int getOrderItemId() {
+	public String getOrderItemId() {
 		return orderItemId;
 	}
-	public void setOrderItemId(int orderItemId) {
+	public void setOrderItemId(String orderItemId) {
 		this.orderItemId = orderItemId;
 	}
-	public String getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	public String getQuantityOption() {
