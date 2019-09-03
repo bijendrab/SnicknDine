@@ -17,7 +17,7 @@ import com.wityo.modules.restaurant.service.RestaurantServerService;
 
 @RestController
 @RequestMapping(Constant.RESTAURANT_SERVER_API)
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RestaurantServerController {
 	
 	@Autowired
