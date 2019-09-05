@@ -2,6 +2,7 @@ package com.wityo.modules.reservation.service.impl;
 
 import java.util.Collections;
 
+import com.wityo.modules.reservation.model.Reservation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +47,15 @@ public class ReservationServiceImpl implements ReservationService{
 	 * @Description: Method to reserve table for user  
 	 *
 	 **/
-	public ReservationDetailsDTO reserveTable( Long restaurantId, ReservationDetailsDTO reservation) {
+	public Reservation reserveTable( Long restaurantId, ReservationDetailsDTO reservation) {
 		try {
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Customer customer = user.getCustomer();
 			reservation.setCustomerInfo(customer);
-			ReservationDetailsDTO dto = restTemplate
+			Reservation dto = restTemplate
 					.postForObject(Constant.RESTAURANT_SERVER_URL+"api/reservation/"+restaurantId+"/reserve",
 							reservation,
-							ReservationDetailsDTO.class);
+							Reservation.class);
 			return dto;
 		}catch (Exception e) {
 			logger.error("Exception in reserveTabe inside ReservationServiceImpl:- {}", e);
