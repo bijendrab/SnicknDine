@@ -14,6 +14,8 @@ public class OrderItem {
 	private String quantityOption;
 	private Boolean immediateStatus;
 	private String customerCartItems;
+	private Boolean specialDiscount;
+	private float specialDiscountValue;
 
 	public OrderItem() {}
 
@@ -95,5 +97,22 @@ public class OrderItem {
 
 	public void setCustomerCartItems(String customerCartItems) {
 		this.customerCartItems = customerCartItems;
+	}
+
+
+	public Boolean getSpecialDiscount() {
+		return specialDiscount;
+	}
+
+	public void setSpecialDiscount(Boolean specialDiscount) {
+		this.specialDiscount = specialDiscount;
+	}
+
+	public float getSpecialDiscountValue() {
+		return specialDiscountValue;
+	}
+
+	public void setSpecialDiscountValue(float specialDiscountValue) {
+		this.specialDiscountValue = specialDiscountValue;
 	}
 }

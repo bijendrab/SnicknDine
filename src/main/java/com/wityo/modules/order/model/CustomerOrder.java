@@ -12,6 +12,8 @@ public class CustomerOrder {
 	private OrderStatus status;
 	private Reservation accordingReservation;
 	private Set<OrderItem> menuItemOrders = new HashSet<OrderItem>();
+	private String orderedBy;
+
 	
 	public Long getOrderId() {
 		return orderId;
@@ -43,5 +45,12 @@ public class CustomerOrder {
 	public void setMenuItemOrders(Set<OrderItem> menuItemOrders) {
 		this.menuItemOrders = menuItemOrders;
 	}
-	
+
+	public String getOrderedBy() {
+		return orderedBy;
+	}
+
+	public void setOrderedBy(String orderedBy) {
+		this.orderedBy = orderedBy;
+	}
 }
