@@ -16,6 +16,6 @@ public class Constant {
 	/*-----------------------------Constants for API MAPPING--------------------------------*/
 	
 	/*-----------------------------Constants for server address--------------------------------*/
-	public static final String RESTAURANT_SERVER_URL = "http://localhost:8081/";
+	public static final String RESTAURANT_SERVER_URL = "http://ec2-13-126-4-149.ap-south-1.compute.amazonaws.com:8081/";
 	/*-----------------------------Constants for server addesss--------------------------------*/
 }
