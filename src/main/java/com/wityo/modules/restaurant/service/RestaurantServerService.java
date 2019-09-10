@@ -5,6 +5,7 @@ import com.wityo.modules.restaurant.dto.RestaurantListDto;
 import com.wityo.modules.restaurant.dto.RestaurantMenuListDto;
 
 public interface RestaurantServerService {
-	public RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException;
-	RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId);
+    RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException;
+
+    RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId);
 }

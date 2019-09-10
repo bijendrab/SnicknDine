@@ -1,16 +1,15 @@
 package com.wityo.modules.reservation.dto;
 
-import java.time.LocalDate;
-
-import javax.persistence.Embedded;
-import javax.validation.constraints.NotNull;
-
 import com.wityo.modules.order.model.TimeSpan;
 import com.wityo.modules.user.model.Customer;
 
+import javax.persistence.Embedded;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
 public class ReservationDetailsDTO {
-	
-	@NotNull
+
+    @NotNull
     private LocalDate date;
 
     @NotNull
@@ -25,54 +24,55 @@ public class ReservationDetailsDTO {
     @Embedded
     private TimeSpan timeSpan;
 
-    public ReservationDetailsDTO() {}
+    public ReservationDetailsDTO() {
+    }
 
-	public LocalDate getDate() {
-		return date;
-	}
+    public LocalDate getDate() {
+        return date;
+    }
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-	public Integer getNumberOfSeats() {
-		return numberOfSeats;
-	}
+    public Integer getNumberOfSeats() {
+        return numberOfSeats;
+    }
 
-	public void setNumberOfSeats(Integer numberOfSeats) {
-		this.numberOfSeats = numberOfSeats;
-	}
+    public void setNumberOfSeats(Integer numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
+    }
 
-	public Integer getTableNumber() {
-		return tableNumber;
-	}
+    public Integer getTableNumber() {
+        return tableNumber;
+    }
 
-	public void setTableNumber(Integer tableNumber) {
-		this.tableNumber = tableNumber;
-	}
+    public void setTableNumber(Integer tableNumber) {
+        this.tableNumber = tableNumber;
+    }
 
-	public Customer getCustomerInfo() {
-		return customerInfo;
-	}
+    public Customer getCustomerInfo() {
+        return customerInfo;
+    }
 
-	public void setCustomerInfo(Customer customerInfo) {
-		this.customerInfo = customerInfo;
-	}
+    public void setCustomerInfo(Customer customerInfo) {
+        this.customerInfo = customerInfo;
+    }
 
-	public TimeSpan getTs() {
-		return getTimeSpan();
-	}
+    public TimeSpan getTs() {
+        return getTimeSpan();
+    }
 
-	public TimeSpan getTimeSpan() {
-		return timeSpan;
-	}
+    public TimeSpan getTimeSpan() {
+        return timeSpan;
+    }
 
-	public void setTs(TimeSpan ts) {
-		setTimeSpan(ts);
-	}
+    public void setTs(TimeSpan ts) {
+        setTimeSpan(ts);
+    }
 
-	public void setTimeSpan(TimeSpan ts) {
-		this.timeSpan = ts;
-	}
+    public void setTimeSpan(TimeSpan ts) {
+        this.timeSpan = ts;
+    }
 
 }

@@ -6,7 +6,9 @@ import com.wityo.modules.cart.exception.UnableToUpdateCartException;
 import com.wityo.modules.cart.model.Cart;
 
 public interface CartService {
-	public Cart getCart() throws NoCartFoundException;
-	public Cart validateCartById(Long cartId) throws InvalidCartException;
-	public Cart updateCart(Cart cart) throws UnableToUpdateCartException;
+    Cart getCart() throws NoCartFoundException;
+
+    Cart validateCartById(Long cartId) throws InvalidCartException;
+
+    Cart updateCart(Cart cart) throws UnableToUpdateCartException;
 }

@@ -4,14 +4,14 @@ import java.util.List;
 
 public class RestaurantListDto {
 
-	private List<RestaurantIdNameDto> restaurantDetails;
+    private List<RestaurantIdNameDto> restaurantDetails;
 
-	public List<RestaurantIdNameDto> getRestaurantDetails() {
-		return restaurantDetails;
-	}
+    public List<RestaurantIdNameDto> getRestaurantDetails() {
+        return restaurantDetails;
+    }
 
-	public void setRestaurantDetails(List<RestaurantIdNameDto> restaurantDetails) {
-		this.restaurantDetails = restaurantDetails;
-	}
+    public void setRestaurantDetails(List<RestaurantIdNameDto> restaurantDetails) {
+        this.restaurantDetails = restaurantDetails;
+    }
 
 }

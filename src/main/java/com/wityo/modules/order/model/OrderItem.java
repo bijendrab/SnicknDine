@@ -3,116 +3,117 @@ package com.wityo.modules.order.model;
 import java.util.Date;
 
 public class OrderItem {
-	
-	private String orderItemId;
-	private Date orderCreationTime;
-	private int quantity;
-	private double price;
-	private String status;
-	private String itemName;
-	private double waitTime;
-	private String quantityOption;
-	private Boolean immediateStatus;
-	private String customerCartItems;
-	private Boolean specialDiscount;
-	private float specialDiscountValue;
 
-	public OrderItem() {}
+    private String orderItemId;
+    private Date orderCreationTime;
+    private int quantity;
+    private double price;
+    private String status;
+    private String itemName;
+    private double waitTime;
+    private String quantityOption;
+    private Boolean immediateStatus;
+    private String customerCartItems;
+    private Boolean specialDiscount;
+    private float specialDiscountValue;
 
-	public String getOrderItemId() {
-		return orderItemId;
-	}
+    public OrderItem() {
+    }
 
-	public void setOrderItemId(String orderItemId) {
-		this.orderItemId = orderItemId;
-	}
+    public String getOrderItemId() {
+        return orderItemId;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public void setOrderItemId(String orderItemId) {
+        this.orderItemId = orderItemId;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public int getQuantity() {
+        return quantity;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getItemName() {
-		return itemName;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
+    public String getItemName() {
+        return itemName;
+    }
 
-	public double getWaitTime() {
-		return waitTime;
-	}
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-	public void setWaitTime(double waitTime) {
-		this.waitTime = waitTime;
-	}
+    public double getWaitTime() {
+        return waitTime;
+    }
 
-	public String getQuantityOption() {
-		return quantityOption;
-	}
+    public void setWaitTime(double waitTime) {
+        this.waitTime = waitTime;
+    }
 
-	public void setQuantityOption(String quantityOptions) {
-		this.quantityOption = quantityOptions;
-	}
+    public String getQuantityOption() {
+        return quantityOption;
+    }
 
-	public Boolean getImmediateStatus() {
-		return immediateStatus;
-	}
+    public void setQuantityOption(String quantityOptions) {
+        this.quantityOption = quantityOptions;
+    }
 
-	public void setImmediateStatus(Boolean immediateStatus) {
-		this.immediateStatus = immediateStatus;
-	}
+    public Boolean getImmediateStatus() {
+        return immediateStatus;
+    }
 
-	public Date getOrderCreationTime() {
-		return orderCreationTime;
-	}
+    public void setImmediateStatus(Boolean immediateStatus) {
+        this.immediateStatus = immediateStatus;
+    }
 
-	public void setOrderCreationTime(Date orderCreationTime) {
-		this.orderCreationTime = orderCreationTime;
-	}
+    public Date getOrderCreationTime() {
+        return orderCreationTime;
+    }
 
-	public String getCustomerCartItems() {
-		return customerCartItems;
-	}
+    public void setOrderCreationTime(Date orderCreationTime) {
+        this.orderCreationTime = orderCreationTime;
+    }
 
-	public void setCustomerCartItems(String customerCartItems) {
-		this.customerCartItems = customerCartItems;
-	}
+    public String getCustomerCartItems() {
+        return customerCartItems;
+    }
+
+    public void setCustomerCartItems(String customerCartItems) {
+        this.customerCartItems = customerCartItems;
+    }
 
 
-	public Boolean getSpecialDiscount() {
-		return specialDiscount;
-	}
+    public Boolean getSpecialDiscount() {
+        return specialDiscount;
+    }
 
-	public void setSpecialDiscount(Boolean specialDiscount) {
-		this.specialDiscount = specialDiscount;
-	}
+    public void setSpecialDiscount(Boolean specialDiscount) {
+        this.specialDiscount = specialDiscount;
+    }
 
-	public float getSpecialDiscountValue() {
-		return specialDiscountValue;
-	}
+    public float getSpecialDiscountValue() {
+        return specialDiscountValue;
+    }
 
-	public void setSpecialDiscountValue(float specialDiscountValue) {
-		this.specialDiscountValue = specialDiscountValue;
-	}
+    public void setSpecialDiscountValue(float specialDiscountValue) {
+        this.specialDiscountValue = specialDiscountValue;
+    }
 }

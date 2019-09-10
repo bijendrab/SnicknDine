@@ -5,6 +5,7 @@ import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.model.Reservation;
 
 public interface ReservationService {
-	public CheckReservationResponseDTO checkReservationStatus(Long restaurantId);
-	public Reservation reserveTable(Long restaurantId, ReservationDetailsDTO reservation);
+    CheckReservationResponseDTO checkReservationStatus(Long restaurantId);
+
+    Reservation reserveTable(Long restaurantId, ReservationDetailsDTO reservation);
 }

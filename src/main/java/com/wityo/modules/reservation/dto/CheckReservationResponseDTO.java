@@ -1,22 +1,23 @@
 package com.wityo.modules.reservation.dto;
 
-import java.util.List;
-
 import com.wityo.modules.table.model.RestaurantTable;
+
+import java.util.List;
 
 public class CheckReservationResponseDTO {
 
     private Boolean reservationStatus;
     private List<RestaurantTable> restaurantTable;
 
-    public CheckReservationResponseDTO() {}
-    
-    public CheckReservationResponseDTO(Boolean reservationStatus, List<RestaurantTable> restaurantTable) {
-	this.reservationStatus = reservationStatus;
-	this.restaurantTable = restaurantTable;
+    public CheckReservationResponseDTO() {
     }
 
-	public Boolean getReservationStatus() {
+    public CheckReservationResponseDTO(Boolean reservationStatus, List<RestaurantTable> restaurantTable) {
+        this.reservationStatus = reservationStatus;
+        this.restaurantTable = restaurantTable;
+    }
+
+    public Boolean getReservationStatus() {
         return reservationStatus;
     }
 
@@ -31,6 +32,6 @@ public class CheckReservationResponseDTO {
     public void ListRestaurantTable(List<RestaurantTable> restaurantTable) {
         this.restaurantTable = restaurantTable;
     }
-    
-    
+
+
 }

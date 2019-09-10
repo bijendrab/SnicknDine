@@ -1,88 +1,89 @@
 package com.wityo.modules.user.model;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wityo.modules.cart.model.Cart;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customer")
 public class Customer {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long customerId;
-	private String firstName;
-	private String lastName;
-	private String phoneNumber;
-	private String emailId;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="userId")
-	@JsonIgnore
-	private User user;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cart_id")
-	@JsonIgnore
-	private Cart cart;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String emailId;
 
-	public Customer() {}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
+    @JsonIgnore
+    private User user;
 
-	public Long getCustomerId() {
-		return customerId;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    @JsonIgnore
+    private Cart cart;
 
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
+    public Customer() {
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public Long getCustomerId() {
+        return customerId;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getEmailId() {
-		return emailId;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public String getEmailId() {
+        return emailId;
+    }
 
-	public Cart getCart() {
-		return cart;
-	}
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }

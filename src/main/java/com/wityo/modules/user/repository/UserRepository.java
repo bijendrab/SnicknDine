@@ -1,14 +1,14 @@
 package com.wityo.modules.user.repository;
 
+import com.wityo.modules.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.wityo.modules.user.model.User;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-	
-	public User findByUserId(Long userId);
-	public User findByPhoneNumber(String phoneNumber);
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByUserId(Long userId);
+
+    User findByPhoneNumber(String phoneNumber);
 
 }
