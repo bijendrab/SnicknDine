@@ -65,7 +65,7 @@ public class UserController {
     @GetMapping("/getMenu")
     public String getMenu() {
         String result = restTemplate.getForObject
-                ("http://localhost:8080/api/restaurant/getMenu", String.class);
+                (Constant.RESTAURANT_SERVER_URL+"/api/restaurant/getMenu", String.class);
         return result;
 
     }

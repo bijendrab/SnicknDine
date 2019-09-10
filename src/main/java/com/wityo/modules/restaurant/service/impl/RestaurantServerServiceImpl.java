@@ -23,7 +23,7 @@ public class RestaurantServerServiceImpl implements RestaurantServerService {
     public RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException {
         try {
             return restTemplate.getForObject
-                    ("http://localhost:8081/api/restaurant/restaurant-id-list", RestaurantListDto.class);
+                    (Constant.RESTAURANT_SERVER_URL+"/api/restaurant/restaurant-id-list", RestaurantListDto.class);
         } catch (Exception e) {
             throw new NoRestaurantFoundException(e.getMessage());
         }
