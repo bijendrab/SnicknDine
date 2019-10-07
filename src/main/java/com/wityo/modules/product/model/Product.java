@@ -4,9 +4,9 @@ import java.util.Set;
 
 public class Product {
     private String productId;
-    private String category;
-    private String subCategory;
-    private String cuisine;
+    private Category category;
+    private SubCategory subCategory;
+    private Cuisine cuisine;
     private String description;
     private String productName;
     private boolean isAdd;
@@ -28,31 +28,31 @@ public class Product {
         this.productId = productId;
     }
 
-    public String getCategory() {
-        return category;
-    }
+    public Category getCategory() {
+		return category;
+	}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
-    public String getSubCategory() {
-        return subCategory;
-    }
+	public SubCategory getSubCategory() {
+		return subCategory;
+	}
 
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
+	public void setSubCategory(SubCategory subCategory) {
+		this.subCategory = subCategory;
+	}
 
-    public String getCuisine() {
-        return cuisine;
-    }
+	public Cuisine getCuisine() {
+		return cuisine;
+	}
 
-    public void setCuisine(String cuisine) {
-        this.cuisine = cuisine;
-    }
+	public void setCuisine(Cuisine cuisine) {
+		this.cuisine = cuisine;
+	}
 
-    public String getDescription() {
+	public String getDescription() {
         return description;
     }
 
