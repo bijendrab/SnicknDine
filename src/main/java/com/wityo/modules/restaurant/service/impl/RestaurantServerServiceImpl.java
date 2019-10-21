@@ -1,6 +1,7 @@
 package com.wityo.modules.restaurant.service.impl;
 
 import com.wityo.common.Constant;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.restaurant.Exception.NoRestaurantFoundException;
 import com.wityo.modules.restaurant.dto.RestaurantListDto;
 import com.wityo.modules.restaurant.dto.RestaurantMenuListDto;
@@ -18,12 +19,15 @@ public class RestaurantServerServiceImpl implements RestaurantServerService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private WityoRestAppProperties wityoRestAppProperties;
+
 
     /*=================================RESTAURANT LIST REST CALLS================================================*/
     public RestaurantListDto fetchRestaurantListByIdAndName() throws NoRestaurantFoundException {
         try {
             return restTemplate.getForObject
-                    (Constant.RESTAURANT_SERVER_URL+"/api/restaurant/restaurant-id-list", RestaurantListDto.class);
+                    (wityoRestAppProperties.getWityoUserAppUrl()+"/api/restaurant/restaurant-id-list", RestaurantListDto.class);
         } catch (Exception e) {
             throw new NoRestaurantFoundException(e.getMessage());
         }
@@ -34,7 +38,7 @@ public class RestaurantServerServiceImpl implements RestaurantServerService {
     public RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId) {
         try {
             RestaurantMenuListDto menuList = restTemplate.getForObject
-                    (Constant.RESTAURANT_SERVER_URL + "api/menu/" + restaurantId, RestaurantMenuListDto.class);
+                    (wityoRestAppProperties.getWityoUserAppUrl() + "api/menu/" + restaurantId, RestaurantMenuListDto.class);
             return menuList;
         } catch (Exception e) {
             throw new NoRestaurantFoundException(e.getMessage());

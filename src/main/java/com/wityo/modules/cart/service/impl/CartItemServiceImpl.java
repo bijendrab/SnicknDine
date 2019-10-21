@@ -1,6 +1,7 @@
 package com.wityo.modules.cart.service.impl;
 
 import com.google.gson.Gson;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
@@ -10,6 +11,7 @@ import com.wityo.modules.product.model.ProductQuantityOption;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

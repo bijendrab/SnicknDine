@@ -1,6 +1,7 @@
 package com.wityo.modules.order.service.impl;
 
 import com.wityo.common.Constant;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
@@ -29,13 +30,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     CartItemRepository cartItemRepository;
 
+    @Autowired
+    private WityoRestAppProperties wityoRestAppProperties;
+
     public CustomerOrder placeCustomerOrder(PlaceOrderDTO order, Long restaurantId) {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
             order.setCustomer(customer);
             CustomerOrder placedOrder = restTemplate.postForObject(
-                    Constant.RESTAURANT_SERVER_URL + "api/customerOrder/checkout/" + restaurantId, order,
+                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/checkout/" + restaurantId, order,
                     CustomerOrder.class);
             if (placedOrder != null) {
                 cartItemRepository.deleteCartItemsByCartId(customer.getCart().getCartId());
@@ -51,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
             TableOrdersResponse response = restTemplate.postForObject(
-                    Constant.RESTAURANT_SERVER_URL + "api/customerOrder/getTableOrder/" + restaurantId, customer,
+                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/getTableOrder/" + restaurantId, customer,
                     TableOrdersResponse.class);
             return response;
         } catch (Exception e) {
@@ -66,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
             Customer customer = user.getCustomer();
             dto.setCustomer(customer);
 
-            String url = Constant.RESTAURANT_SERVER_URL + "api/customerOrder/updateUserOrderedItem/" + restaurantId;
+            String url = wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/updateUserOrderedItem/" + restaurantId;
             HttpEntity<UpdateOrderItemDTO> entity = new HttpEntity<UpdateOrderItemDTO>(dto);
             CustomerOrder response = restTemplate.exchange(url,
                     HttpMethod.PUT,
@@ -85,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
             dto.setCustomer(customer);
-            String url = Constant.RESTAURANT_SERVER_URL + "api/customerOrder/deleteUserOrderedItem/" + restaurantId;
+            String url = wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/deleteUserOrderedItem/" + restaurantId;
             HttpEntity<UpdateOrderItemDTO> entity = new HttpEntity<UpdateOrderItemDTO>(dto);
             Boolean response = restTemplate.exchange(url,
                     HttpMethod.DELETE,

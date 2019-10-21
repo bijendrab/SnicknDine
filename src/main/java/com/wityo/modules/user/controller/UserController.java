@@ -2,6 +2,7 @@ package com.wityo.modules.user.controller;
 
 import com.wityo.common.Constant;
 import com.wityo.common.ResponseCreator;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.user.dto.LoginRequestDTO;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.service.UserService;
@@ -29,6 +30,8 @@ public class UserController {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    private WityoRestAppProperties wityoRestAppProperties;
 
     @PostMapping("/validate")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO dto) {
@@ -65,7 +68,7 @@ public class UserController {
     @GetMapping("/getMenu")
     public String getMenu() {
         String result = restTemplate.getForObject
-                (Constant.RESTAURANT_SERVER_URL+"/api/restaurant/getMenu", String.class);
+                (wityoRestAppProperties.getWityoUserAppUrl()+"/api/restaurant/getMenu", String.class);
         return result;
 
     }

@@ -1,6 +1,7 @@
 package com.wityo.modules.reservation.service.impl;
 
 import com.wityo.common.Constant;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.reservation.dto.CheckReservationResponseDTO;
 import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.model.Reservation;
@@ -21,6 +22,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private WityoRestAppProperties wityoRestAppProperties;
     private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     /*
@@ -31,7 +34,7 @@ public class ReservationServiceImpl implements ReservationService {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
             CheckReservationResponseDTO response = restTemplate
-                    .postForObject(Constant.RESTAURANT_SERVER_URL + "api/reservation/" + restaurantId + "/check-reservation",
+                    .postForObject(wityoRestAppProperties.getWityoUserAppUrl() + "api/reservation/" + restaurantId + "/check-reservation",
                             customer,
                             CheckReservationResponseDTO.class);
             return response;
@@ -52,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
             Customer customer = user.getCustomer();
             reservation.setCustomerInfo(customer);
             Reservation dto = restTemplate
-                    .postForObject(Constant.RESTAURANT_SERVER_URL + "api/reservation/" + restaurantId + "/reserve",
+                    .postForObject(wityoRestAppProperties.getWityoUserAppUrl() + "api/reservation/" + restaurantId + "/reserve",
                             reservation,
                             Reservation.class);
             return dto;
