@@ -68,7 +68,7 @@ public class UserController {
     @GetMapping("/getMenu")
     public String getMenu() {
         String result = restTemplate.getForObject
-                (wityoRestAppProperties.getWityoUserAppUrl()+"/api/restaurant/getMenu", String.class);
+                (wityoRestAppProperties.getWityoUserAppUrl()+"api/restaurant/getMenu", String.class);
         return result;
 
     }
