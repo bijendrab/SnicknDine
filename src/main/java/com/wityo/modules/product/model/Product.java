@@ -16,6 +16,7 @@ public class Product {
     private String selectedQuantity;
     private int sequenceId;
     private Set<ProductQuantityOption> productQuantityOptions;
+    private Set<AddOnProfile> addOnProfiles;
 
     public Product() {
     }
@@ -122,5 +123,13 @@ public class Product {
 
     public void setSequenceId(int sequenceId) {
         this.sequenceId = sequenceId;
+    }
+
+    public Set<AddOnProfile> getAddOnProfiles() {
+        return addOnProfiles;
+    }
+
+    public void setAddOnProfiles(Set<AddOnProfile> addOnProfiles) {
+        this.addOnProfiles = addOnProfiles;
     }
 }
