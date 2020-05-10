@@ -79,8 +79,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					}
 					filterChain.doFilter(request, response);
 					return;
-				} else {
-					throw new UsernameNotFoundException("Unauthorized");
+				} else{
+					filterChain.doFilter(request, response);
+					return;
 				}
 			}
 		
