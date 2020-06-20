@@ -85,13 +85,14 @@ public class Product {
         this.isVeg = isVeg;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
+    public Boolean getIsEnabled() {
+        return this.isEnabled;
     }
 
-    public void setEnabled(boolean isEnabled) {
+    public void setIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
+
 
     public int getPreparationTime() {
         return preparationTime;
