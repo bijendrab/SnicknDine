@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cartItemId")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cartItemId")
 public class CartItem {
 
     @Id
@@ -27,6 +28,9 @@ public class CartItem {
 
     @Lob
     private String productJson;
+
+    @OneToMany(mappedBy = "cartItem", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<SelectCartAddOnItems> selectCartAddOnItems;
 
     public CartItem() {
     }
@@ -93,5 +97,13 @@ public class CartItem {
 
     public void setImmediateStatus(Boolean immediateStatus) {
         this.immediateStatus = immediateStatus;
+    }
+
+    public Set<SelectCartAddOnItems> getSelectCartAddOnItems() {
+        return selectCartAddOnItems;
+    }
+
+    public void setSelectCartAddOnItems(Set<SelectCartAddOnItems> selectCartAddOnItems) {
+        this.selectCartAddOnItems = selectCartAddOnItems;
     }
 }

@@ -1,5 +1,6 @@
 package com.wityo.modules.cart.controller;
 
+import com.wityo.modules.cart.model.UserCartItem;
 import com.wityo.modules.cart.service.CartItemService;
 import com.wityo.modules.product.model.Product;
 import com.wityo.modules.user.model.User;
@@ -24,10 +25,10 @@ public class CartItemController {
      * @Description: Function to add/update CartItem in user's cart.
      *
      * */
-    @PostMapping("/addupdate/{quantityOption}")
-    public ResponseEntity<?> addOrUpdateCartItem(@RequestBody Product product, @PathVariable String quantityOption) {
+    @PostMapping("/addupdate")
+    public ResponseEntity<?> addOrUpdateCartItem(@RequestBody UserCartItem userCartItem) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("message", cartItemService.addOrUpdateCart(product, quantityOption));
+        response.put("message", cartItemService.addOrUpdateCart(userCartItem));
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
