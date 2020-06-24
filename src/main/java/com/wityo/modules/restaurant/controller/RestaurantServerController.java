@@ -1,7 +1,10 @@
 package com.wityo.modules.restaurant.controller;
 
 import com.wityo.common.Constant;
+import com.wityo.modules.restaurant.dto.RestaurantListDto;
+import com.wityo.modules.restaurant.dto.RestaurantMenuListDto;
 import com.wityo.modules.restaurant.service.RestaurantServerService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ public class RestaurantServerController {
     @Autowired
     RestaurantServerService restaurantService;
 
+    @ApiOperation(value = "get list of restaurants", response = RestaurantListDto.class)
     @GetMapping(value = "/get-restaurants")
     public ResponseEntity<?> fetchRestaurants() {
         Map<String, Object> response = new HashMap<String, Object>();
@@ -28,6 +32,7 @@ public class RestaurantServerController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "get menu items of a restaurant", response = RestaurantMenuListDto.class)
     @GetMapping("/menu/{restaurantId}")
     public ResponseEntity<?> fetchRestaurantMenu(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();

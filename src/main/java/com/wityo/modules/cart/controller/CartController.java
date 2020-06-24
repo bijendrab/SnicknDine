@@ -1,6 +1,8 @@
 package com.wityo.modules.cart.controller;
 
+import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.service.CartService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/getcart")
+
+    @ApiOperation(value = "get cart items of a user", response = Cart.class)
+    @GetMapping("/getCart")
     public ResponseEntity<?> fetchCartById() {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("message", "user cart items");

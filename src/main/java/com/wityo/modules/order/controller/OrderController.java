@@ -2,8 +2,10 @@ package com.wityo.modules.order.controller;
 
 import com.wityo.common.Constant;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
+import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
 import com.wityo.modules.order.service.OrderService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ public class OrderController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "get order of a table of the user", response = TableOrdersResponse.class)
     @GetMapping("/get-order/{restaurantId}")
     public ResponseEntity<?> getOrdersForTable(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();

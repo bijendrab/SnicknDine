@@ -1,7 +1,9 @@
 package com.wityo.modules.reservation.controller;
 
+import com.wityo.modules.reservation.dto.CheckReservationResponseDTO;
 import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
 import com.wityo.modules.reservation.service.ReservationService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ public class ReservationController {
 
     @Autowired
     ReservationService reservationService;
-
+    @ApiOperation(value = "get reservation status ", response = CheckReservationResponseDTO.class)
     @GetMapping("/check-reservation/{restaurantId}")
     public ResponseEntity<?> checkReservation(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();

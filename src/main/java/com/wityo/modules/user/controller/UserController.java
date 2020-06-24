@@ -76,14 +76,6 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/getMenu")
-	public String getMenu() {
-		String result = restTemplate
-				.getForObject(wityoRestAppProperties.getWityoUserAppUrl() + "api/restaurant/getMenu", String.class);
-		return result;
-
-	}
-
 	private String generateTokenForUser(User user) {
 		String jwt = Constant.TOKEN_PREFIX + tokenProvider.generateJwtToken(user);
 		return jwt;
