@@ -25,10 +25,24 @@ public class CartItemController {
      * @Description: Function to add/update CartItem in user's cart.
      *
      * */
-    @PostMapping("/addupdate")
-    public ResponseEntity<?> addOrUpdateCartItem(@RequestBody UserCartItem userCartItem) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("message", cartItemService.addOrUpdateCart(userCartItem));
+    @PostMapping("/addItemFromMenu")
+    public ResponseEntity<?> addItemFromMenu(@RequestBody UserCartItem userCartItem) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", cartItemService.addItemFromMenu(userCartItem));
+        response.put("body", "");
+        response.put("status", HttpStatus.ACCEPTED);
+        response.put("error", false);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+    }
+
+    /*
+     * @Description: Function to add Item from Cart
+     *
+     * */
+    @PutMapping("/addItemFromCart/{cartItemId}")
+    public ResponseEntity<?> addItemFromCart(@PathVariable String cartItemId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", cartItemService.addItemFromCart(Long.parseLong(cartItemId)));
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
@@ -41,7 +55,7 @@ public class CartItemController {
      * */
     @DeleteMapping("/delete/{cartItemId}")
     public ResponseEntity<?> removeCartItem(@PathVariable String cartItemId) {
-        Map<String, Object> response = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<>();
         response.put("message", cartItemService.deleteCartItemById(Long.parseLong(cartItemId)));
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
@@ -54,10 +68,10 @@ public class CartItemController {
      * @Description: Function to remove all CartItems from user's cart
      *
      * */
-    @DeleteMapping("/delete/cartitems")
+    @DeleteMapping("/delete/cartItems")
     public ResponseEntity<?> removeAllCartItems() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Map<String, Object> response = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<>();
         response.put("message", cartItemService.removeAllCartItems(user.getCustomer().getCart()));
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
@@ -70,10 +84,10 @@ public class CartItemController {
      * @Description: Function to Decrement or Remove cartItem from cart
      *
      * */
-    @DeleteMapping("/decrement/{productId}/{quantityOption}")
-    public ResponseEntity<?> decrementCartItemQuantity(@PathVariable String productId, @PathVariable String quantityOption) {
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put("message", cartItemService.reduceCartItem(productId, quantityOption));
+    @DeleteMapping("/subtractItemFromCart/{cartItemId}")
+    public ResponseEntity<?> decrementCartItemQuantity(@PathVariable String cartItemId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", cartItemService.subtractCartItem(Long.parseLong(cartItemId)));
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);

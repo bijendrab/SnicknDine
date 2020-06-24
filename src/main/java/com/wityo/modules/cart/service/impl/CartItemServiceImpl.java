@@ -13,7 +13,6 @@ import com.wityo.modules.cart.model.UserCartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
 import com.wityo.modules.product.model.Product;
-import com.wityo.modules.product.model.ProductQuantityOption;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class CartItemServiceImpl implements CartItemService {
     CartItemRepository cartItemRepository;
 
 
-    public String addOrUpdateCart(UserCartItem userCartItem) {
+    public String addItemFromMenu(UserCartItem userCartItem) {
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = userDetail.getCustomer();
@@ -129,9 +128,7 @@ public class CartItemServiceImpl implements CartItemService {
         return true;
     }
 
-    public static <T> Set<T> convertListToSet(List<T> list)
-    {
-        // create a set from the List
+    public static <T> Set<T> convertListToSet(List<T> list) {
         return list.stream().collect(Collectors.toSet());
     }
     public String deleteCartItemById(Long cartItemId) {
@@ -149,34 +146,58 @@ public class CartItemServiceImpl implements CartItemService {
                     .forEach(cartItem -> cartItemRepository.deleteById(cartItem.getCartItemId()));
             return "all items deleted";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return "failure";
     }
 
-    public String reduceCartItem(String productId, String quantityOption) {
-        User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Customer customer = userDetail.getCustomer();
-        Cart cart = customer.getCart();
-        for (CartItem cartItem : cart.getCartItems()) {
-            String productJson = cartItem.getProductJson();
-            Product product = new Gson().fromJson(productJson, Product.class);
-            if (productId.equals(product.getProductId())) {
-                int updatedQuantity = cartItem.getQuantity() - 1;
-                if (updatedQuantity == 0) {
-                    cartItemRepository.deleteById(cartItem.getCartItemId());
-                    return "cart updated";
-                }
-                cartItem.setQuantity(updatedQuantity);
-                for (ProductQuantityOption qOption : product.getProductQuantityOptions()) {
-                    if (cartItem.getQuantityOption().equalsIgnoreCase(quantityOption)) {
-                        cartItem.setPrice(updatedQuantity * qOption.getPrice());
-                        cartItemRepository.save(cartItem);
-                        return "cart updated";
+    public String subtractCartItem(Long cartItemId) {
+        try {
+            User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Customer customer = userDetail.getCustomer();
+            Cart cart = customer.getCart();
+            for (CartItem cartItem : cart.getCartItems()) {
+                String productJson = cartItem.getProductJson();
+                Product product = new Gson().fromJson(productJson, Product.class);
+                if (cartItem.getCartItemId() == cartItemId) {
+                    int updatedQuantity = cartItem.getQuantity() - 1;
+                    if (updatedQuantity == 0) {
+                        cartItemRepository.deleteById(cartItemId);
+                        return "item removed as it is the only present in cart";
                     }
+                    cartItem.setQuantity(updatedQuantity);
+                    cartItem.setPrice(updatedQuantity * cartItem.getPrice());
+                    cartItemRepository.save(cartItem);
+                    return "Item Decremented";
                 }
-
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        return "operation failed";
+        return "No Item Found to be Deleted";
     }
+
+    public String addItemFromCart(Long cartItemId) {
+        try {
+            User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Customer customer = userDetail.getCustomer();
+            Cart cart = customer.getCart();
+            for (CartItem cartItem : cart.getCartItems()) {
+                String productJson = cartItem.getProductJson();
+                Product product = new Gson().fromJson(productJson, Product.class);
+                if (cartItem.getCartItemId() == cartItemId) {
+                    int updatedQuantity = cartItem.getQuantity() + 1;
+                    cartItem.setQuantity(updatedQuantity);
+                    cartItem.setPrice(updatedQuantity * cartItem.getPrice());
+                    cartItemRepository.save(cartItem);
+                    return "Item Incremented";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "No Item Found to be incremented";
+    }
+
+
 }
