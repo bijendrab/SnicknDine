@@ -6,6 +6,7 @@ import com.wityo.modules.user.model.Customer;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cartId")
@@ -17,7 +18,7 @@ public class Cart {
     private double totalPrice;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
-    private List<CartItem> cartItems;
+    private Set<CartItem> cartItems;
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -47,12 +48,11 @@ public class Cart {
         this.customer = customer;
     }
 
-    public List<CartItem> getCartItems() {
+    public Set<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
+    public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
-
 }

@@ -33,7 +33,7 @@ public class CartItemServiceImpl implements CartItemService {
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
 
-            List<CartItem> userCartItems = cart.getCartItems();
+            Set<CartItem> userCartItems = cart.getCartItems();
             String productId = userCartItem.getProduct().getProductId();
             CartItem tempCartItem = null;
             for (CartItem cartItem : userCartItems) {
