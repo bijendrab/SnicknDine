@@ -69,19 +69,19 @@ public class Product {
         this.productName = productName;
     }
 
-    public boolean isAdd() {
-        return isAdd;
+    public Boolean getIsAdd() {
+        return this.isAdd;
     }
 
-    public void setAdd(boolean isAdd) {
+    public void setIsAdd(Boolean isAdd) {
         this.isAdd = isAdd;
     }
 
-    public boolean isVeg() {
-        return isVeg;
+    public Boolean getIsVeg() {
+        return this.isVeg;
     }
 
-    public void setVeg(boolean isVeg) {
+    public void setIsVeg(Boolean isVeg) {
         this.isVeg = isVeg;
     }
 
