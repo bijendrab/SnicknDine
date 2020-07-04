@@ -14,5 +14,7 @@ public interface CartItemService {
 
     String subtractCartItem(Long cartItemId);
 
+    String subtractItemFromMenu(UserCartItem userCartItem);
+
     String addItemFromCart(Long cartItemId);
 }

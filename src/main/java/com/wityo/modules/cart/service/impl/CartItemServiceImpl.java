@@ -35,7 +35,6 @@ public class CartItemServiceImpl implements CartItemService {
 
             Set<CartItem> userCartItems = cart.getCartItems();
             String productId = userCartItem.getProduct().getProductId();
-            CartItem tempCartItem = null;
             for (CartItem cartItem : userCartItems) {
                 String productJson = cartItem.getProductJson();
                 Product p = new Gson().fromJson(productJson, Product.class);
@@ -151,6 +150,39 @@ public class CartItemServiceImpl implements CartItemService {
         return "failure";
     }
 
+    public String subtractItemFromMenu(UserCartItem userCartItem) {
+        try {
+            User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Customer customer = userDetail.getCustomer();
+            Cart cart = customer.getCart();
+
+            Set<CartItem> userCartItems = cart.getCartItems();
+            String productId = userCartItem.getProduct().getProductId();
+            for (CartItem cartItem : userCartItems) {
+                String productJson = cartItem.getProductJson();
+                Product p = new Gson().fromJson(productJson, Product.class);
+                if ((productId.equalsIgnoreCase(p.getProductId()) && cartItem.getQuantityOption().equals(userCartItem.getUserSelectQuantityOption()))) {
+                    if (compareAddOn(cartItem, userCartItem)) {
+                        double newPrice = cartItem.getPrice() / cartItem.getQuantity();
+                        int updatedQuantity = cartItem.getQuantity() - 1;
+                        if (updatedQuantity == 0) {
+                            cartItemRepository.deleteById(cartItem.getCartItemId());
+                            return "item removed as it is the only one present in cart";
+                        }
+                        cartItem.setQuantity(updatedQuantity);
+                        cartItem.setPrice(cartItem.getQuantity() * newPrice);
+                        cartItemRepository.save(cartItem);
+                        return "updated";
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "No Item Found to be Deleted";
+    }
+
     public String subtractCartItem(Long cartItemId) {
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -163,7 +195,7 @@ public class CartItemServiceImpl implements CartItemService {
                     int updatedQuantity = cartItem.getQuantity() - 1;
                     if (updatedQuantity == 0) {
                         cartItemRepository.deleteById(cartItemId);
-                        return "item removed as it is the only present in cart";
+                        return "item removed as it is the only one present in cart";
                     }
                     cartItem.setQuantity(updatedQuantity);
                     cartItem.setPrice(updatedQuantity * cartItem.getPrice());

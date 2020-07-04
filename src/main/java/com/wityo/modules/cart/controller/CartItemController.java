@@ -79,6 +79,19 @@ public class CartItemController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
     }
 
+    /*
+     * @Description: Function to Decrement or Remove cartItem from cart
+     *
+     * */
+    @PutMapping("/subtractItemFromMenu")
+    public ResponseEntity<?> decrementItemQuantityFromMenu(@RequestBody UserCartItem userCartItem) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", cartItemService.subtractItemFromMenu(userCartItem));
+        response.put("body", "");
+        response.put("status", HttpStatus.ACCEPTED);
+        response.put("error", false);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+    }
 
     /*
      * @Description: Function to Decrement or Remove cartItem from cart
