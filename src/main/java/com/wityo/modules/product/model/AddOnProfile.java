@@ -6,6 +6,7 @@ public class AddOnProfile {
     private String profileId;
     private String profileName;
     private Set<AddOnItems> customItems;
+    private Boolean toggleAddOnItems;
 
     public String getProfileId() {
         return profileId;
@@ -29,5 +30,13 @@ public class AddOnProfile {
 
     public void setCustomItems(Set<AddOnItems> customItems) {
         this.customItems = customItems;
+    }
+
+    public Boolean getToggleAddOnItems() {
+        return toggleAddOnItems;
+    }
+
+    public void setToggleAddOnItems(Boolean toggleAddOnItems) {
+        this.toggleAddOnItems = toggleAddOnItems;
     }
 }

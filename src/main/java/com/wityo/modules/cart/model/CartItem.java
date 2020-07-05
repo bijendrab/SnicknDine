@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,9 @@ public class CartItem {
     private int quantity;
     private double price;
     private Boolean immediateStatus = Boolean.FALSE;
+    private LocalDateTime addItemToCartTime;
+    private LocalDateTime updateItemInCartTime;
+
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
@@ -105,5 +109,21 @@ public class CartItem {
 
     public void setSelectCartAddOnItems(Set<SelectCartAddOnItems> selectCartAddOnItems) {
         this.selectCartAddOnItems = selectCartAddOnItems;
+    }
+
+    public LocalDateTime getAddItemToCartTime() {
+        return addItemToCartTime;
+    }
+
+    public void setAddItemToCartTime(LocalDateTime addItemToCartTime) {
+        this.addItemToCartTime = addItemToCartTime;
+    }
+
+    public LocalDateTime getUpdateItemInCartTime() {
+        return updateItemInCartTime;
+    }
+
+    public void setUpdateItemInCartTime(LocalDateTime updateItemInCartTime) {
+        this.updateItemInCartTime = updateItemInCartTime;
     }
 }

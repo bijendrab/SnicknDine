@@ -1,10 +1,13 @@
 package com.wityo.modules.product.model;
 
+import java.util.Set;
+
 public class ProductQuantityOption {
     private Long productQuantityOptionId;
     private String quantityOption;
     private String quantity;
     private double price;
+    private Set<AddOnProfile> quantityOptionAddOnProfiles;
 
     public ProductQuantityOption() {
     }
@@ -39,5 +42,13 @@ public class ProductQuantityOption {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Set<AddOnProfile> getQuantityOptionAddOnProfiles() {
+        return quantityOptionAddOnProfiles;
+    }
+
+    public void setQuantityOptionAddOnProfiles(Set<AddOnProfile> quantityOptionAddOnProfiles) {
+        this.quantityOptionAddOnProfiles = quantityOptionAddOnProfiles;
     }
 }

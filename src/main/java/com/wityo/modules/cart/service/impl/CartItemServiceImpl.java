@@ -1,5 +1,6 @@
 package com.wityo.modules.cart.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,8 +44,9 @@ public class CartItemServiceImpl implements CartItemService {
                         double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                         cartItem.setQuantity(cartItem.getQuantity() + 1);
                         cartItem.setPrice(cartItem.getQuantity() * newPrice);
+                        cartItem.setUpdateItemInCartTime(LocalDateTime.now());
                         cartItemRepository.save(cartItem);
-                        return "updated";
+                        return "Item Incremented";
                     }
                 }
             }
@@ -63,8 +65,9 @@ public class CartItemServiceImpl implements CartItemService {
             for (SelectCartAddOnItems selectCartAddOnItems : newCartItem.getSelectCartAddOnItems()) {
                 selectCartAddOnItems.setCartItem(newCartItem);
             }
+            newCartItem.setAddItemToCartTime(LocalDateTime.now());
             cartItemRepository.save(newCartItem);
-            return "added";
+            return "Item Added";
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -171,8 +174,9 @@ public class CartItemServiceImpl implements CartItemService {
                         }
                         cartItem.setQuantity(updatedQuantity);
                         cartItem.setPrice(cartItem.getQuantity() * newPrice);
+                        cartItem.setUpdateItemInCartTime(LocalDateTime.now());
                         cartItemRepository.save(cartItem);
-                        return "updated";
+                        return "Item Decremented";
                     }
                 }
             }
@@ -192,13 +196,15 @@ public class CartItemServiceImpl implements CartItemService {
                 String productJson = cartItem.getProductJson();
                 Product product = new Gson().fromJson(productJson, Product.class);
                 if (cartItem.getCartItemId() == cartItemId) {
+                    double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                     int updatedQuantity = cartItem.getQuantity() - 1;
                     if (updatedQuantity == 0) {
                         cartItemRepository.deleteById(cartItemId);
                         return "item removed as it is the only one present in cart";
                     }
                     cartItem.setQuantity(updatedQuantity);
-                    cartItem.setPrice(updatedQuantity * cartItem.getPrice());
+                    cartItem.setPrice(updatedQuantity * newPrice);
+                    cartItem.setUpdateItemInCartTime(LocalDateTime.now());
                     cartItemRepository.save(cartItem);
                     return "Item Decremented";
                 }
@@ -218,9 +224,11 @@ public class CartItemServiceImpl implements CartItemService {
                 String productJson = cartItem.getProductJson();
                 Product product = new Gson().fromJson(productJson, Product.class);
                 if (cartItem.getCartItemId() == cartItemId) {
+                    double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                     int updatedQuantity = cartItem.getQuantity() + 1;
                     cartItem.setQuantity(updatedQuantity);
-                    cartItem.setPrice(updatedQuantity * cartItem.getPrice());
+                    cartItem.setPrice(updatedQuantity * newPrice);
+                    cartItem.setUpdateItemInCartTime(LocalDateTime.now());
                     cartItemRepository.save(cartItem);
                     return "Item Incremented";
                 }
