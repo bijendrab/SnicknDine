@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class CustomerOrder {
 
-    private Long orderId;
+    private String orderId;
     private Float totalCost;
     private OrderStatus status;
     private Reservation accordingReservation;
@@ -15,11 +15,11 @@ public class CustomerOrder {
     private String orderedBy;
 
 
-    public Long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

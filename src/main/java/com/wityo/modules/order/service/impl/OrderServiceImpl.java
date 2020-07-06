@@ -2,6 +2,7 @@ package com.wityo.modules.order.service.impl;
 
 import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
+import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
@@ -42,7 +43,9 @@ public class OrderServiceImpl implements OrderService {
                 wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/checkout/" + restaurantId, order,
                     CustomerOrder.class);
             if (placedOrder != null) {
-                cartItemRepository.deleteCartItemsByCartId(customer.getCart().getCartId());
+                for(CartItem cartItem:order.getCartItems()){
+                    cartItemRepository.deleteById(cartItem.getCartItemId());
+                }
                 return placedOrder;
             }
         } catch (Exception e) {

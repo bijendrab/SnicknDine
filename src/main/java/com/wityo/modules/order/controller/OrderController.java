@@ -27,9 +27,16 @@ public class OrderController {
         Map<String, Object> response = new HashMap<String, Object>();
         response.putIfAbsent("message", "Reservation status");
         response.put("body", orderService.placeCustomerOrder(order, restaurantId));
-        response.put("error", Boolean.FALSE);
-        response.put("status", HttpStatus.OK);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        if (response.get("body")==null){
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
     }
 
     @ApiOperation(value = "get order of a table of the user", response = TableOrdersResponse.class)
