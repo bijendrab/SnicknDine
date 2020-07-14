@@ -6,8 +6,6 @@ import java.util.Map;
 public class BillingDetailResponse {
     private List<BillingDetailItem> billingDetailItems;
 
-    private Map<String, Map<Double, List<String>>> taxCharges;
-
     private List<TaxDetails> totalCalculatedTaxed;
 
     private List<DiscountDetails> totalCalculatedDiscount;
@@ -29,14 +27,6 @@ public class BillingDetailResponse {
 
     public void setBillingDetailItems(List<BillingDetailItem> billingDetailItems) {
         this.billingDetailItems = billingDetailItems;
-    }
-
-    public Map<String, Map<Double, List<String>>> getTaxCharges() {
-        return taxCharges;
-    }
-
-    public void setTaxCharges(Map<String, Map<Double, List<String>>> taxCharges) {
-        this.taxCharges = taxCharges;
     }
 
     public List<TaxDetails> getTotalCalculatedTaxed() {
