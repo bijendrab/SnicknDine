@@ -4,16 +4,25 @@ import java.util.List;
 import com.wityo.modules.product.model.Product;
 
 public class UserCartItem {
-    private Product product;
+    private String productId;
+    private Long restaurantId;
     private List<SelectCartAddOnItems> selectCartAddOnItems;
     private String userSelectQuantityOption;
 
-    public Product getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public List<SelectCartAddOnItems> getSelectCartAddOnItems() {

@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.model.SelectCartAddOnItems;
@@ -20,13 +21,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
 
     @Autowired
     CartItemRepository cartItemRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
+    @Autowired
+    private WityoRestAppProperties wityoRestAppProperties;
 
     public String addItemFromMenu(UserCartItem userCartItem) {
         try {
@@ -35,7 +41,10 @@ public class CartItemServiceImpl implements CartItemService {
             Cart cart = customer.getCart();
 
             Set<CartItem> userCartItems = cart.getCartItems();
-            String productId = userCartItem.getProduct().getProductId();
+            String productId = userCartItem.getProductId();
+            Product product = restTemplate.getForObject
+                (wityoRestAppProperties.getWityoUserAppUrl() + "api/menu/" + userCartItem.getRestaurantId() + "/"+ userCartItem.getProductId() ,
+                    Product.class);
             for (CartItem cartItem : userCartItems) {
                 String productJson = cartItem.getProductJson();
                 Product p = new Gson().fromJson(productJson, Product.class);
@@ -52,10 +61,10 @@ public class CartItemServiceImpl implements CartItemService {
             }
             CartItem newCartItem = new CartItem();
             newCartItem.setCart(cart);
-            newCartItem.setItemName(userCartItem.getProduct().getProductName());
+            newCartItem.setItemName(product.getProductName());
             newCartItem.setQuantity(1);
-            newCartItem.setProductJson(new Gson().toJson(userCartItem.getProduct()));
-            userCartItem.getProduct().getProductQuantityOptions().forEach(qOption2 -> {
+            newCartItem.setProductJson(new Gson().toJson(product));
+            product.getProductQuantityOptions().forEach(qOption2 -> {
                 if (qOption2.getQuantityOption().equalsIgnoreCase(userCartItem.getUserSelectQuantityOption())) {
                     newCartItem.setPrice(qOption2.getPrice() * 1);
                     newCartItem.setQuantityOption(userCartItem.getUserSelectQuantityOption());
@@ -160,7 +169,7 @@ public class CartItemServiceImpl implements CartItemService {
             Cart cart = customer.getCart();
 
             Set<CartItem> userCartItems = cart.getCartItems();
-            String productId = userCartItem.getProduct().getProductId();
+            String productId = userCartItem.getProductId();
             for (CartItem cartItem : userCartItems) {
                 String productJson = cartItem.getProductJson();
                 Product p = new Gson().fromJson(productJson, Product.class);

@@ -38,7 +38,7 @@ public class RestaurantServerServiceImpl implements RestaurantServerService {
     public RestaurantMenuListDto getRestaurantMenuByRestId(Long restaurantId) {
         try {
             RestaurantMenuListDto menuList = restTemplate.getForObject
-                    (wityoRestAppProperties.getWityoUserAppUrl() + "api/menu/" + restaurantId, RestaurantMenuListDto.class);
+                (wityoRestAppProperties.getWityoUserAppUrl() + "api/menu/" + restaurantId, RestaurantMenuListDto.class);
             return menuList;
         } catch (Exception e) {
             throw new NoRestaurantFoundException(e.getMessage());
