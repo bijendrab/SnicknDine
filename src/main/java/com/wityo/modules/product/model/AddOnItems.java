@@ -1,17 +1,25 @@
 package com.wityo.modules.product.model;
 
 public class AddOnItems {
-    private int ItemId;
+    private int itemId;
     private String itemName;
     private double price;
     private Boolean isEnabled;
 
     public int getItemId() {
-        return ItemId;
+        return itemId;
     }
 
     public void setItemId(int itemId) {
-        ItemId = itemId;
+        this.itemId = itemId;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 
     public String getItemName() {
