@@ -208,7 +208,7 @@ public class CartItemServiceImpl implements CartItemService {
                 System.out.println(cartItemId);
                 System.out.println(cartItem.getCartItemId());
                 System.out.println(cartItem.getCartItemId() == cartItemId);
-                if (cartItem.getCartItemId() == cartItemId) {
+                if (cartItem.getCartItemId().equals(cartItemId)) {
                     double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                     int updatedQuantity = cartItem.getQuantity() - 1;
                     if (updatedQuantity == 0) {
@@ -236,7 +236,7 @@ public class CartItemServiceImpl implements CartItemService {
             for (CartItem cartItem : cart.getCartItems()) {
                 String productJson = cartItem.getProductJson();
                 Product product = new Gson().fromJson(productJson, Product.class);
-                if (cartItem.getCartItemId() == cartItemId) {
+                if (cartItem.getCartItemId().equals(cartItemId)) {
                     double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                     int updatedQuantity = cartItem.getQuantity() + 1;
                     cartItem.setQuantity(updatedQuantity);
