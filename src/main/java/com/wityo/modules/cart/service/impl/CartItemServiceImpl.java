@@ -75,6 +75,7 @@ public class CartItemServiceImpl implements CartItemService {
                 selectCartAddOnItems.setCartItem(newCartItem);
             }
             newCartItem.setAddItemToCartTime(LocalDateTime.now());
+            newCartItem.setUpdateItemInCartTime(LocalDateTime.now());
             cartItemRepository.save(newCartItem);
             return "Item Added";
 
