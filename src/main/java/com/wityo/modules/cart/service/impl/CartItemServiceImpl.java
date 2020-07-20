@@ -201,9 +201,13 @@ public class CartItemServiceImpl implements CartItemService {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
+            System.out.println(cart.getCartItems());
             for (CartItem cartItem : cart.getCartItems()) {
                 String productJson = cartItem.getProductJson();
                 Product product = new Gson().fromJson(productJson, Product.class);
+                System.out.println(cartItemId);
+                System.out.println(cartItem.getCartItemId());
+                System.out.println(cartItem.getCartItemId() == cartItemId);
                 if (cartItem.getCartItemId() == cartItemId) {
                     double newPrice = cartItem.getPrice() / cartItem.getQuantity();
                     int updatedQuantity = cartItem.getQuantity() - 1;
