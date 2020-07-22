@@ -1,6 +1,9 @@
 package com.wityo.modules.order.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import com.wityo.modules.order.dto.OrderItemAddOn;
 
 public class OrderItem {
 
@@ -13,6 +16,7 @@ public class OrderItem {
     private double waitTime;
     private String quantityOption;
     private Boolean immediateStatus;
+    private Set<OrderItemAddOn> orderItemAddOns = new HashSet<>();
     private String customerCartItems;
     private Boolean specialDiscount;
     private float specialDiscountValue;
@@ -115,5 +119,13 @@ public class OrderItem {
 
     public void setSpecialDiscountValue(float specialDiscountValue) {
         this.specialDiscountValue = specialDiscountValue;
+    }
+
+    public Set<OrderItemAddOn> getOrderItemAddOns() {
+        return orderItemAddOns;
+    }
+
+    public void setOrderItemAddOns(Set<OrderItemAddOn> orderItemAddOns) {
+        this.orderItemAddOns = orderItemAddOns;
     }
 }
