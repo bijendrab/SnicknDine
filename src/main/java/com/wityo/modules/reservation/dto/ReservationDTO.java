@@ -7,7 +7,7 @@ import javax.persistence.Embedded;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class ReservationDetailsDTO {
+public class ReservationDTO {
 
     @NotNull
     private LocalDate date;
@@ -18,13 +18,11 @@ public class ReservationDetailsDTO {
     @NotNull
     private Integer tableNumber;
 
-    private Customer customerInfo;
-
     @NotNull
     @Embedded
     private TimeSpan timeSpan;
 
-    public ReservationDetailsDTO() {
+    public ReservationDTO() {
     }
 
     public LocalDate getDate() {
@@ -51,24 +49,8 @@ public class ReservationDetailsDTO {
         this.tableNumber = tableNumber;
     }
 
-    public Customer getCustomerInfo() {
-        return customerInfo;
-    }
-
-    public void setCustomerInfo(Customer customerInfo) {
-        this.customerInfo = customerInfo;
-    }
-
-    public TimeSpan getTs() {
-        return getTimeSpan();
-    }
-
     public TimeSpan getTimeSpan() {
         return timeSpan;
-    }
-
-    public void setTs(TimeSpan ts) {
-        setTimeSpan(ts);
     }
 
     public void setTimeSpan(TimeSpan ts) {

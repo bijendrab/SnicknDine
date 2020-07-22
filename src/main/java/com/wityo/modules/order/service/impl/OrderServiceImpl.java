@@ -1,7 +1,10 @@
 package com.wityo.modules.order.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
+import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
@@ -34,16 +37,20 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private WityoRestAppProperties wityoRestAppProperties;
 
-    public CustomerOrder placeCustomerOrder(PlaceOrderDTO order, Long restaurantId) {
+    public CustomerOrder placeCustomerOrder(Long restaurantId) {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
-            order.setCustomer(customer);
+            PlaceOrderDTO placeOrderDTO = new PlaceOrderDTO();
+            Cart cart = customer.getCart();
+            List<CartItem> targetCart = new ArrayList<>(cart.getCartItems());
+            placeOrderDTO.setCartItems(targetCart);
+            placeOrderDTO.setCustomer(customer);
             CustomerOrder placedOrder = restTemplate.postForObject(
-                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/checkout/" + restaurantId, order,
+                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/checkout/" + restaurantId, placeOrderDTO,
                     CustomerOrder.class);
             if (placedOrder != null) {
-                for(CartItem cartItem:order.getCartItems()){
+                for(CartItem cartItem:placeOrderDTO.getCartItems()){
                     cartItemRepository.deleteById(cartItem.getCartItemId());
                 }
                 return placedOrder;

@@ -1,7 +1,7 @@
 package com.wityo.modules.reservation.controller;
 
 import com.wityo.modules.reservation.dto.CheckReservationResponseDTO;
-import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
+import com.wityo.modules.reservation.dto.ReservationDTO;
 import com.wityo.modules.reservation.service.ReservationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reserve-table/{restaurantId}")
-    public ResponseEntity<?> reserveTable(@PathVariable Long restaurantId, @RequestBody ReservationDetailsDTO reservation) {
+    public ResponseEntity<?> reserveTable(@PathVariable Long restaurantId, @RequestBody ReservationDTO reservation) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.putIfAbsent("message", "New reservation successful");
         response.put("body", reservationService.reserveTable(restaurantId, reservation));

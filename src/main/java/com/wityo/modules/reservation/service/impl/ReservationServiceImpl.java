@@ -1,9 +1,9 @@
 package com.wityo.modules.reservation.service.impl;
 
-import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.reservation.dto.CheckReservationResponseDTO;
-import com.wityo.modules.reservation.dto.ReservationDetailsDTO;
+import com.wityo.modules.reservation.dto.ReservationDTO;
+import com.wityo.modules.reservation.dto.ReservationDetails;
 import com.wityo.modules.reservation.model.Reservation;
 import com.wityo.modules.reservation.service.ReservationService;
 import com.wityo.modules.user.model.Customer;
@@ -49,14 +49,16 @@ public class ReservationServiceImpl implements ReservationService {
      * @Description: Method to reserve table for user
      *
      **/
-    public Reservation reserveTable(Long restaurantId, ReservationDetailsDTO reservation) {
+    public Reservation reserveTable(Long restaurantId, ReservationDTO reservation) {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
-            reservation.setCustomerInfo(customer);
+            ReservationDetails reservationDetails = new ReservationDetails();
+            reservationDetails.setReservationDTO(reservation);
+            reservationDetails.setCustomerInfo(customer);
             Reservation dto = restTemplate
                     .postForObject(wityoRestAppProperties.getWityoUserAppUrl() + "api/reservation/" + restaurantId + "/reserve",
-                            reservation,
+                        reservationDetails,
                             Reservation.class);
             return dto;
         } catch (Exception e) {

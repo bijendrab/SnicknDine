@@ -7,7 +7,7 @@ import com.wityo.modules.order.model.CustomerOrder;
 
 public interface OrderService {
 
-    CustomerOrder placeCustomerOrder(PlaceOrderDTO order, Long restaurantId);
+    CustomerOrder placeCustomerOrder(Long restaurantId);
 
     TableOrdersResponse getCustomerTableOrders(Long restaurantId);
 

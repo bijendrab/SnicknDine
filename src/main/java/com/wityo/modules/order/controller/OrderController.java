@@ -23,10 +23,10 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/checkout/{restaurantId}")
-    public ResponseEntity<?> placeOrder(@PathVariable Long restaurantId, @RequestBody PlaceOrderDTO order) {
+    public ResponseEntity<?> placeOrder(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.putIfAbsent("message", "Reservation status");
-        response.put("body", orderService.placeCustomerOrder(order, restaurantId));
+        response.put("body", orderService.placeCustomerOrder(restaurantId));
         if (response.get("body")==null){
             response.put("error", Boolean.TRUE);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
