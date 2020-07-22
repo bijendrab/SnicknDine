@@ -7,27 +7,41 @@ import javax.validation.constraints.Pattern;
 public class TimeSpan {
 
     @Pattern(regexp = "([01]?[0-9]|2[0-3])[0-5][0-9]")
-    private String startTime;
+    private String start;   //e.g. "1400" -> 14:00
+
     @Pattern(regexp = "([01]?[0-9]|2[0-3])[0-5][0-9]")
-    private String endTime;
+    private String end;     //e.g. "1630" -> 16:30
 
     public TimeSpan() {
     }
 
-    public String getStartTime() {
-        return startTime;
+    public TimeSpan(String start, String end) {
+        this.start = start;
+        this.end = end;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public String getStart() {
+        return start;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeSpan{" +
+            "start='" + start + '\'' +
+            ", end='" + end + '\'' +
+            '}';
     }
 
 }
