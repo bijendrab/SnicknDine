@@ -25,14 +25,15 @@ public class OrderController {
     @PostMapping("/checkout/{restaurantId}")
     public ResponseEntity<?> placeOrder(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.putIfAbsent("message", "Reservation status");
         response.put("body", orderService.placeCustomerOrder(restaurantId));
         if (response.get("body")==null){
+            response.put("message","order not placed");
             response.put("error", Boolean.TRUE);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         else {
+            response.put("message","order placed");
             response.put("error", Boolean.FALSE);
             response.put("status", HttpStatus.OK);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -45,9 +46,18 @@ public class OrderController {
         Map<String, Object> response = new HashMap<String, Object>();
         response.putIfAbsent("message", "Table Order Items");
         response.put("body", orderService.getCustomerTableOrders(restaurantId));
-        response.put("error", Boolean.FALSE);
-        response.put("status", HttpStatus.OK);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        if (response.get("body")==null){
+            response.put("message","fetching order is not successful");
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("message","list of orders");
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
     }
 
     @PutMapping("/update-ordered-item/{restaurantId}")

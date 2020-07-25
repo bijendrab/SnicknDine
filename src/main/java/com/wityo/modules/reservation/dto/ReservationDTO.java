@@ -20,7 +20,7 @@ public class ReservationDTO {
 
     @NotNull
     @Embedded
-    private TimeSpan timeSpan;
+    private TimeSpan reservationTime;
 
     public ReservationDTO() {
     }
@@ -49,12 +49,11 @@ public class ReservationDTO {
         this.tableNumber = tableNumber;
     }
 
-    public TimeSpan getTimeSpan() {
-        return timeSpan;
+    public TimeSpan getReservationTime() {
+        return reservationTime;
     }
 
-    public void setTimeSpan(TimeSpan ts) {
-        this.timeSpan = ts;
+    public void setReservationTime(TimeSpan reservationTime) {
+        this.reservationTime = reservationTime;
     }
-
 }

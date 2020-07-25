@@ -13,8 +13,11 @@ import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
 import com.wityo.modules.order.model.CustomerOrder;
 import com.wityo.modules.order.service.OrderService;
+import com.wityo.modules.reservation.service.impl.ReservationServiceImpl;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -37,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private WityoRestAppProperties wityoRestAppProperties;
 
+    private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
+
     public CustomerOrder placeCustomerOrder(Long restaurantId) {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -56,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
                 return placedOrder;
             }
         } catch (Exception e) {
+            logger.error("Exception in reserveTable inside ReservationServiceImpl:- {}", e);
         }
         return null;
     }
@@ -69,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
                     TableOrdersResponse.class);
             return response;
         } catch (Exception e) {
-            // exception
+            logger.error("Exception in reserveTable inside ReservationServiceImpl:- {}", e);
         }
         return null;
     }

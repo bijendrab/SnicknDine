@@ -33,10 +33,18 @@ public class ReservationController {
     @PostMapping("/reserve-table/{restaurantId}")
     public ResponseEntity<?> reserveTable(@PathVariable Long restaurantId, @RequestBody ReservationDTO reservation) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.putIfAbsent("message", "New reservation successful");
         response.put("body", reservationService.reserveTable(restaurantId, reservation));
-        response.put("error", Boolean.FALSE);
-        response.put("status", HttpStatus.ACCEPTED);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        if (response.get("body")==null){
+            response.put("message","reservation not successful");
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("message","reservation successful");
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
     }
 }
