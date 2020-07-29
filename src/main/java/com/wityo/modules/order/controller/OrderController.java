@@ -27,7 +27,7 @@ public class OrderController {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("body", orderService.placeCustomerOrder(restaurantId));
         if (response.get("body")==null){
-            response.put("message","order not placed");
+            response.put("message","either reservation not occurred or something wrong in order request ");
             response.put("error", Boolean.TRUE);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,11 +47,12 @@ public class OrderController {
         response.putIfAbsent("message", "Table Order Items");
         response.put("body", orderService.getCustomerTableOrders(restaurantId));
         if (response.get("body")==null){
-            response.put("message","fetching order is not successful");
+            response.put("message","fetching order is not successful. may be no reservation or something wrong with order");
             response.put("error", Boolean.TRUE);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
         else {
             response.put("message","list of orders");
             response.put("error", Boolean.FALSE);
@@ -73,10 +74,18 @@ public class OrderController {
     @DeleteMapping("/delete-ordered-item/{restaurantId}")
     public ResponseEntity<?> deleteOrderedItem(@RequestBody UpdateOrderItemDTO orderItem, @PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.putIfAbsent("message", "Order Item: " + orderItem.getOrderItemId() + " deleted!");
         response.put("body", orderService.deleteCustomerOrderedItem(orderItem, restaurantId));
-        response.put("error", Boolean.FALSE);
-        response.put("status", HttpStatus.OK);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        if (response.get("body").equals(Boolean.FALSE)){
+            response.put("message","Order Item: " + orderItem.getOrderItemId() + " could not get deleted!");
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("message","Order Item: " + orderItem.getOrderItemId() + " got deleted!");
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 }
