@@ -42,4 +42,15 @@ public class RestaurantServerController {
         response.put("status", HttpStatus.FOUND);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "get details of a restaurant", response = RestaurantListDto.class)
+    @GetMapping(value = "/{restaurantId}")
+    public ResponseEntity<?> getRestaurantDetails(@PathVariable Long restaurantId) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.putIfAbsent("message", "Restaurant Details by Id");
+        response.put("body", restaurantService.fetchRestaurantDetailsById(restaurantId));
+        response.put("error", Boolean.FALSE);
+        response.put("status", HttpStatus.FOUND);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
 }

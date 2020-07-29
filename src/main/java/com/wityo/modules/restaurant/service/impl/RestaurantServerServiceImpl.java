@@ -3,6 +3,7 @@ package com.wityo.modules.restaurant.service.impl;
 import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.restaurant.Exception.NoRestaurantFoundException;
+import com.wityo.modules.restaurant.dto.RestaurantBasicDTO;
 import com.wityo.modules.restaurant.dto.RestaurantListDto;
 import com.wityo.modules.restaurant.dto.RestaurantMenuListDto;
 import com.wityo.modules.restaurant.service.RestaurantServerService;
@@ -28,6 +29,17 @@ public class RestaurantServerServiceImpl implements RestaurantServerService {
         try {
             return restTemplate.getForObject
                     (wityoRestAppProperties.getWityoUserAppUrl()+"api/restaurant/restaurant-id-list", RestaurantListDto.class);
+        } catch (Exception e) {
+            throw new NoRestaurantFoundException(e.getMessage());
+        }
+    }
+    /*=================================RESTAURANT LIST REST CALLS================================================*/
+
+    /*=================================RESTAURANT LIST REST CALLS================================================*/
+    public RestaurantBasicDTO fetchRestaurantDetailsById(Long restaurantId) throws NoRestaurantFoundException {
+        try {
+            return restTemplate.getForObject
+                (wityoRestAppProperties.getWityoUserAppUrl()+"api/restaurant/"+ restaurantId, RestaurantBasicDTO.class);
         } catch (Exception e) {
             throw new NoRestaurantFoundException(e.getMessage());
         }
