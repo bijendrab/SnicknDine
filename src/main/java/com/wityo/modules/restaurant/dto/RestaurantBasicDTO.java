@@ -3,6 +3,7 @@ package com.wityo.modules.restaurant.dto;
 public class RestaurantBasicDTO {
     private String restName;
     private String phone;
+    private String description;
     private String address1;
     private String address2;
     private String city;
@@ -22,6 +23,14 @@ public class RestaurantBasicDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAddress1() {
