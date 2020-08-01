@@ -4,12 +4,17 @@ import com.wityo.common.Constant;
 import com.wityo.common.ResponseCreator;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.user.dto.LoginRequestDTO;
+import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
+import com.wityo.modules.user.repository.CustomerRepository;
+import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
 import com.wityo.security.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +28,12 @@ public class UserController {
 
 	@Autowired
 	private UserService userServiceImpl;
+
+	@Autowired
+	CustomerRepository customerRepository;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	private JwtTokenProvider tokenProvider;
@@ -79,6 +90,13 @@ public class UserController {
 	private String generateTokenForUser(User user) {
 		String jwt = Constant.TOKEN_PREFIX + tokenProvider.generateJwtToken(user);
 		return jwt;
+	}
+
+	@GetMapping("/getUserDetails")
+	public ResponseEntity<Customer> getUser() {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer customer = customerRepository.findByPhoneNumber(user.getPhoneNumber());
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 }

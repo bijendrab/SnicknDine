@@ -63,37 +63,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			 * After the above code is done, this header will not be present.
 			 * 
 			 * */
+			FilterErrorResponse errorResponse = new FilterErrorResponse();
 			String firstTimeCheck = request.getHeader("first-time-validation");
 			if(StringUtils.hasText(firstTimeCheck) && firstTimeCheck.equals("true")) {
 				filterChain.doFilter(request, response);
 				return;
 			}else {
 				String jwt = getJwtFromRequest(request);
-				if(StringUtils.hasText(jwt) && tokenProvider.validateJwtToken(jwt)) {
-					Long userId = tokenProvider.getUserIdFromToken(jwt);
-					User userDetail = customUserDetailService.loadUserByUserId(userId);
-					Authentication auth = new UsernamePasswordAuthenticationToken(userDetail,null,Collections.emptyList());
-					SecurityContextHolder.getContext().setAuthentication(auth);
-					if( userDetail == null) {
-						throw new UsernameNotFoundException("Invalid Session");
+				if(StringUtils.hasText(jwt)){
+					if (tokenProvider.validateJwtToken(jwt)) {
+						Long userId = tokenProvider.getUserIdFromToken(jwt);
+						User userDetail = customUserDetailService.loadUserByUserId(userId);
+						Authentication auth = new UsernamePasswordAuthenticationToken(userDetail,null,Collections.emptyList());
+						SecurityContextHolder.getContext().setAuthentication(auth);
+						if( userDetail == null) {
+							throw new UsernameNotFoundException("Invalid Session");
+						}
+						filterChain.doFilter(request, response);
+						return;
+					} else {
+						SetErrorResponse(response, errorResponse);
+						return;
 					}
-					filterChain.doFilter(request, response);
-					return;
-				} else{
+				}
+				else {
 					filterChain.doFilter(request, response);
 					return;
 				}
+
 			}
-		
+
 		}catch (Exception e) {
 			logger.info("Exception in filter: {}", e.getMessage());
 		}
 		FilterErrorResponse errorResponse = new FilterErrorResponse();
+		SetErrorResponse(response, errorResponse);
+		return;
+	}
+
+	private void SetErrorResponse(HttpServletResponse response, FilterErrorResponse errorResponse) throws IOException {
 		errorResponse.setBody(null);
 		errorResponse.setMessage("You are not authorized to access this page!");
 		errorResponse.setStatus(String.valueOf(HttpStatus.UNAUTHORIZED));
 		errorResponse.setError(true);
-		
+
 		String jsonResp = new Gson().toJson(errorResponse);
 		response.setContentType("application/json");
 		response.setStatus(401);

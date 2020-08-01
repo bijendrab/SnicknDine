@@ -12,7 +12,6 @@ import java.util.Collection;
 @Table(name = "user")
 public class User implements UserDetails, Serializable {
 
-    private static final long serialVersionUID = 2681531852204068105L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
