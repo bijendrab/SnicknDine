@@ -1,7 +1,6 @@
 package com.wityo.modules.order.dto;
 
 import java.util.List;
-import java.util.Map;
 
 public class BillingDetailResponse {
     private List<BillingDetailItem> billingDetailItems;
@@ -14,11 +13,12 @@ public class BillingDetailResponse {
     private float serviceChargePercent;
     private double addOnCharge;
     private float packagingCharge;
-    private double overallDiscount;
-    private float overallDiscountPercent;
+    private double tableDiscount;
+    private float tableDiscountPercent;
     private double totalCostWithoutTaxAndDiscount;
     private double totalTax;
     private double totalItemsDiscount;
+    private double totalDiscount;
     private double totalCost;
 
     public List<BillingDetailItem> getBillingDetailItems() {
@@ -77,20 +77,20 @@ public class BillingDetailResponse {
         this.packagingCharge = packagingCharge;
     }
 
-    public double getOverallDiscount() {
-        return overallDiscount;
+    public double getTableDiscount() {
+        return tableDiscount;
     }
 
-    public void setOverallDiscount(double overallDiscount) {
-        this.overallDiscount = overallDiscount;
+    public void setTableDiscount(double tableDiscount) {
+        this.tableDiscount = tableDiscount;
     }
 
-    public float getOverallDiscountPercent() {
-        return overallDiscountPercent;
+    public float getTableDiscountPercent() {
+        return tableDiscountPercent;
     }
 
-    public void setOverallDiscountPercent(float overallDiscountPercent) {
-        this.overallDiscountPercent = overallDiscountPercent;
+    public void setTableDiscountPercent(float tableDiscountPercent) {
+        this.tableDiscountPercent = tableDiscountPercent;
     }
 
     public double getTotalCostWithoutTaxAndDiscount() {
@@ -123,5 +123,13 @@ public class BillingDetailResponse {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public double getTotalDiscount() {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(double totalDiscount) {
+        this.totalDiscount = totalDiscount;
     }
 }
