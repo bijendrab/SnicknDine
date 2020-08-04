@@ -2,6 +2,7 @@ package com.wityo.modules.order.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.cart.model.Cart;
@@ -48,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
             Customer customer = user.getCustomer();
             PlaceOrderDTO placeOrderDTO = new PlaceOrderDTO();
             Cart cart = customer.getCart();
+            cart.setCartItems(cart.getCartItems().stream().filter(item -> item.getRestaurantId() == restaurantId).collect(Collectors.toSet()));
             List<CartItem> targetCart = new ArrayList<>(cart.getCartItems());
             placeOrderDTO.setCartItems(targetCart);
             placeOrderDTO.setCustomer(customer);
