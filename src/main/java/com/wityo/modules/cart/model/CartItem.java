@@ -15,7 +15,7 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
-
+    private Long restaurantId;
     private String itemName;
     private String quantityOption;
     private int quantity;
@@ -37,6 +37,14 @@ public class CartItem {
     private Set<SelectCartAddOnItems> selectCartAddOnItems;
 
     public CartItem() {
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public Long getCartItemId() {

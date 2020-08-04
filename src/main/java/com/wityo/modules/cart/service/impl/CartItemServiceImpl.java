@@ -40,7 +40,7 @@ public class CartItemServiceImpl implements CartItemService {
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
 
-            Set<CartItem> userCartItems = cart.getCartItems();
+            Set<CartItem> userCartItems = cart.getCartItems().stream().filter(item -> item.getRestaurantId() == userCartItem.getRestaurantId()).collect(Collectors.toSet());
             String productId = userCartItem.getProductId();
             Product product = restTemplate.getForObject
                 (wityoRestAppProperties.getWityoUserAppUrl() + "api/menu/" + userCartItem.getRestaurantId() + "/"+ userCartItem.getProductId() ,
@@ -64,6 +64,7 @@ public class CartItemServiceImpl implements CartItemService {
             newCartItem.setItemName(product.getProductName());
             newCartItem.setQuantity(1);
             newCartItem.setProductJson(new Gson().toJson(product));
+            newCartItem.setRestaurantId(userCartItem.getRestaurantId());
             product.getProductQuantityOptions().forEach(qOption2 -> {
                 if (qOption2.getQuantityOption().equalsIgnoreCase(userCartItem.getUserSelectQuantityOption())) {
                     newCartItem.setPrice(qOption2.getPrice() * 1);
@@ -169,7 +170,7 @@ public class CartItemServiceImpl implements CartItemService {
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
 
-            Set<CartItem> userCartItems = cart.getCartItems();
+            Set<CartItem> userCartItems = cart.getCartItems().stream().filter(item -> item.getRestaurantId() == userCartItem.getRestaurantId()).collect(Collectors.toSet());
             String productId = userCartItem.getProductId();
             for (CartItem cartItem : userCartItems) {
                 String productJson = cartItem.getProductJson();

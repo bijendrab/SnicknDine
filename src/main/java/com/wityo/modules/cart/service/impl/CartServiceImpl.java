@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -26,10 +28,11 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Override
-    public Cart getCart() throws NoCartFoundException {
+    public Cart getCart(Long restaurantId) throws NoCartFoundException {
         User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customer customer = customerService.getCustomerByPhoneNumber(userDetail.getPhoneNumber());
         Cart cart = customer.getCart();
+        cart.setCartItems(cart.getCartItems().stream().filter(item -> item.getRestaurantId() == restaurantId).collect(Collectors.toSet()));
         return cart;
     }
 

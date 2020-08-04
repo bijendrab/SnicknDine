@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +28,11 @@ public class CartController {
 
 
     @ApiOperation(value = "get cart items of a user", response = Cart.class)
-    @GetMapping("/getCart")
-    public ResponseEntity<?> fetchCartById() {
+    @GetMapping("/getCart/{restaurantId}")
+    public ResponseEntity<?> fetchCartById(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("message", "user cart items");
-        response.put("body", cartService.getCart());
+        response.put("body", cartService.getCart(restaurantId));
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
