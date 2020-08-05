@@ -1,6 +1,7 @@
 package com.wityo.modules.order.controller;
 
 import com.wityo.common.Constant;
+import com.wityo.modules.order.dto.EndDiningInfo;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
 import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
@@ -88,4 +89,23 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
+
+    @PostMapping("/end-dining")
+    public ResponseEntity<?> endDining(@RequestBody EndDiningInfo endDiningInfo) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("body", orderService.endDining(endDiningInfo));
+        if (response.get("body")==null){
+            response.put("message","Something went wrong in end dining");
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("message","Dining Ended Successfully");
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
+    }
+
 }

@@ -229,9 +229,10 @@ public class CartItemServiceImpl implements CartItemService {
     public String subtractCartItem(Long cartItemId) {
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndCartStatus(userDetail.getUserId(),true);
-            if(userRestaurantBindCurrent ==null){
-                return "Binding is not there between user and restaurant with cart status true";
+            UserRestaurantBind userRestaurantBindCartCurrent = userRestBindRepository.findAllByUserIdAndCartStatus(userDetail.getUserId(),true);
+            UserRestaurantBind userRestaurantBindOrderCurrent = userRestBindRepository.findAllByUserIdAndOrderStatus(userDetail.getUserId(),true);
+            if(userRestaurantBindCartCurrent ==null && userRestaurantBindOrderCurrent == null){
+                return "Binding is not there between user and restaurant with cart and order status true";
             }
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
@@ -241,7 +242,7 @@ public class CartItemServiceImpl implements CartItemService {
                     int updatedQuantity = cartItem.getQuantity() - 1;
                     if (updatedQuantity == 0) {
                         cartItemRepository.deleteById(cartItemId);
-                        userRestBindService.unBindUserToRestaurantCart(userRestaurantBindCurrent.getRestaurantId());
+                        userRestBindService.unBindUserToRestaurantCart(userRestaurantBindCartCurrent.getRestaurantId());
                         return "Item removed as it is the only one present in cart";
                     }
                     cartItem.setQuantity(updatedQuantity);

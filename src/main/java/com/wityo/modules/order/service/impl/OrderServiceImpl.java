@@ -3,13 +3,13 @@ package com.wityo.modules.order.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.Binding.service.UserRestBindService;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
+import com.wityo.modules.order.dto.EndDiningInfo;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
 import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
@@ -65,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
                     cartItemRepository.deleteById(cartItem.getCartItemId());
                 }
                 userRestBindService.unBindUserToRestaurantCart(restaurantId);
+                userRestBindService.bindUserToRestaurantOrder(restaurantId);
                 return placedOrder;
             }
         } catch (Exception e) {
@@ -72,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return null;
     }
+
 
     public TableOrdersResponse getCustomerTableOrders(Long restaurantId) {
         try {
@@ -123,5 +125,22 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public Boolean endDining(EndDiningInfo endDiningInfo) {
+        try {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            HttpEntity<EndDiningInfo> entity = new HttpEntity<>(endDiningInfo);
+            Boolean endDiningStatus = restTemplate.exchange(
+                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/end-dining", HttpMethod.DELETE, entity,
+                Boolean.class).getBody();
+            userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
+            return endDiningStatus;
+        } catch (Exception e) {
+            {
+                logger.error("Exception in end dining:- {}", e.getMessage());
+                return false;
+            }
+        }
     }
 }

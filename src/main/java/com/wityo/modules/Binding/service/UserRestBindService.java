@@ -10,4 +10,9 @@ public interface UserRestBindService {
 
     String unBindUserToRestaurantCart(Long restaurantId);
 
+    String bindUserToRestaurantOrder(Long restaurantId);
+
+    String unBindUserToRestaurantOrder(Long restaurantId);
+
+
 }

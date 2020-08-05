@@ -30,7 +30,7 @@ public class UserRestaurantBindController {
     public ResponseEntity<?> linkUserToRest(@RequestBody UserRestBindInput userRestBindInput) {
         Map<String, Object> response = new HashMap<String, Object>();
         String bindStatus= userRestBindService.bindUserToRestaurant(userRestBindInput);
-        if(!bindStatus.contains("is active now for the user")){
+        if(!bindStatus.contains("is active for this user")){
             response.put("message","Binding of User to Restaurant");
             response.put("body", bindStatus);
             response.put("error", Boolean.TRUE);

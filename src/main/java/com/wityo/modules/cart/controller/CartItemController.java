@@ -35,9 +35,9 @@ public class CartItemController {
             cartStatus.contains("Binding is not there between")){
             response.put("message", "Add Item from Menu to Cart");
             response.put("body", cartStatus);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", HttpStatus.NOT_FOUND);
             response.put("error", true);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "add item from Menu to Cart");
         response.put("body", cartStatus);
@@ -57,9 +57,9 @@ public class CartItemController {
         if(cartStatus.contains("Binding")){
             response.put("message", "add item in cart");
             response.put("body", cartStatus);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", HttpStatus.NOT_FOUND);
             response.put("error", true);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "add item in cart");
         response.put("body", cartStatus);
@@ -79,9 +79,9 @@ public class CartItemController {
         if(!Status.equals("deleted")){
             response.put("message", "delete cartItem");
             response.put("body", Status);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", HttpStatus.NOT_FOUND);
             response.put("error", true);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "delete cartItem");
         response.put("body", Status);
@@ -117,9 +117,9 @@ public class CartItemController {
         if(cartStatus.contains("Binding")){
             response.put("message", "subtract item from Menu");
             response.put("body", cartStatus);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", HttpStatus.NOT_FOUND);
             response.put("error", true);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "subtract item from Menu");
         response.put("body", cartStatus);
@@ -139,9 +139,9 @@ public class CartItemController {
         if(cartStatus.contains("Binding")){
             response.put("message", "subtract item from Cart");
             response.put("body", cartStatus);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", HttpStatus.NOT_FOUND);
             response.put("error", true);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "subtract item from Cart");
         response.put("body", cartStatus);

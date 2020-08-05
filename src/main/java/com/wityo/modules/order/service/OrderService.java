@@ -1,5 +1,6 @@
 package com.wityo.modules.order.service;
 
+import com.wityo.modules.order.dto.EndDiningInfo;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
 import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
@@ -14,4 +15,6 @@ public interface OrderService {
     CustomerOrder updateCustomerOrderedItem(UpdateOrderItemDTO dto, Long restaurantId);
 
     Boolean deleteCustomerOrderedItem(UpdateOrderItemDTO dto, Long restaurantId);
+
+    Boolean endDining(EndDiningInfo endDiningInfo);
 }

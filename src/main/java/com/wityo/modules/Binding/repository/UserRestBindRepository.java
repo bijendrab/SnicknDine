@@ -11,4 +11,5 @@ public interface UserRestBindRepository extends JpaRepository<UserRestaurantBind
     UserRestaurantBind findAllByUserIdAndRestaurantId(Long userId, Long restaurantId);
     List<UserRestaurantBind> findAllByUserIdAndRestaurantIdNot(Long userId, Long restaurantId);
     UserRestaurantBind findAllByUserIdAndCartStatus(Long userId, Boolean cartStatus);
+    UserRestaurantBind findAllByUserIdAndOrderStatus(Long userId, Boolean orderStatus);
 }
