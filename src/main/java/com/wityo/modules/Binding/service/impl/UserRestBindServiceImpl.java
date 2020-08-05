@@ -25,7 +25,7 @@ public class UserRestBindServiceImpl implements UserRestBindService {
             List<UserRestaurantBind> userRestaurantBindList = userRestBindRepository.findAllByUserIdAndRestaurantIdNot(userDetail.getUserId(),userRestBindInput.getRestaurantId());
             if(userRestaurantBindUpdate !=null){
                 if(userRestaurantBindUpdate.getActive()==true){
-                    return "restaurant:"+ userRestBindInput.getRestaurantId() + " is already active for this user";
+                    return "restaurant:"+ userRestBindInput.getRestaurantId() + " is active for this user already";
                 }
                 userRestaurantBindUpdate.setActive(Boolean.TRUE);
                 userRestBindRepository.save(userRestaurantBindUpdate);
