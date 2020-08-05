@@ -44,6 +44,9 @@ public class CartItemServiceImpl implements CartItemService {
     public String addItemFromMenu(UserCartItem userCartItem) {
         try {
             String cartStatus = userRestBindService.bindUserToRestaurantCart(userCartItem.getRestaurantId());
+            if(cartStatus ==null){
+                return "Binding is not there between current user and given restaurant id: " + userCartItem.getRestaurantId();
+            }
             if(!cartStatus.equals("Go Ahead") && !cartStatus.equals("Start Adding Cart Items")){
                 return cartStatus;
             }
@@ -158,6 +161,9 @@ public class CartItemServiceImpl implements CartItemService {
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndCartStatus(userDetail.getUserId(),true);
+            if(userRestaurantBindCurrent ==null){
+                return "Binding is not there between user and restaurant with cart status true";
+            }
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
             cartItemRepository.deleteById(cartItemId);

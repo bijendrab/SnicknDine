@@ -31,7 +31,8 @@ public class CartItemController {
         String cartStatus = cartItemService.addItemFromMenu(userCartItem);
         if(cartStatus.contains("Cart Items exist") ||
             cartStatus.contains("Order is going on") ||
-            cartStatus.contains("User has not selected restaurant")){
+            cartStatus.contains("User has not selected restaurant")||
+            cartStatus.contains("Binding is not there between")){
             response.put("message", "Add Item from Menu to Cart");
             response.put("body", cartStatus);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
