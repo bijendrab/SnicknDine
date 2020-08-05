@@ -53,11 +53,19 @@ public class CartItemController {
     @PutMapping("/addItemFromCart/{cartItemId}")
     public ResponseEntity<?> addItemFromCart(@PathVariable String cartItemId) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", cartItemService.addItemFromCart(Long.parseLong(cartItemId)));
-        response.put("body", "");
+        String cartStatus = cartItemService.addItemFromCart(Long.parseLong(cartItemId));
+        if(cartStatus.contains("Binding")){
+            response.put("message", "add item in cart");
+            response.put("body", cartStatus);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "add item in cart");
+        response.put("body", cartStatus);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     /*
@@ -79,7 +87,7 @@ public class CartItemController {
         response.put("body", Status);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
 
@@ -95,7 +103,7 @@ public class CartItemController {
         response.put("body", "");
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     /*
@@ -105,11 +113,19 @@ public class CartItemController {
     @PutMapping("/subtractItemFromMenu")
     public ResponseEntity<?> decrementItemQuantityFromMenu(@RequestBody UserCartItem userCartItem) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", cartItemService.subtractItemFromMenu(userCartItem));
-        response.put("body", "");
+        String cartStatus = cartItemService.subtractItemFromMenu(userCartItem);
+        if(cartStatus.contains("Binding")){
+            response.put("message", "subtract item from Menu");
+            response.put("body", cartStatus);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "subtract item from Menu");
+        response.put("body", cartStatus);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     /*
@@ -119,10 +135,18 @@ public class CartItemController {
     @DeleteMapping("/subtractItemFromCart/{cartItemId}")
     public ResponseEntity<?> decrementCartItemQuantity(@PathVariable String cartItemId) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", cartItemService.subtractCartItem(Long.parseLong(cartItemId)));
-        response.put("body", "");
+        String cartStatus = cartItemService.subtractCartItem(Long.parseLong(cartItemId));
+        if(cartStatus.contains("Binding")){
+            response.put("message", "subtract item from Cart");
+            response.put("body", cartStatus);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "subtract item from Cart");
+        response.put("body", cartStatus);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }
