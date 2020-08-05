@@ -28,11 +28,21 @@ public class CartItemController {
     @PostMapping("/addItemFromMenu")
     public ResponseEntity<?> addItemFromMenu(@RequestBody UserCartItem userCartItem) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", cartItemService.addItemFromMenu(userCartItem));
-        response.put("body", "");
+        String cartStatus = cartItemService.addItemFromMenu(userCartItem);
+        if(cartStatus.contains("Cart Items exist") ||
+            cartStatus.contains("Order is going on") ||
+            cartStatus.contains("User has not selected restaurant")){
+            response.put("message", "Add Item from Menu to Cart");
+            response.put("body", cartStatus);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "add item from Menu to Cart");
+        response.put("body", cartStatus);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     /*
@@ -56,8 +66,16 @@ public class CartItemController {
     @DeleteMapping("/delete/{cartItemId}")
     public ResponseEntity<?> removeCartItem(@PathVariable String cartItemId) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", cartItemService.deleteCartItemById(Long.parseLong(cartItemId)));
-        response.put("body", "");
+        String Status = cartItemService.deleteCartItemById(Long.parseLong(cartItemId));
+        if(!Status.equals("deleted")){
+            response.put("message", "delete cartItem");
+            response.put("body", Status);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("error", true);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        response.put("message", "delete cartItem");
+        response.put("body", Status);
         response.put("status", HttpStatus.ACCEPTED);
         response.put("error", false);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.ACCEPTED);

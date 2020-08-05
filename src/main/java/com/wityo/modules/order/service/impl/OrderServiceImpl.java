@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.wityo.common.Constant;
 import com.wityo.common.WityoRestAppProperties;
+import com.wityo.modules.Binding.service.UserRestBindService;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
@@ -41,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private WityoRestAppProperties wityoRestAppProperties;
 
+    @Autowired
+    UserRestBindService userRestBindService;
+
     private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
     public CustomerOrder placeCustomerOrder(Long restaurantId) {
@@ -60,6 +64,7 @@ public class OrderServiceImpl implements OrderService {
                 for(CartItem cartItem:placeOrderDTO.getCartItems()){
                     cartItemRepository.deleteById(cartItem.getCartItemId());
                 }
+                userRestBindService.unBindUserToRestaurantCart(restaurantId);
                 return placedOrder;
             }
         } catch (Exception e) {

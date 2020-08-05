@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.wityo.common.WityoRestAppProperties;
+import com.wityo.modules.Binding.model.UserRestaurantBind;
+import com.wityo.modules.Binding.repository.UserRestBindRepository;
+import com.wityo.modules.Binding.service.UserRestBindService;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.model.SelectCartAddOnItems;
@@ -30,16 +33,23 @@ public class CartItemServiceImpl implements CartItemService {
     CartItemRepository cartItemRepository;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    UserRestBindService userRestBindService;
+    @Autowired
+    private UserRestBindRepository userRestBindRepository;
 
     @Autowired
     private WityoRestAppProperties wityoRestAppProperties;
 
     public String addItemFromMenu(UserCartItem userCartItem) {
         try {
+            String cartStatus = userRestBindService.bindUserToRestaurantCart(userCartItem.getRestaurantId());
+            if(!cartStatus.equals("Go Ahead") && !cartStatus.equals("Start Adding Cart Items")){
+                return cartStatus;
+            }
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = userDetail.getCustomer();
             Cart cart = customer.getCart();
-
             Set<CartItem> userCartItems = cart.getCartItems().stream().filter(item -> item.getRestaurantId() == userCartItem.getRestaurantId()).collect(Collectors.toSet());
             String productId = userCartItem.getProductId();
             Product product = restTemplate.getForObject
@@ -146,11 +156,18 @@ public class CartItemServiceImpl implements CartItemService {
     }
     public String deleteCartItemById(Long cartItemId) {
         try {
+            User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndCartStatus(userDetail.getUserId(),true);
+            Customer customer = userDetail.getCustomer();
+            Cart cart = customer.getCart();
             cartItemRepository.deleteById(cartItemId);
+            if(cart.getCartItems().size()==1){
+                userRestBindService.unBindUserToRestaurantCart(userRestaurantBindCurrent.getRestaurantId());
+            }
             return "deleted";
         } catch (Exception e) {
+            return e.getMessage();
         }
-        return "failure";
     }
 
     public String removeAllCartItems(Cart cart) {
