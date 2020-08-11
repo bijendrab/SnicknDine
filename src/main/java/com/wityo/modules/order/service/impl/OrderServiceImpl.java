@@ -122,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
                     Boolean.class)
                     .getBody();
             TableOrdersResponse tableOrdersResponse = getCustomerTableOrders(restaurantId);
-            if(tableOrdersResponse == null){
+            if(tableOrdersResponse.getTableOrders() == null){
                 userRestBindService.unBindUserToRestaurantOrder(restaurantId);
             }
             return response;
