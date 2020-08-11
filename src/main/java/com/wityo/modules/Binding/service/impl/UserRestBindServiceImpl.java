@@ -56,8 +56,13 @@ public class UserRestBindServiceImpl implements UserRestBindService {
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndRestaurantId(userDetail.getUserId(), restaurantId);
-            if (userRestaurantBindCurrent.getActive() == true && (userRestaurantBindCurrent.getCartStatus() == true || userRestaurantBindCurrent.getOrderStatus() == true)) {
+            if (userRestaurantBindCurrent.getActive() == true && (userRestaurantBindCurrent.getCartStatus() == true && userRestaurantBindCurrent.getOrderStatus() == true)) {
                 return "Go Ahead";
+            }
+            if (userRestaurantBindCurrent.getActive() == true && (userRestaurantBindCurrent.getCartStatus() == false && userRestaurantBindCurrent.getOrderStatus() == true)) {
+                userRestaurantBindCurrent.setCartStatus(true);
+                userRestBindRepository.save(userRestaurantBindCurrent);
+                return "Start Adding Cart Items";
             }
             List<UserRestaurantBind> userRestaurantBindOther = userRestBindRepository.findAllByUserIdAndRestaurantIdNot(userDetail.getUserId(), restaurantId);
             Long getActiveCart = getCartActive(userRestaurantBindOther);
