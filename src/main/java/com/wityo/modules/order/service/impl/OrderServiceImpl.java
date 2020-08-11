@@ -121,6 +121,10 @@ public class OrderServiceImpl implements OrderService {
                     entity,
                     Boolean.class)
                     .getBody();
+            TableOrdersResponse tableOrdersResponse = getCustomerTableOrders(restaurantId);
+            if(tableOrdersResponse == null){
+                userRestBindService.unBindUserToRestaurantOrder(restaurantId);
+            }
             return response;
         } catch (Exception e) {
         }
