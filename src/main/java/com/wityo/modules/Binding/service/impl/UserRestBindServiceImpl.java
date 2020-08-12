@@ -2,6 +2,7 @@ package com.wityo.modules.Binding.service.impl;
 
 import java.util.List;
 import com.wityo.modules.Binding.dto.UserRestBindInput;
+import com.wityo.modules.Binding.dto.UserRestBindOutput;
 import com.wityo.modules.Binding.model.UserRestaurantBind;
 import com.wityo.modules.Binding.repository.UserRestBindRepository;
 import com.wityo.modules.Binding.service.UserRestBindService;
@@ -18,6 +19,24 @@ public class UserRestBindServiceImpl implements UserRestBindService {
     private UserRestBindRepository userRestBindRepository;
 
     private Logger logger = LoggerFactory.getLogger(UserRestBindServiceImpl.class);
+
+    public UserRestBindOutput getUserBindRestaurant(){
+        try{
+            User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            List<UserRestaurantBind> userRestaurantBindList = userRestBindRepository.findAllByUserId(userDetail.getUserId());
+            for(UserRestaurantBind userRestaurantBind: userRestaurantBindList){
+                if(userRestaurantBind.getActive()==true){
+                    UserRestBindOutput userRestBindOutput = new UserRestBindOutput();
+                    userRestBindOutput.setRestaurantId(userRestaurantBind.getRestaurantId());
+                    return userRestBindOutput;
+                }
+            }
+        }catch (Exception e) {
+            logger.error("Exception in getting past orders- {}", e.getMessage());
+        }
+        return null;
+    }
+
     public String bindUserToRestaurant(UserRestBindInput userRestBindInput){
         try {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

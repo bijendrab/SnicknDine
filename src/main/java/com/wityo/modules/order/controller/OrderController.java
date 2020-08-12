@@ -108,4 +108,22 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/getPastOrders/{restaurantId}")
+    public ResponseEntity<?> getPastOrders(@PathVariable Long restaurantId) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("body", orderService.getPastOrders(restaurantId));
+        if (response.get("body")==null){
+            response.put("message","Something went wrong in getting past orders");
+            response.put("error", Boolean.TRUE);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            response.put("message","list of past orders");
+            response.put("error", Boolean.FALSE);
+            response.put("status", HttpStatus.OK);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }
+    }
+
 }

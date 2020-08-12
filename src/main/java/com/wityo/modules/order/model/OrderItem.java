@@ -1,5 +1,6 @@
 package com.wityo.modules.order.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +9,7 @@ import com.wityo.modules.order.dto.OrderItemAddOn;
 public class OrderItem {
 
     private String orderItemId;
-    private Date orderCreationTime;
+    private LocalDateTime orderCreationTime;
     private int quantity;
     private double price;
     private String status;
@@ -88,11 +89,11 @@ public class OrderItem {
         this.immediateStatus = immediateStatus;
     }
 
-    public Date getOrderCreationTime() {
+    public LocalDateTime getOrderCreationTime() {
         return orderCreationTime;
     }
 
-    public void setOrderCreationTime(Date orderCreationTime) {
+    public void setOrderCreationTime(LocalDateTime orderCreationTime) {
         this.orderCreationTime = orderCreationTime;
     }
 

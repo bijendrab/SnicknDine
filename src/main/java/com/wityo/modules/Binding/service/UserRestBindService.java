@@ -1,6 +1,7 @@
 package com.wityo.modules.Binding.service;
 
 import com.wityo.modules.Binding.dto.UserRestBindInput;
+import com.wityo.modules.Binding.dto.UserRestBindOutput;
 
 public interface UserRestBindService {
 
@@ -14,5 +15,6 @@ public interface UserRestBindService {
 
     String unBindUserToRestaurantOrder(Long restaurantId);
 
+    UserRestBindOutput getUserBindRestaurant();
 
 }

@@ -1,19 +1,29 @@
 package com.wityo.modules.order.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.Binding.service.UserRestBindService;
 import com.wityo.modules.cart.model.Cart;
 import com.wityo.modules.cart.model.CartItem;
 import com.wityo.modules.cart.repository.CartItemRepository;
 import com.wityo.modules.cart.service.CartItemService;
+import com.wityo.modules.order.Repository.OrderHistoryRepository;
+import com.wityo.modules.order.dto.BillingDetailResponse;
 import com.wityo.modules.order.dto.EndDiningInfo;
 import com.wityo.modules.order.dto.PlaceOrderDTO;
 import com.wityo.modules.order.dto.TableOrdersResponse;
 import com.wityo.modules.order.dto.UpdateOrderItemDTO;
 import com.wityo.modules.order.model.CustomerOrder;
+import com.wityo.modules.order.model.OrderHistory;
+import com.wityo.modules.order.service.BillingService;
 import com.wityo.modules.order.service.OrderService;
 import com.wityo.modules.reservation.service.impl.ReservationServiceImpl;
 import com.wityo.modules.user.model.Customer;
@@ -44,6 +54,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     UserRestBindService userRestBindService;
+
+    @Autowired
+    BillingService billingService;
+
+    @Autowired
+    OrderHistoryRepository orderHistoryRepository;
 
     private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
@@ -134,11 +150,42 @@ public class OrderServiceImpl implements OrderService {
     public Boolean endDining(EndDiningInfo endDiningInfo) {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            TableOrdersResponse tableOrdersResponse = getCustomerTableOrders(endDiningInfo.getRestId());
+            BillingDetailResponse billingDetailResponse = billingService.getOrderBill(endDiningInfo.getRestId());
             HttpEntity<EndDiningInfo> entity = new HttpEntity<>(endDiningInfo);
             Boolean endDiningStatus = restTemplate.exchange(
                 wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/end-dining", HttpMethod.DELETE, entity,
                 Boolean.class).getBody();
             userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
+            Set<Long> customerIds = new HashSet<>();
+            Long restaurantId = null;
+            Long tableId = null;
+            int count = 0;
+            for(CustomerOrder customerOrder:tableOrdersResponse.getTableOrders()){
+                Customer customer = new Gson().fromJson(customerOrder.getAccordingReservation().getCustomerInfo(), Customer.class);
+                if(count==0) {
+                    restaurantId = customerOrder.getAccordingReservation().getRelatedTable().getRestId();
+                    tableId = customerOrder.getAccordingReservation().getRelatedTable().getId();
+                }
+                count ++;
+                if(customerOrder.getOrderedBy().equals("restaurant")){
+                    continue;
+                }
+                customerIds.add(customer.getCustomerId());
+            }
+            for(Long customerId:customerIds){
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.setOrders(new ObjectMapper().writeValueAsString(tableOrdersResponse));
+                orderHistory.setRestaurantId(restaurantId);
+                orderHistory.setTableId(tableId);
+                orderHistory.setPaymentStatus(Boolean.TRUE);
+                orderHistory.setPaymentMethod("CASH");
+                orderHistory.setOrderCreationTime(tableOrdersResponse.getTableOrders().get(0).getMenuItemOrders().iterator().next().getOrderCreationTime());
+                orderHistory.setOrderHistoryTime(LocalDateTime.now());
+                orderHistory.setTotalCost(billingDetailResponse.getTotalCost());
+                orderHistory.setCustomerId(customerId);
+                orderHistoryRepository.save(orderHistory);
+            }
             return endDiningStatus;
         } catch (Exception e) {
             {
@@ -146,5 +193,17 @@ public class OrderServiceImpl implements OrderService {
                 return false;
             }
         }
+    }
+
+    public List<OrderHistory> getPastOrders(Long restaurantId){
+        try {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Customer customer = user.getCustomer();
+            return orderHistoryRepository.findAllByCustomerIdAndRestaurantId(customer.getCustomerId(),restaurantId);
+        }
+        catch (Exception e) {
+            logger.error("Exception in getting past orders- {}", e.getMessage());
+        }
+        return null;
     }
 }
