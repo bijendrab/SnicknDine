@@ -25,7 +25,7 @@ public class UserRestBindServiceImpl implements UserRestBindService {
             User userDetail = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             List<UserRestaurantBind> userRestaurantBindList = userRestBindRepository.findAllByUserId(userDetail.getUserId());
             for(UserRestaurantBind userRestaurantBind: userRestaurantBindList){
-                if(userRestaurantBind.getActive()==true){
+                if(userRestaurantBind.getActive()==true && (userRestaurantBind.getCartStatus()==true || userRestaurantBind.getOrderStatus()==true)){
                     UserRestBindOutput userRestBindOutput = new UserRestBindOutput();
                     userRestBindOutput.setRestaurantId(userRestaurantBind.getRestaurantId());
                     return userRestBindOutput;

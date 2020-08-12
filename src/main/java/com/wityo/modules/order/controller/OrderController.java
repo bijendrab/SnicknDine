@@ -108,7 +108,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/getPastOrders/{restaurantId}")
+    @GetMapping("/getPastOrders/{restaurantId}")
     public ResponseEntity<?> getPastOrders(@PathVariable Long restaurantId) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("body", orderService.getPastOrders(restaurantId));
