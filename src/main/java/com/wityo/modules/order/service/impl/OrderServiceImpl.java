@@ -158,11 +158,6 @@ public class OrderServiceImpl implements OrderService {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             TableOrdersResponse tableOrdersResponse = getCustomerTableOrders(endDiningInfo.getRestId());
             BillingDetailResponse billingDetailResponse = billingService.getOrderBill(endDiningInfo.getRestId());
-            HttpEntity<EndDiningInfo> entity = new HttpEntity<>(endDiningInfo);
-            Boolean endDiningStatus = restTemplate.exchange(
-                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/end-dining", HttpMethod.DELETE, entity,
-                Boolean.class).getBody();
-            userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
             Set<Long> customerIds = new HashSet<>();
             Long restaurantId = null;
             String restaurantName = null;
@@ -182,6 +177,16 @@ public class OrderServiceImpl implements OrderService {
                 }
                 customerIds.add(customer.getCustomerId());
             }
+            HttpEntity<EndDiningInfo> entity = new HttpEntity<>(endDiningInfo);
+            /**
+             * Save Order to Restaurant
+             */
+            Boolean endDiningStatus = restTemplate.exchange(
+                wityoRestAppProperties.getWityoUserAppUrl() + "api/customerOrder/end-dining", HttpMethod.DELETE, entity,
+                Boolean.class).getBody();
+            /**
+             * Save Order to Customer
+             */
             for(Long customerId:customerIds){
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setOrders(new ObjectMapper().writeValueAsString(tableOrdersResponse));
@@ -196,6 +201,10 @@ public class OrderServiceImpl implements OrderService {
                 orderHistory.setCustomerId(customerId);
                 orderHistoryRepository.save(orderHistory);
             }
+            /**
+             * UnBind User from Restaurant
+             */
+            userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
             return endDiningStatus;
         } catch (Exception e) {
             {

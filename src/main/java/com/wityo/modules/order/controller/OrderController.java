@@ -94,7 +94,7 @@ public class OrderController {
     public ResponseEntity<?> endDining(@RequestBody EndDiningInfo endDiningInfo) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("body", orderService.endDining(endDiningInfo));
-        if (response.get("body")==null){
+        if (response.get("body")==null || response.get("body").equals(false)){
             response.put("message","Something went wrong in end dining");
             response.put("error", Boolean.TRUE);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
