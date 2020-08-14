@@ -144,9 +144,9 @@ public class UserRestBindServiceImpl implements UserRestBindService {
             }
         }
 
-    public String unBindOtherUsersToRestaurantOrder(Long customerId, Long restaurantId ){
+    public String unBindOtherUsersToRestaurantOrder(Long userId, Long restaurantId ){
         try {
-            UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndRestaurantId(customerId, restaurantId);
+            UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndRestaurantId(userId, restaurantId);
             userRestaurantBindCurrent.setOrderStatus(false);
             userRestBindRepository.save(userRestaurantBindCurrent);
             return "remove binding from user to order";

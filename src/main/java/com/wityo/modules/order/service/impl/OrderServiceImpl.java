@@ -2,7 +2,6 @@ package com.wityo.modules.order.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +29,7 @@ import com.wityo.modules.restaurant.dto.RestaurantBasicDTO;
 import com.wityo.modules.restaurant.service.RestaurantServerService;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
+import com.wityo.modules.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     RestTemplate restTemplate;
 
@@ -206,7 +207,8 @@ public class OrderServiceImpl implements OrderService {
              */
             userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
             for(Long customerId:customerIds){
-                userRestBindService.unBindOtherUsersToRestaurantOrder(customerId , endDiningInfo.getRestId() );
+                User userDetails = userRepository.findByCustomerCustomerId(customerId);
+                userRestBindService.unBindOtherUsersToRestaurantOrder(userDetails.getUserId() , endDiningInfo.getRestId() );
             }
             return endDiningStatus;
         } catch (Exception e) {
