@@ -144,6 +144,16 @@ public class UserRestBindServiceImpl implements UserRestBindService {
             }
         }
 
+    public String unBindOtherUsersToRestaurantOrder(Long customerId, Long restaurantId ){
+        try {
+            UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndRestaurantId(customerId, restaurantId);
+            userRestaurantBindCurrent.setOrderStatus(false);
+            userRestBindRepository.save(userRestaurantBindCurrent);
+            return "remove binding from user to order";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 
     private Long getCartActive(List<UserRestaurantBind> userRestaurantBindOther){
         for(UserRestaurantBind userRestaurantBind:userRestaurantBindOther){

@@ -205,6 +205,9 @@ public class OrderServiceImpl implements OrderService {
              * UnBind User from Restaurant
              */
             userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
+            for(Long customerId:customerIds){
+                userRestBindService.unBindOtherUsersToRestaurantOrder(customerId , endDiningInfo.getRestId() );
+            }
             return endDiningStatus;
         } catch (Exception e) {
             {
