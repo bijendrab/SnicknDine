@@ -20,5 +20,5 @@ public interface OrderService {
 
     Boolean endDining(EndDiningInfo endDiningInfo);
 
-    List<OrderHistory> getPastOrders(Long restaurantId);
+    List<OrderHistory> getPastOrders();
 }

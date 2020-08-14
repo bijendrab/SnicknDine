@@ -26,6 +26,8 @@ import com.wityo.modules.order.model.OrderHistory;
 import com.wityo.modules.order.service.BillingService;
 import com.wityo.modules.order.service.OrderService;
 import com.wityo.modules.reservation.service.impl.ReservationServiceImpl;
+import com.wityo.modules.restaurant.dto.RestaurantBasicDTO;
+import com.wityo.modules.restaurant.service.RestaurantServerService;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import org.slf4j.Logger;
@@ -60,6 +62,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderHistoryRepository orderHistoryRepository;
+
+    @Autowired
+    RestaurantServerService restaurantServerService;
 
     private Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
 
@@ -143,6 +148,7 @@ public class OrderServiceImpl implements OrderService {
             }
             return response;
         } catch (Exception e) {
+            logger.error("Exception in Delete Order Exception:- {}", e.getMessage());
         }
         return null;
     }
@@ -159,12 +165,15 @@ public class OrderServiceImpl implements OrderService {
             userRestBindService.unBindUserToRestaurantOrder(endDiningInfo.getRestId());
             Set<Long> customerIds = new HashSet<>();
             Long restaurantId = null;
+            String restaurantName = null;
             Long tableId = null;
             int count = 0;
             for(CustomerOrder customerOrder:tableOrdersResponse.getTableOrders()){
                 Customer customer = new Gson().fromJson(customerOrder.getAccordingReservation().getCustomerInfo(), Customer.class);
                 if(count==0) {
                     restaurantId = customerOrder.getAccordingReservation().getRelatedTable().getRestId();
+                    RestaurantBasicDTO restaurantBasicDTO = restaurantServerService.fetchRestaurantDetailsById(restaurantId);
+                    restaurantName = restaurantBasicDTO.getRestName();
                     tableId = customerOrder.getAccordingReservation().getRelatedTable().getId();
                 }
                 count ++;
@@ -177,6 +186,7 @@ public class OrderServiceImpl implements OrderService {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setOrders(new ObjectMapper().writeValueAsString(tableOrdersResponse));
                 orderHistory.setRestaurantId(restaurantId);
+                orderHistory.setRestaurantName(restaurantName);
                 orderHistory.setTableId(tableId);
                 orderHistory.setPaymentStatus(Boolean.TRUE);
                 orderHistory.setPaymentMethod("CASH");
@@ -195,11 +205,11 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public List<OrderHistory> getPastOrders(Long restaurantId){
+    public List<OrderHistory> getPastOrders(){
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Customer customer = user.getCustomer();
-            return orderHistoryRepository.findAllByCustomerIdAndRestaurantId(customer.getCustomerId(),restaurantId);
+            return orderHistoryRepository.findAllByCustomerId(customer.getCustomerId());
         }
         catch (Exception e) {
             logger.error("Exception in getting past orders- {}", e.getMessage());

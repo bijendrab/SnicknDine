@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderHistoryRepository extends JpaRepository<OrderHistory, Long> {
+    List<OrderHistory> findAllByCustomerId(Long customerId);
     List<OrderHistory> findAllByCustomerIdAndRestaurantId(Long customerId, Long restaurantId);
 }

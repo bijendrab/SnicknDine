@@ -108,10 +108,10 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/getPastOrders/{restaurantId}")
-    public ResponseEntity<?> getPastOrders(@PathVariable Long restaurantId) {
+    @GetMapping("/getPastOrders")
+    public ResponseEntity<?> getPastOrders() {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("body", orderService.getPastOrders(restaurantId));
+        response.put("body", orderService.getPastOrders());
         if (response.get("body")==null){
             response.put("message","Something went wrong in getting past orders");
             response.put("error", Boolean.TRUE);

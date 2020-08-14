@@ -40,6 +40,9 @@ public class OrderHistory {
     @Column(name= "restaurantId")
     private Long restaurantId;
 
+    @Column(name= "restaurantName")
+    private String restaurantName;
+
     private LocalDateTime orderCreationTime;
 
     private LocalDateTime orderHistoryTime;
@@ -122,5 +125,13 @@ public class OrderHistory {
 
     public void setOrderHistoryTime(LocalDateTime orderHistoryTime) {
         this.orderHistoryTime = orderHistoryTime;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }
