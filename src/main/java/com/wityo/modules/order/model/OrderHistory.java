@@ -22,6 +22,10 @@ public class OrderHistory {
     @Column(name = "orders")
     private String orders;
 
+    @Lob
+    @Column(name = "billingDetails")
+    private String billingDetails;
+
     @Column(name = "tableId")
     private Long tableId;
 
@@ -133,5 +137,13 @@ public class OrderHistory {
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+
+    public String getBillingDetails() {
+        return billingDetails;
+    }
+
+    public void setBillingDetails(String billingDetails) {
+        this.billingDetails = billingDetails;
     }
 }

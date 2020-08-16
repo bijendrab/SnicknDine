@@ -191,6 +191,7 @@ public class OrderServiceImpl implements OrderService {
             for(Long customerId:customerIds){
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setOrders(new ObjectMapper().writeValueAsString(tableOrdersResponse));
+                orderHistory.setBillingDetails(new ObjectMapper().writeValueAsString(billingDetailResponse));
                 orderHistory.setRestaurantId(restaurantId);
                 orderHistory.setRestaurantName(restaurantName);
                 orderHistory.setTableId(tableId);
