@@ -1,11 +1,12 @@
 package com.wityo.modules.user.service;
 
+import com.wityo.modules.user.dto.RegistrationDTO;
 import com.wityo.modules.user.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    User registerUser(User user);
+    User registerUser(RegistrationDTO registrationDTO);
 
     User validateUser(String phoneNumber);
 

@@ -4,6 +4,7 @@ import com.wityo.common.Constant;
 import com.wityo.common.ResponseCreator;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.user.dto.LoginRequestDTO;
+import com.wityo.modules.user.dto.RegistrationDTO;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.CustomerRepository;
@@ -74,8 +75,8 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody User user) {
-		User registeredUser = userServiceImpl.registerUser(user);
+	public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO registrationDTO) {
+		User registeredUser = userServiceImpl.registerUser(registrationDTO);
 		Map<String, Object> response = new HashMap<String, Object>();
 		if (registeredUser != null) {
 			response = ResponseCreator.successResponseCreator("User is registere and JWT is assigned.",

@@ -12,7 +12,7 @@ public class UserRestaurantBind {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bindId;
-    private Long userId;
+    private String userId;
     private Long restaurantId;
     private Boolean active;
     private Boolean cartStatus = Boolean.FALSE;
@@ -26,11 +26,11 @@ public class UserRestaurantBind {
         this.bindId = bindId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

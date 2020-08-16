@@ -1,6 +1,9 @@
 package com.wityo.modules.user.service.impl;
 
+import static java.lang.Boolean.TRUE;
 import com.wityo.modules.cart.model.Cart;
+import com.wityo.modules.user.dto.RegistrationDTO;
+import com.wityo.modules.user.exception.UsernameAlreadyExistsException;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
 import com.wityo.modules.user.repository.UserRepository;
@@ -8,7 +11,10 @@ import com.wityo.modules.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,31 +32,31 @@ public class UserServiceImpl implements UserService {
 		return user1;
 	}
 
-	public User registerUser(User user) {
+	public User registerUser(RegistrationDTO registrationDTO) {
 		try {
+			User user = new User();
 			Customer customer = new Customer();
-			customer.setCustomerId(user.getUserId());
-			customer.setEmailId(user.getEmailId());
-			customer.setFirstName(user.getFirstName());
-			customer.setLastName(user.getLastName());
-			customer.setPhoneNumber(user.getPhoneNumber());
-			customer.setUser(user);
-			Cart cart = new Cart();
-			customer.setCart(cart);
-			cart.setCustomer(customer);
-			user.setCustomer(customer);
-
-			/*
-			 * CartItem item = new CartItem(); item.setCart(cart); item.setItemName("lala");
-			 * List<CartItem> items = new ArrayList<CartItem>(); items.add(item);
-			 * cart.setCartItems(items);
-			 */
-
-			User user1 = userRepository.save(user);
-			if (null != user1) {
-				return user1;
+			String userUUID = UUID.randomUUID().toString();
+			userUUID = userUUID.replaceAll("-", "");
+			user.setUserId(userUUID);
+			user.setEnabled(TRUE);
+			user.setPhoneNumber(registrationDTO.getPhoneNumber());
+			user.setEmailId(registrationDTO.getEmailId());
+			user.setCreatedAt(LocalDateTime.now());
+			User tempUser = userRepository.findByPhoneNumber(user.getPhoneNumber());
+			if (tempUser == null) {
+				customer.setFirstName(registrationDTO.getFirstName());
+				customer.setLastName(registrationDTO.getFirstName());
+				customer.setEmailId(registrationDTO.getEmailId());
+				customer.setPhoneNumber(registrationDTO.getPhoneNumber());
+				user.setCustomer(customer);
+				customer.setUser(user);
+				Cart cart = new Cart();
+				cart.setCustomer(customer);
+				customer.setCart(cart);
+				return userRepository.save(user);
 			} else {
-				throw new RuntimeException();
+				throw new UsernameAlreadyExistsException("This user already exists with phone number. Please login with that number");
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to register user, please try again");

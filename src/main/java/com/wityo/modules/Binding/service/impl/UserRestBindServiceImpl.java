@@ -144,7 +144,7 @@ public class UserRestBindServiceImpl implements UserRestBindService {
             }
         }
 
-    public String unBindOtherUsersToRestaurantOrder(Long userId, Long restaurantId ){
+    public String unBindOtherUsersToRestaurantOrder(String userId, Long restaurantId ){
         try {
             UserRestaurantBind userRestaurantBindCurrent = userRestBindRepository.findAllByUserIdAndRestaurantId(userId, restaurantId);
             userRestaurantBindCurrent.setOrderStatus(false);

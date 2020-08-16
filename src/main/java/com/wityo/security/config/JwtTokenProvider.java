@@ -29,8 +29,8 @@ public class JwtTokenProvider {
 	public String generateJwtToken(User user) {
 		Date now = new Date(System.currentTimeMillis());
 		Date expiryDate = new Date(now.getTime() + Constant.EXPIRY_TIME);
-		String userId = Long.toString(user.getUserId());
-		String customerName = user.getFirstName() +" "+user.getLastName();
+		String userId = user.getUserId();
+		String customerName = user.getCustomer().getFirstName() +" "+user.getCustomer().getLastName();
 		Map<String, Object> claims = new HashMap<String, Object>();
 		claims.put("id", userId);
 		claims.put("customerId",user.getCustomer().getCustomerId());

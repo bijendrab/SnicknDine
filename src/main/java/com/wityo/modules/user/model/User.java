@@ -13,10 +13,7 @@ import java.util.Collection;
 public class User implements UserDetails, Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-    private String firstName;
-    private String lastName;
+    private String userId;
     private String emailId;
     @Column(unique = true)
     private String phoneNumber;
@@ -31,35 +28,13 @@ public class User implements UserDetails, Serializable {
     }
 
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-
-    public String getLastName() {
-        return lastName;
-    }
-
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
 
     public String getEmailId() {
         return emailId;
@@ -138,12 +113,12 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public String getPassword() {
-        return this.lastName;
+        return this.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.firstName;
+        return this.getEmailId();
     }
 
     @Override

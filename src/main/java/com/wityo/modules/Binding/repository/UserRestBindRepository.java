@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRestBindRepository extends JpaRepository<UserRestaurantBind, Long> {
-    List<UserRestaurantBind> findAllByUserId(Long userId);
-    UserRestaurantBind findAllByUserIdAndRestaurantId(Long userId, Long restaurantId);
-    List<UserRestaurantBind> findAllByUserIdAndRestaurantIdNot(Long userId, Long restaurantId);
-    UserRestaurantBind findAllByUserIdAndCartStatus(Long userId, Boolean cartStatus);
-    UserRestaurantBind findAllByUserIdAndOrderStatus(Long userId, Boolean orderStatus);
+    List<UserRestaurantBind> findAllByUserId(String userId);
+    UserRestaurantBind findAllByUserIdAndRestaurantId(String userId, Long restaurantId);
+    List<UserRestaurantBind> findAllByUserIdAndRestaurantIdNot(String userId, Long restaurantId);
+    UserRestaurantBind findAllByUserIdAndCartStatus(String userId, Boolean cartStatus);
+    UserRestaurantBind findAllByUserIdAndOrderStatus(String userId, Boolean orderStatus);
 }

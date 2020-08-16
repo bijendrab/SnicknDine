@@ -15,7 +15,7 @@ public interface UserRestBindService {
 
     String unBindUserToRestaurantOrder(Long restaurantId);
 
-    String unBindOtherUsersToRestaurantOrder(Long userId, Long restaurantId );
+    String unBindOtherUsersToRestaurantOrder(String userId, Long restaurantId );
 
     UserRestBindOutput getUserBindRestaurant();
 
