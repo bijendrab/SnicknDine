@@ -162,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
             Set<Long> customerIds = new HashSet<>();
             Long restaurantId = null;
             String restaurantName = null;
+            String restaurantContact = null;
             Long tableId = null;
             int count = 0;
             for(CustomerOrder customerOrder:tableOrdersResponse.getTableOrders()){
@@ -170,6 +171,7 @@ public class OrderServiceImpl implements OrderService {
                     restaurantId = customerOrder.getAccordingReservation().getRelatedTable().getRestId();
                     RestaurantBasicDTO restaurantBasicDTO = restaurantServerService.fetchRestaurantDetailsById(restaurantId);
                     restaurantName = restaurantBasicDTO.getRestName();
+                    restaurantContact = restaurantBasicDTO.getPhone();
                     tableId = customerOrder.getAccordingReservation().getRelatedTable().getId();
                 }
                 count ++;
@@ -194,6 +196,7 @@ public class OrderServiceImpl implements OrderService {
                 orderHistory.setBillingDetails(new ObjectMapper().writeValueAsString(billingDetailResponse));
                 orderHistory.setRestaurantId(restaurantId);
                 orderHistory.setRestaurantName(restaurantName);
+                orderHistory.setRestaurantContact(restaurantContact);
                 orderHistory.setTableId(tableId);
                 orderHistory.setPaymentStatus(Boolean.TRUE);
                 orderHistory.setPaymentMethod("CASH");
