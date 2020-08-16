@@ -75,13 +75,13 @@ public class JwtTokenProvider {
 	
 	/*---------------------------GETTING USERID FROM THE TOKEN-------------------------*/
 	
-	public Long getUserIdFromToken(String token) {
+	public String getUserIdFromToken(String token) {
 		Claims claim = Jwts.parser()
 						   .setSigningKey(Constant.API_SECRET)
 						   .parseClaimsJws(token)
 						   .getBody();
 		String userId = (String)claim.get("id");
-		return Long.parseLong(userId);
+		return userId;
 	}
 	
 	/*---------------------------GETTING USERID FROM THE TOKEN-------------------------*/

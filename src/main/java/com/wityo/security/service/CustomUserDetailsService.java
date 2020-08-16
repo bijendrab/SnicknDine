@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return null;	
 	}
 	
-	public User loadUserByUserId(Long userId) throws UsernameNotFoundException {
+	public User loadUserByUserId(String userId) throws UsernameNotFoundException {
 		try {
 			return userRepo.findByUserId(userId);
 		} catch (Exception e) {
