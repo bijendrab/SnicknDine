@@ -32,7 +32,7 @@ public class UserRestBindServiceImpl implements UserRestBindService {
                 }
             }
         }catch (Exception e) {
-            logger.error("Exception in getting past orders- {}", e.getMessage());
+            logger.error("Exception in getting Bind Details {}", e.getMessage());
         }
         return null;
     }
