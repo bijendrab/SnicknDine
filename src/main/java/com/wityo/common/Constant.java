@@ -20,6 +20,6 @@ public class Constant {
 	//public static final String RESTAURANT_SERVER_URL = "http://localhost:8081/";
 	/*-----------------------------Constants for OTP 2Factor--------------------------------*/
 
-	public static final String TWO_FACTOR_API_SECRET = "15f9e67c-e180-11ea-9fa5-0200cd936042";
+	public static final String TWO_FACTOR_API_SECRET = "5ce82e95-9bd9-11e9-ade6-0200cd936042";
 	public static final String TWO_FACTOR_API_URL = "https://2factor.in/API/V1/";
 }

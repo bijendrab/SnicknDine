@@ -56,7 +56,7 @@ public class UserController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		response.put("message", "generated OTP successfully");
-		response.put("body", userServiceImpl.generateOTP(phoneNumber));
+		response.put("body", otpGenerationStatus);
 		response.put("error", Boolean.FALSE);
 		response.put("status", HttpStatus.FOUND);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class UserController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		response.put("message", "validate OTP successfully");
-		response.put("body", userServiceImpl.validateOTP(sessionId,otpInput));
+		response.put("body", otpValidationStatus);
 		response.put("error", Boolean.FALSE);
 		response.put("status", HttpStatus.FOUND);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
