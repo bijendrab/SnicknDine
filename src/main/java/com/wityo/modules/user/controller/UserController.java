@@ -4,6 +4,7 @@ import com.wityo.common.Constant;
 import com.wityo.common.ResponseCreator;
 import com.wityo.common.WityoRestAppProperties;
 import com.wityo.modules.user.dto.LoginRequestDTO;
+import com.wityo.modules.user.dto.OTPResponse;
 import com.wityo.modules.user.dto.RegistrationDTO;
 import com.wityo.modules.user.model.Customer;
 import com.wityo.modules.user.model.User;
@@ -11,10 +12,10 @@ import com.wityo.modules.user.repository.CustomerRepository;
 import com.wityo.modules.user.repository.UserRepository;
 import com.wityo.modules.user.service.UserService;
 import com.wityo.security.config.JwtTokenProvider;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -40,10 +41,45 @@ public class UserController {
 	private JwtTokenProvider tokenProvider;
 
 	@Autowired
-	RestTemplate restTemplate;
-
-	@Autowired
 	private WityoRestAppProperties wityoRestAppProperties;
+
+	@ApiOperation(value = "generate otp", response = OTPResponse.class)
+	@GetMapping(value = "/generateOTP/{phoneNumber}")
+	public ResponseEntity<?> generateOTP(@PathVariable String phoneNumber) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		OTPResponse otpGenerationStatus = userServiceImpl.generateOTP(phoneNumber);
+		if(otpGenerationStatus == null || otpGenerationStatus.getStatus().equals("Error")){
+			response.put("message", "could not generate OTP");
+			response.put("body", otpGenerationStatus);
+			response.put("error", Boolean.TRUE);
+			response.put("status", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		response.put("message", "generated OTP successfully");
+		response.put("body", userServiceImpl.generateOTP(phoneNumber));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.FOUND);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "validate otp", response = OTPResponse.class)
+	@GetMapping(value = "/validateOTP/{sessionId}/{otpInput}")
+	public ResponseEntity<?> validateOTP(@PathVariable String sessionId,@PathVariable Long otpInput) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		OTPResponse otpValidationStatus = userServiceImpl.validateOTP(sessionId,otpInput);
+		if(otpValidationStatus == null || otpValidationStatus.getStatus().equals("Error")){
+			response.put("message", "could not validate OTP");
+			response.put("body", otpValidationStatus);
+			response.put("error", Boolean.TRUE);
+			response.put("status", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		response.put("message", "validate OTP successfully");
+		response.put("body", userServiceImpl.validateOTP(sessionId,otpInput));
+		response.put("error", Boolean.FALSE);
+		response.put("status", HttpStatus.FOUND);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
 
 	@GetMapping("/validate")
 	public ResponseEntity<?> checkUserExists(@RequestParam("phoneNumber") String phoneNumber) {
