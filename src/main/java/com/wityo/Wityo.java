@@ -19,6 +19,7 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.TrustStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +36,7 @@ import org.apache.http.ssl.SSLContextBuilder;
 @SpringBootApplication
 @EnableConfigurationProperties(WityoRestAppProperties.class)
 public class Wityo {
-	@Value("${app.wityoRestSslKeyStore}")
+	@Value("${server.ssl.trust-store}")
 	private String trustStore;
 
 	public static void main(String[] args) {
