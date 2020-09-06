@@ -55,7 +55,7 @@ RUN mkdir -p /pkcs
 
 COPY --from=builder /build/target/*.jar wityodiner.jar
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -Dserver.ssl.key-store=file:/pkcs/keystorewityo.p12 -Dserver.ssl.trust-store=classpath:/pkcs/keystorewityorest.p12 -jar wityodiner.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -Dserver.ssl.key-store=file:/pkcs/keystorewityo.p12 -Dserver.ssl.trust-store=file:/pkcs/keystorewityorest.p12 -jar wityodiner.jar" ]
 
 #Second option using shell form:
 

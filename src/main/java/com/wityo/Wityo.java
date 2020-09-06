@@ -54,12 +54,7 @@ public class Wityo {
 
 		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
 		sslContextBuilder.loadKeyMaterial(clientStore, "wityorest123".toCharArray());
-		sslContextBuilder.loadTrustMaterial(new TrustStrategy(){
-			@Override
-			public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-				return true;
-			}
-		});
+		sslContextBuilder.loadTrustMaterial((chain, authType) -> true);
 
 		SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContextBuilder.build(),SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 		CloseableHttpClient httpClient = HttpClients.custom()
