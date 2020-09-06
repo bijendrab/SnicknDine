@@ -48,7 +48,7 @@ public class Wityo {
 	@Bean
 	public RestTemplate getRestTemplate() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
 		KeyStore  clientStore = KeyStore.getInstance("PKCS12");
-		clientStore.load(new FileInputStream("src/main/resources/keystorewityorest.p12"), "wityorest123".toCharArray());
+		clientStore.load(new FileInputStream("/pkcs/keystorewityorest.p12"), "wityorest123".toCharArray());
 
 		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
 		sslContextBuilder.loadKeyMaterial(clientStore, "wityorest123".toCharArray());
