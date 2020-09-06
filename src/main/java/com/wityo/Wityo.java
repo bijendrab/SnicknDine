@@ -35,6 +35,8 @@ import org.apache.http.ssl.SSLContextBuilder;
 @SpringBootApplication
 @EnableConfigurationProperties(WityoRestAppProperties.class)
 public class Wityo {
+	@Value("${server.ssl.trust-store}")
+	private String trustStore;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Wityo.class, args);
@@ -48,7 +50,7 @@ public class Wityo {
 	@Bean
 	public RestTemplate getRestTemplate() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
 		KeyStore  clientStore = KeyStore.getInstance("PKCS12");
-		clientStore.load(new FileInputStream("/pkcs/keystorewityorest.p12"), "wityorest123".toCharArray());
+		clientStore.load(new FileInputStream(trustStore), "wityorest123".toCharArray());
 
 		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
 		sslContextBuilder.loadKeyMaterial(clientStore, "wityorest123".toCharArray());
