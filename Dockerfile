@@ -50,12 +50,12 @@ VOLUME $APP_HOME/config
 
 WORKDIR $APP_HOME
 
-RUN mkdir -p /pkcs
+RUN mkdir -p $APP_HOME/pkcs
 #Copy executable jar file from the builder image
 
 COPY --from=builder /build/target/*.jar wityodiner.jar
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -Dserver.ssl.key-store=file:/pkcs/keystorewityo.p12 -Dserver.ssl.trust-store=file:/pkcs/keystorewityorest.p12 -jar wityodiner.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -Dserver.ssl.key-store=file:/app/pkcs/keystorewityo.p12 -Dserver.ssl.trust-store=file:/app/pkcs/keystorewityorest.p12 -jar wityodiner.jar" ]
 
 #Second option using shell form:
 
