@@ -35,13 +35,13 @@ import org.apache.http.ssl.SSLContextBuilder;
 @SpringBootApplication
 @EnableConfigurationProperties(WityoRestAppProperties.class)
 public class Wityo {
-	@Value("${server.ssl.trust-store}")
+	@Value("${app.wityoRestSslKeyStore}")
 	private String trustStore;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Wityo.class, args);
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -54,7 +54,12 @@ public class Wityo {
 
 		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
 		sslContextBuilder.loadKeyMaterial(clientStore, "wityorest123".toCharArray());
-		sslContextBuilder.loadTrustMaterial((chain, authType) -> true);
+		sslContextBuilder.loadTrustMaterial(new TrustStrategy(){
+			@Override
+			public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				return true;
+			}
+		});
 
 		SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContextBuilder.build(),SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 		CloseableHttpClient httpClient = HttpClients.custom()

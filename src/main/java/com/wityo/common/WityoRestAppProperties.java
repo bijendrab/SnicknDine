@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 public class WityoRestAppProperties {
     @NotNull
     private String wityoUserAppUrl;
+    private String wityoRestSslKeyStore;
 
     public String getWityoUserAppUrl() {
         return wityoUserAppUrl;
@@ -18,5 +19,13 @@ public class WityoRestAppProperties {
 
     public void setWityoUserAppUrl(String wityoUserAppUrl) {
         this.wityoUserAppUrl = wityoUserAppUrl;
+    }
+
+    public String getWityoRestSslKeyStore() {
+        return wityoRestSslKeyStore;
+    }
+
+    public void setWityoRestSslKeyStore(String wityoRestSslKeyStore) {
+        this.wityoRestSslKeyStore = wityoRestSslKeyStore;
     }
 }
