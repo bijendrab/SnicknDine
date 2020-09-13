@@ -33,6 +33,7 @@ public class WityoSecurityConfig extends WebSecurityConfigurerAdapter{
 			.frameOptions().sameOrigin()
 			.and().authorizeRequests()
 			.antMatchers("/api/user/**").permitAll()
+			.antMatchers("/actuator/**").permitAll()
 			.anyRequest().authenticated();
 		http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
